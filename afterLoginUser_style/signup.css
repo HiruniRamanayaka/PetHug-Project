@@ -1,0 +1,55 @@
+.form
+{
+    text-align: center;
+    height: 400px;
+    width: 320px;
+    border:rgb(26, 111, 190) solid 2px;
+    border-radius: 20px;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 0 10px;
+    padding-top: 8px;
+    padding-bottom: 25px;
+}
+
+h2
+{
+    font-size: 2rem;
+    margin-top: 7px;
+}
+
+input
+{
+    border-radius: 10px;
+    padding:3px 5px;
+}
+
+#submit
+{
+    margin-top:11px;
+    padding: 4px 15px;
+    border-radius: 13px;
+    background-color: #166FE5;
+    border: #166FE5;
+    color: white;
+}
+
+.error-box {
+    border: 2px solid red;
+    background-color: #ffe5e5;
+    color: red;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+}
+
+.success-box {
+    border: 2px solid green;
+    background-color: #e5ffe5;
+    color: green;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+}

@@ -1,0 +1,72 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+}
+
+/* Container Styles */
+.unpaid, .paid {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 90%;
+    margin: 20px auto;
+}
+
+/* Headings */
+h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+/* Header Cell Styles */
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Row Hover Effect */
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Highlight Total Due Amount */
+strong {
+    color: #e74c3c; /* Red color for the due amount */
+}
+
+/* Link Styles */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* No Data Message */
+p {
+    font-style: italic;
+    color: #666;
+}

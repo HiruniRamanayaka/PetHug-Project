@@ -1,0 +1,97 @@
+.service-header {
+    margin: auto 50px;
+    text-align: left;
+    padding: 30px 20px;
+}
+
+.service-header h1 {
+    font-family: serif;
+    color: #0c1b49;
+    font-size: 36px;
+    margin: 0;
+}
+
+.service-header p {
+    margin-left: 60px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.services-section {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#service-2, #service-4{
+    margin-left: auto;  
+    margin-right: 0;    
+    max-width: 50%;   
+}
+
+.service-container1,.service-container2, .service-container3, .service-container4, .service-container5{
+    display: flex; 
+    justify-content: space-between; /* Adjust space between image and text */
+    align-items: center; /* Vertically align items */
+    margin-bottom: 30px;
+}
+
+.img img {
+    max-width: 100%; /* Ensures the image scales down for smaller screens */
+    width: 50%; 
+    height: auto; 
+    margin-left: 20%; /* Adds space between the image and text */
+}
+
+.service {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+    padding: 20px;
+    width: 60%;
+}
+
+.service-container5 .service{
+    width: 50%;
+}
+
+.service-container5 .img img{
+    max-width: 100%; /* Ensures the image scales down for smaller screens */
+    width: 100%; 
+    height: auto; 
+    margin-left: -40%; 
+}
+
+.service h2 {
+    font-family: serif;
+    font-size: 24px;
+    color: rgb(57, 57, 195);
+    display: flex;
+    align-items: center;
+}
+
+.service h2 i {
+    margin-right: 10px;
+}
+
+.service p {
+    font-size: 16px;
+    color: #555;
+}
+
+.service ul {
+    padding: 0;
+    margin-left: 40px;
+}
+
+.service ul li {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.service ul li strong {
+    color: #333;
+}

@@ -1,0 +1,41 @@
+.container_earnings {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    border-radius: 20px; 
+}
+
+.container_earnings h1 {
+    text-align: center;
+    font-size: 26px; 
+    color: #1976d2; 
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+thead th {
+    background-color: #1976d2; 
+    color: white; 
+    padding: 10px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; 
+}
+
+th, td {
+    padding: 12px; 
+    border: 1px solid #ddd; 
+}
+
+tbody td strong {
+    color: #1976d2; 
+}
+

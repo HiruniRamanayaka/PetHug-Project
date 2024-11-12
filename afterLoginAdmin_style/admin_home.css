@@ -1,0 +1,126 @@
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.container h2 {
+    font-family: 'Georgia', serif;
+    color: #0c1b49;
+    margin-bottom: 20px;
+}
+
+.container p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 50px;
+}
+
+/* Dashboard cards */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    font-size: 22px;
+    color: #0c1b49;
+    margin-bottom: 15px;
+}
+
+.card p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.card .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0a36d4;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.card .btn:hover {
+    background-color: #0b5ed7;
+}
+
+.about {
+    position: relative;
+    width: 95%;
+    margin: 0 auto;
+  }
+  
+  .about img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    width: 100%; /* Adjusted to 100% to make use of .about's 95% width */
+    position: relative;
+  }
+  
+  .about h2,
+  .about p {
+    position: absolute;
+    left: 10px; /* Position text on the left side */
+    text-align: left; /* Align text to the left */
+    color: #007bff; /* or your preferred color */
+    width: 45%; /* Adjusted width to fit left side */
+  }
+  
+  .about h2 {
+    top: 20px; /* Position h2 slightly from the top */
+    font-size: 24px; /* Adjust size as needed */
+  }
+  
+  .about p {
+    top: 60px; /* Position p below h2 */
+    color: #333;
+    font-size: 16px; /* Adjust size as needed */
+  }
+  
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container p {
+        font-size: 16px;
+    }
+
+    .card h3 {
+        font-size: 20px;
+    }
+
+    .card p {
+        font-size: 14px;
+    }
+}

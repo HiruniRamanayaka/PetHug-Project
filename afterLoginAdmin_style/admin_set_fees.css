@@ -1,0 +1,65 @@
+
+#title {
+    color: #0015b3;
+    margin-top: 3%;
+    margin-left: 30px;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.update-fees-container {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5%;
+    padding: 20px;
+    gap: 20px;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    margin-bottom: 50px;
+}
+
+.update-fees-container form {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 25px;
+    margin-bottom: 10px;
+    max-width: 100%; /* Ensures each form has a minimum width */
+    flex-shrink: 0; /* Prevents forms from shrinking to fit */
+}
+
+.update-fees-container form h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.update-fees-container label, .update-fees-container input, .update-fees-container button {
+    display: block;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.update-fees-container label {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.update-fees-container input[type="number"] {
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+.update-fees-container button {
+    padding: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.update-fees-container button:hover {
+    background-color: #0056b3;
+}

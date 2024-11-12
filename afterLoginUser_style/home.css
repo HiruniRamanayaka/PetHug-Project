@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: black;
+}
+
+.home-info {
+    padding: 20px;
+    text-align: center;
+}
+
+/* welcome note */
+
+.welcome{
+    margin: auto;
+    width: 90%;
+    background-color: #4c46f85d;
+    padding: 20px;
+}
+
+.welcome h1 {
+    font-size: 40px;
+    color: #1d3272;
+    font-family: serif;
+}
+
+.welcome p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+/* Accordion Styles */
+.accordion {
+    margin: 3% 5% 30px;
+    width: 90%;
+    max-width: 600px;
+}
+
+.accordion h1{
+    text-align: left;
+    font-family: serif;
+    margin-bottom: 20px;
+    color: #2b4699;
+}
+
+.accordion-item {
+    border: 1px solid #0056b3;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    border: 1px solid blue;
+    color: black;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+    background-color: #89a2e2;
+}
+
+.accordion-header i {
+    text-align: right;
+    transition: transform 0.3s ease;
+}
+
+.accordion-header i.fa-chevron-up {
+    transform: rotate(180deg); /* Rotate the arrow when accordion is expanded */
+}
+
+.accordion-content {
+    background-color: #f7f7f7;
+    padding: 15px;
+    display: none; /* Hidden by default */
+    border-top: 1px solid #dedede;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .accordion {
+        width: 100%;
+    }
+}
+
+/*main features*/
+.nav-to-about-services-contact h1{
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    color: #1d3272;
+}
+
+.home-features {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.feature-card {
+    background-color: white;
+    border: 1px solid #bab9b9;
+    border-radius: 10px;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+}
+
+.feature-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.feature-card h2 {
+    font-size: 1.5rem;
+    color: #0056b3;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
