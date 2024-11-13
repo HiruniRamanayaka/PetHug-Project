@@ -9,12 +9,15 @@
 }
 
 .container form {
+    margin-top: 50px;
     margin-left: 70px;
 }
 
 
 .container h2 {
+    color: #292685;
     font-size: 32px;
+    margin-bottom: 50px;
 }
 
 .container h3 {
@@ -26,6 +29,11 @@
     text-align: center;
 }
 
+.container input {
+    height: 30px;
+    width: 100px;
+    text-align: right;
+}
 
 .container button {
     padding: 7px 15px;

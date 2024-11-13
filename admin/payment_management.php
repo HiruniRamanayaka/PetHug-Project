@@ -76,6 +76,7 @@ $admin_id = $_SESSION['admin_id'];
         <li><a class="link-button" href="admin_set_fees.php">Set Fees</a></li>
         <li><a class="link-button" href="admin_payment_confirmation_bank_transfer.php">Confirm Bank Transfer Payments</a></li>
         <li><a class="link-button" href="admin_confirmation_cash.php">Confirm Cash Payments</a></li>
+        <li><a class="link-button" href="view_doctor_earnings.php">View earnings</a></li>
     </ul>
     </div>
 
