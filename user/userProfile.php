@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require '../connection.php'; // Include the database connection file
+include_once "header_user.php";
 
 $user_id = $_SESSION['user_id'];
 

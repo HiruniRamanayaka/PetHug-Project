@@ -32,7 +32,7 @@ $unpaid_activities_query = "
     (SELECT 
         'consultation' AS activity_type, consultation_id AS activity_id, dr_id AS doctor_id, consultation_time AS activity_time
     FROM consultation 
-    WHERE user_id = $user_id AND consultation_time <= '$current_time' AND bill_id IS NULL AND status='Accepted' AND consultation_fee IS nOT NULL)
+    WHERE user_id = $user_id AND consultation_time <= '$current_time' AND bill_id IS NULL AND status='Accepted' AND consultation_fee IS NOT NULL)
 
     UNION ALL
 

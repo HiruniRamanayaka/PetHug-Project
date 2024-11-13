@@ -29,7 +29,7 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
         SELECT SUM(d.dr_fee) AS appointment_earnings
         FROM appointment a
         JOIN doctor d ON a.doctor_id = d.dr_id
-        WHERE a.status = 'Accepted' AND DATE(appointment_time) = ? AND a.doctor_id = ?
+        WHERE a.status = 'Completed' AND DATE(appointment_time) = ? AND a.doctor_id = ?
     ";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("si", $current_date, $doctor_id); // Bind current date and doctor ID
@@ -38,6 +38,8 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
     $appointmentEarnings = 0;
     if ($result && $row = $result->fetch_assoc()) {
         $appointmentEarnings = $row['appointment_earnings'] ?? 0;
+    }else {
+        echo "Error fetching appointment earnings: " . $stmt->error;
     }
 
     // Sum of earnings from consultations for the specific doctor
@@ -45,7 +47,7 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
         SELECT SUM(d.dr_fee) AS consultation_earnings
         FROM consultation c
         JOIN doctor d ON c.dr_id = d.dr_id
-        WHERE c.status = 'Accepted' AND DATE(consultation_time) = ? AND c.dr_id = ?
+        WHERE c.status = 'Completed' AND DATE(consultation_time) = ? AND c.dr_id = ?
     ";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("si", $current_date, $doctor_id);
@@ -54,13 +56,15 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
     $consultationEarnings = 0;
     if ($result && $row = $result->fetch_assoc()) {
         $consultationEarnings = $row['consultation_earnings'] ?? 0;
+    } else {
+        echo "Error fetching consultation earnings: " . $stmt->error;
     }
 
     // Sum of earnings from hostel supervision for the specific doctor
     $query = "
         SELECT SUM(dr_supervision_fee) AS hostel_earnings
         FROM hostel
-        WHERE status = 'Accepted' AND ? BETWEEN start_date AND end_date AND dr_id = ?
+        WHERE status = 'Completed' AND ? BETWEEN start_date AND end_date AND dr_id = ?
     ";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("si", $current_date, $doctor_id);
@@ -69,6 +73,8 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
     $hostelEarnings = 0;
     if ($result && $row = $result->fetch_assoc()) {
         $hostelEarnings = $row['hostel_earnings'] ?? 0;
+    }else {
+        echo "Error fetching hostel earnings: " . $stmt->error;
     }
 
     // Total earnings for the doctor on the current date
@@ -86,7 +92,11 @@ while ($doctor = mysqli_fetch_assoc($doctorsResult)) {
     ";
     $stmt = $conn->prepare($insertQuery);
     $stmt->bind_param("isdddd", $doctor_id, $current_date, $appointmentEarnings, $consultationEarnings, $hostelEarnings, $totalEarnings);
-    $stmt->execute();
+    //$stmt->execute();
+
+    if (!$stmt->execute()) {
+        echo "Error updating earnings: " . $stmt->error;
+    }
 }
 
 // Search functionality

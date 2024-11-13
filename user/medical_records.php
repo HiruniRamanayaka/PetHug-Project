@@ -246,7 +246,7 @@ if (!$pet_result) {
                         <tbody>
                         <tr>
                         <td>{$row['consultation_id']}</td>
-                        <td>{$row['created_date']}</td>
+                        <td>{$row['date']}</td>
                         <td>{$row['dr_name']}</td>
                         <td>{$row['details']}</td>
                         </tr>

@@ -34,21 +34,24 @@ $result = $conn->query($sql);
 
 <div class="container">
     <h2>Payment History</h2>
-    <div class="table-container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Bill ID</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Method</th>
-                    <th>Status</th>
-                    <th>Transaction Reference</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="table-container">       
                 <?php
                 if ($result->num_rows > 0) {
+                    echo "
+                        <table class='table table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th>Bill ID</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Transaction Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ";
+
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>
                                 <td>{$row['bill_id']}</td>
@@ -62,9 +65,12 @@ $result = $conn->query($sql);
                 } else {
                     echo "<tr><td colspan='6' class='text-center'>No payment history found.</td></tr>";
                 }
+
+                echo "
+                    </tbody>
+                </table>
+                ";
                 ?>
-            </tbody>
-        </table>
     </div>
 </div>
 

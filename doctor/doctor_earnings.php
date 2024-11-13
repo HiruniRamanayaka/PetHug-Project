@@ -21,7 +21,7 @@
     SELECT SUM(d.dr_fee) AS appointment_earnings
     FROM appointment a
     JOIN doctor d ON a.doctor_id = d.dr_id
-    WHERE a.doctor_id = $doctor_id AND a.status = 'Accepted' AND DATE(appointment_time) = '$current_date'
+    WHERE a.doctor_id = $doctor_id AND a.status = 'Completed' AND DATE(appointment_time) = '$current_date'
     ";
     $result = mysqli_query($conn, $query);
     if ($result && $row = mysqli_fetch_assoc($result)) {
@@ -40,7 +40,7 @@
     SELECT SUM(d.dr_fee) AS consultation_earnings
     FROM consultation c
     JOIN doctor d ON c.dr_id = d.dr_id
-    WHERE c.dr_id = $doctor_id AND c.status = 'Accepted' AND DATE(consultation_time) = '$current_date'
+    WHERE c.dr_id = $doctor_id AND c.status = 'Completed' AND DATE(consultation_time) = '$current_date'
     ";
     $result = mysqli_query($conn, $query);
     if ($result && $row = mysqli_fetch_assoc($result)) {
@@ -57,7 +57,7 @@
     $query = "
     SELECT SUM(dr_supervision_fee) AS hostel_earnings
     FROM hostel
-    WHERE dr_id = $doctor_id AND status = 'Accepted' AND '$current_date' BETWEEN start_date AND end_date
+    WHERE dr_id = $doctor_id AND status = 'Completed' AND '$current_date' BETWEEN start_date AND end_date
     ";
     $result = mysqli_query($conn, $query);
     if ($result && $row = mysqli_fetch_assoc($result)) {

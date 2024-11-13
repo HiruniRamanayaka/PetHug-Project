@@ -25,8 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $stmt->bind_result($status);
         $stmt->fetch();
+        $stmt->close();
         
-        if ($status === 'Approved') {
+        if ($status === 'Accepted') {
             // Proceed to update the fee
             $stmt = $conn->prepare("UPDATE appointment SET appointment_fee = ? WHERE appointment_id = ?");
             $stmt->bind_param("di", $appointment_fee, $appointment_id);
@@ -35,11 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $_SESSION['error_message'] = "Update failed: " . $stmt->error;
             }
+            $stmt->close();
         } else {
             $_SESSION['error_message'] = "Update failed: Appointment is not approved. So can't update appointment fee.";
         }
     }
-
 
     if (isset($_POST['update_consultation_fee'])) {
         $consultation_id = $_POST['consultation_id'];
@@ -51,8 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $stmt->bind_result($status);
         $stmt->fetch();
+        $stmt->close();
         
-        if ($status === 'Approved') {
+        if ($status === 'Accepted') {
             // Proceed to update the fee
             $stmt = $conn->prepare("UPDATE consultation SET consultation_fee = ? WHERE consultation_id = ?");
             $stmt->bind_param("di", $consultation_fee, $consultation_id);
@@ -61,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $_SESSION['error_message'] = "Update failed: " . $stmt->error;
             }
+            $stmt->close();
         } else {
             $_SESSION['error_message'] = "Update failed: Consultation is not approved. So can't update consultation fee.";
         }
@@ -76,8 +79,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $stmt->bind_result($status);
         $stmt->fetch();
+        $stmt->close();
         
-        if ($status === 'Approved') {
+        if ($status === 'Accepted') {
             // Proceed to update the fee
             $stmt = $conn->prepare("UPDATE hostel SET hostel_fee = ? WHERE hostel_id = ?");
             $stmt->bind_param("di", $hostel_fee, $hostel_id);
@@ -86,64 +90,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $_SESSION['error_message'] = "Update failed: " . $stmt->error;
             }
+            $stmt->close();
         } else {
-            $_SESSION['error_message'] = "Update failed: Hostel request is not approved. So can't update hostal fee.";
+            $_SESSION['error_message'] = "Update failed: Hostel request is not approved. So can't update hostel fee.";
         }
-    }
-
     }
 
     if (isset($_POST['update_doctor_fee'])) {
         $doctor_id = $_POST['doctor_id'];
         $doctor_fee = $_POST['doctor_fee'];
+
         $stmt = $conn->prepare("UPDATE doctor SET dr_fee = ? WHERE dr_id = ?");
         $stmt->bind_param("di", $doctor_fee, $doctor_id);
-        $stmt->execute();
-
         if ($stmt->execute()) {
             $_SESSION['success_message'] = "Doctor fee updated successfully!";
         } else {
-            $_SESSION['error_message'] =  "Update failed: " . $stmt->error;
-        }     
+            $_SESSION['error_message'] = "Update failed: " . $stmt->error;
+        }
+        $stmt->close();
     }
 
     if (isset($_POST['update_hospital_fee'])) {
         $hospital_id = $_POST['hospital_id'];
         $hospital_fee = $_POST['hospital_fee'];
+
         $stmt = $conn->prepare("UPDATE hospital SET hospital_fee = ? WHERE hospital_id = ?");
         $stmt->bind_param("di", $hospital_fee, $hospital_id);
-        $stmt->execute();
-        
         if ($stmt->execute()) {
             $_SESSION['success_message'] = "Hospital fee updated successfully!";
         } else {
             $_SESSION['error_message'] = "Update failed: " . $stmt->error;
         }
+        $stmt->close();
     }
 
     if (isset($_POST['update_supervision_fee'])) {
+        $hostel_id = $_POST['hostel_id'];
         $dr_supervision_fee = $_POST['dr_supervision_fee'];
 
-        // Check if the hostel is approved
         $stmt = $conn->prepare("SELECT status FROM hostel WHERE hostel_id = ?");
         $stmt->bind_param("i", $hostel_id);
         $stmt->execute();
         $stmt->bind_result($status);
         $stmt->fetch();
+        $stmt->close();
         
-        if ($status === 'Approved') {
-            // Proceed to update the fee
+        if ($status === 'Accepted') {
             $stmt = $conn->prepare("UPDATE hostel SET dr_supervision_fee = ? WHERE hostel_id = ?");
-            $stmt->bind_param("di", $hostel_fee, $hostel_id);
+            $stmt->bind_param("di", $dr_supervision_fee, $hostel_id);
             if ($stmt->execute()) {
-                $_SESSION['success_message'] = "Hostel fee updated successfully!";
+                $_SESSION['success_message'] = "Doctor supervision fee updated successfully!";
             } else {
                 $_SESSION['error_message'] = "Update failed: " . $stmt->error;
             }
+            $stmt->close();
         } else {
-            $_SESSION['error_message'] = "Update failed: Hostel request is not approved. So can't update hostal fee.";
+            $_SESSION['error_message'] = "Update failed: Hostel request is not approved. So can't update supervision fee.";
         }
-
+    }
 }
 ?>
 

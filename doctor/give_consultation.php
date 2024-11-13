@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->query("UPDATE consultation SET status='Canceled' WHERE consultation_id=$consultation_id");
     } elseif (isset($_POST['add_note'])) {
         $dr_notes = $_POST['details'];
-        $conn->query("UPDATE consultation SET details='$dr_notes', status='Completed' WHERE consultation_id=$consultation_id");
+        $conn->query("UPDATE consultation SET details='$dr_notes', status='Accepted' WHERE consultation_id=$consultation_id");
     }
 }
 

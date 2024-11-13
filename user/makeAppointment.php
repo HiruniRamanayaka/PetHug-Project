@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $datetime = date('Y-m-d H:i:s', strtotime("$appintment_date $appointment_time"));
     // Insert the appointment into the database
-    $insertQuery = "INSERT INTO appointment (pet_id, user_id, doctor_id, appointment_time, details) VALUES (?, ?, ?, ?, ?)";
+    $insertQuery = "INSERT INTO appointment (pet_id, user_id, doctor_id, appointment_time, appointment_reason) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insertQuery);
     $stmt->bind_param("iiiss", $pet_id, $user_id, $vet_id, $datetime, $reason);
 
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             var pet_id = document.forms["appointmentForm"]["pet_id"].value;
             var appointment_date = document.forms["appointmentForm"]["appointment_date"].value;
             var appointment_time = document.forms["appointmentForm"]["appointment_time"].value;
-            var reason = document.forms["appointmentForm"]["reason"].value;
+            var reason = document.forms["appointmentForm"]["appointment_reason"].value;
             var vet_id = document.forms["appointmentForm"]["dr_id"].value;
 
             if (pet_id == "" || appointment_date == "" || appointment_time == "" || reason == "" || vet_id == "") {

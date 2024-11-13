@@ -31,17 +31,17 @@ $conn->close();
     <div class="pending_payment">
         <h1>Pending Payment Details</h1>
 
-        <table>
-            <tr>
-                <th>Bill ID</th>
-                <th>Amount (Rs.)</th>
-                <th>Date</th>
-                <th>Payment Method</th>
-                <th>Status</th>
-            </tr>
-
-            <?php
-            if($result){
+        <?php
+            if($result && mysqli_num_rows($result) > 0){
+                echo "<table>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Amount (Rs.)</th>
+                        <th>Date</th>
+                        <th>Payment Method</th>
+                        <th>Status</th>
+                </tr>
+                ";
                 while($row = mysqli_fetch_assoc($result)){
                     echo "<tr>
                         <td>" . htmlspecialchars($row['bill_id']) . "</td>
@@ -54,8 +54,8 @@ $conn->close();
             }else{
                 echo "<p class='no-data'>No pending payments found for your account.</p>";
             }
+            echo "</table>";
             ?>
-        </table>
     </div>
 
     <!--footer-->

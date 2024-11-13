@@ -54,19 +54,19 @@
             if ($stmt->execute()) {
                 $bill_id = $stmt->insert_id;
                 foreach ($appointment_ids as $appointment_id) {
-                    $stmt = $conn->prepare("UPDATE appointment SET bill_id = ? WHERE appointment_id = ? AND user_id = ?");
+                    $stmt = $conn->prepare("UPDATE appointment SET bill_id = ?, status = 'Completed' WHERE appointment_id = ? AND user_id = ?");
                     $stmt->bind_param("iii", $bill_id, $appointment_id, $user_id);
                     $stmt->execute();
                 }
             
                 foreach ($consultation_ids as $consultation_id) {
-                    $stmt = $conn->prepare("UPDATE consultation SET bill_id = ? WHERE consultation_id = ? AND user_id = ?");
+                    $stmt = $conn->prepare("UPDATE consultation SET bill_id = ?, status = 'Completed' WHERE consultation_id = ? AND user_id = ?");
                     $stmt->bind_param("iii", $bill_id, $consultation_id, $user_id);
                     $stmt->execute();
                 }
                 
                 foreach ($hostel_ids as $hostel_id) {
-                    $stmt = $conn->prepare("UPDATE hostel SET bill_id = ? WHERE hostel_id = ? AND user_id = ?");
+                    $stmt = $conn->prepare("UPDATE hostel SET bill_id = ?, status = 'Completed' WHERE hostel_id = ? AND user_id = ?");
                     $stmt->bind_param("iii", $bill_id, $hostel_id, $user_id);
                     $stmt->execute();
                 }

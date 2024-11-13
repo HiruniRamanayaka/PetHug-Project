@@ -131,12 +131,8 @@
                             <p><strong>Date: </strong>". htmlspecialchars($row_appointment['appointment_time']) . "</p>
                             <p><strong>Doctor name: </strong>". htmlspecialchars($row_appointment['dr_name']) . "</p>
                             <p><strong>Details: </strong>". htmlspecialchars($details) . "</p><br>";
-                            /*if($row_appointment['details']!=NULL){
-                                echo "<a href='download_report.php?appointment_id=" . $row_appointment['appointment_id'] . "'>Download Report</a>";
-                            }*/
                         echo "</div>";
                     }
-                    //echo "<a href='view_all_reports.php?pet_id=" . $pet_id . "'>Show all reports</a><br><br>";
                 }else{
                     echo "<p>No appointment reports available.</p><br>";
                 }
@@ -161,13 +157,9 @@
                             <p><strong>Reason: </strong>". htmlspecialchars($row_consult['consultation_reason']) . "</p>
                             <p><strong>Date: </strong>". htmlspecialchars($row_consult['consultation_time']) . "</p>
                             <p><strong>Doctor name: </strong>". htmlspecialchars($row_consult['dr_name']) . "</p>
-                            <p><strong>Details: </strong>". htmlspecialchars($details) . "</p><br>";
-                            /*if($row_consult['details']!=NULL){
-                                echo "<a href='download_report.php?consultation_id=" . $row_consult['consultation_id'] . "'>Download Report</a>";
-                            }*/    
+                            <p><strong>Details: </strong>". htmlspecialchars($details) . "</p><br>"; 
                         echo "</div>";
                     }
-                    //echo "<a href='view_all_reports.php?pet_id='" . $pet_id . "'>Show all reports</a><br><br>";
                 }else{
                     echo "<p>No consultation reports available.</p><br>";
                 }
@@ -191,13 +183,9 @@
                             <p><strong>Start Date: </strong>". htmlspecialchars($row_hostel['start_date']) . "</p>
                             <p><strong>End Date: </strong>". htmlspecialchars($row_hostel['end_date']) . "</p>
                             <p><strong>Details: </strong>". htmlspecialchars($details) . "</p><br>";
-
-                            /*if($row_hostel['details']!=NULL){
-                                echo "<a href='download_report.php?hostel_id=" . $row_hostel['hostel_id'] . "'>Download Report</a>";
-                            }*/    
+    
                         echo "</div>";
                     }
-                    //echo "<a href='view_all_reports.php?pet_id='" . $pet_id . "'>Show all reports</a><br><br>";
                 }else{
                     echo "<p>No boarding reports available.</p><br>";
                 }

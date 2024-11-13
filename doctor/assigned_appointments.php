@@ -225,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
                         <?php 
                         // Fetch all doctor notes related to the pet_id
-                        $notesQuery = "SELECT details FROM appointment WHERE pet_id = ? AND doctor_id = ? ORDER BY created_at DESC";
+                        $notesQuery = "SELECT appointment_reason FROM appointment WHERE pet_id = ? AND doctor_id = ? ORDER BY created_at DESC";
                         $notesStmt = $conn->prepare($notesQuery);
                         $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
                         $notesStmt->execute();
@@ -234,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         // Display all notes
                         if ($notesResult->num_rows > 0) {
                             while ($noteRow = $notesResult->fetch_assoc()) {
-                                echo "<p>" . htmlspecialchars($noteRow['details']) . "</p>";
+                                echo "<p>" . htmlspecialchars($noteRow['appointment_reason']) . "</p>";
                             }
                         } else {
                             echo "<p>No notes available for this pet.</p>";
