@@ -16,7 +16,6 @@
     if (isset($_POST["submit"])) {    
         $pet_id = $_POST['pet_id'];
         $dr_id = $_POST['dr_id'];              
-        $consultationType = $_POST['consultation_type'];
         $message = $_POST['consultation_reason'];
         $date = $_POST['date'];
         $time = $_POST['time'];
@@ -24,9 +23,9 @@
         $datetime = date('Y-m-d H:i:s', strtotime("$date $time"));
 
         // Insert data into the consultation table
-        $stmt = $conn->prepare("INSERT INTO consultation (user_id, pet_id, dr_id, consultation_type, consultation_time, consultation_reason) 
-                        VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("iiisss", $user_id, $pet_id, $dr_id, $consultationType, $datetime, $message);
+        $stmt = $conn->prepare("INSERT INTO consultation (user_id, pet_id, dr_id, consultation_time, consultation_reason) 
+                        VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("iiiss", $user_id, $pet_id, $dr_id, $datetime, $message);
 
         if ($stmt->execute()) {
             $_SESSION['success_message5'] = "Consultation request submitted successfully!";
@@ -176,14 +175,6 @@
                                 echo "<option value='" . $row['dr_id'] . "'>" . $row['dr_name'] . "</option>";
                             }
                         ?>
-                    </select>
-                    
-                    <label for="consultationType">Consultation Type:</label>
-                    <select id="consultationType" name="consultation_type">
-                        <option value="">Select consultation type</option>
-                        <option value="chat">Chat</option>
-                        <option value="call">Call</option>
-                        <option value="zoom">Zoom</option>
                     </select>
 
                     <label for="time">Time :</label>
