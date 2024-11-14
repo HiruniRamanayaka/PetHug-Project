@@ -1,301 +1,335 @@
 <?php
 session_start();
 if (!isset($_SESSION['dr_id'])) {
-    header("Location: doctor_login.php");
+    header("Location: doctorLogin.php");
     exit();
 }
 
-require '../connection.php'; 
+require '../connection.php';
 include_once 'header_dr.php';
 
 $doctor_id = $_SESSION['dr_id'];
+$today = date('Y-m-d');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Fetch today's consultations
+$acceptedQuery = "SELECT consultation.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM consultation 
+                  JOIN pet ON consultation.pet_id = pet.pet_id 
+                  JOIN user ON consultation.user_id = user.user_id 
+                  WHERE consultation.dr_id = ?  AND consultation.status = 'accepted'";
+$acceptedStmt = $conn->prepare($acceptedQuery);
+$acceptedStmt->bind_param("i", $doctor_id,);
+$acceptedStmt->execute();
+$acceptedConsultations = $acceptedStmt->get_result();
+
+// Fetch pending consultations
+$pendingQuery = "SELECT consultation.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM consultation 
+                 JOIN pet ON consultation.pet_id = pet.pet_id 
+                 JOIN user ON consultation.user_id = user.user_id 
+                 WHERE consultation.dr_id = ? AND consultation.status = 'Pending'";
+$pendingStmt = $conn->prepare($pendingQuery);
+$pendingStmt->bind_param("i", $doctor_id);
+$pendingStmt->execute();
+$pendingConsultations = $pendingStmt->get_result();
+
+// Fetch canceled consultations
+$canceledQuery = "SELECT consultation.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM consultation 
+                  JOIN pet ON consultation.pet_id = pet.pet_id 
+                  JOIN user ON consultation.user_id = user.user_id 
+                  WHERE consultation.dr_id = ? AND consultation.status = 'canceled'";
+$canceledStmt = $conn->prepare($canceledQuery);
+$canceledStmt->bind_param("i", $doctor_id);
+$canceledStmt->execute();
+$canceledConsultations = $canceledStmt->get_result();
+
+// Handle button actions
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $consultation_id = $_POST['consultation_id'];
-    if (isset($_POST['accept'])) {
-        $conn->query("UPDATE consultation SET status='Accepted' WHERE consultation_id=$consultation_id");
-    } elseif (isset($_POST['reject'])) {
-        $conn->query("UPDATE consultation SET status='Canceled' WHERE consultation_id=$consultation_id");
-    } elseif (isset($_POST['add_note'])) {
-        $dr_notes = $_POST['details'];
-        $conn->query("UPDATE consultation SET details='$dr_notes', status='Accepted' WHERE consultation_id=$consultation_id");
+    $action = $_POST['action'];
+
+    switch ($action) {
+        case "accept":
+            $updateQuery = "UPDATE consultation SET status = 'accepted', created_date = NOW() WHERE consultation_id = ?";
+            break;
+        case "cancel":
+            $updateQuery = "UPDATE consultation SET status = 'canceled' WHERE consultation_id = ?";
+            break;
+        case "delete":
+            $updateQuery = "DELETE FROM consultation WHERE consultation_id = ?";
+            break;
+        case "update_notes":
+            $dr_notes = $_POST['dr_notes'];
+            $updateQuery = "UPDATE consultation SET dr_notes = ?, status = 'completed' WHERE consultation_id = ?";
+            break;
+        default:
+            $updateQuery = "";
+            break;
+    }
+
+    if (!empty($updateQuery)) {
+        $updateStmt = $conn->prepare($updateQuery);
+        if ($action === "update_notes") {
+            $updateStmt->bind_param("si", $dr_notes, $consultation_id);
+        } else {
+            $updateStmt->bind_param("i", $consultation_id);
+        }
+
+        if ($updateStmt->execute()) {
+            header("Location: give_consultation.php");
+            exit();
+        } else {
+            $error_message = "Error updating consultation. Please try again.";
+        }
+    } else {
+        $error_message = "No valid action provided.";
     }
 }
-
-$pendingConsultations = $conn->query("SELECT * FROM consultation WHERE dr_id=$doctor_id AND status='Pending'");
-$upcomingConsultations = $conn->query("SELECT * FROM consultation WHERE dr_id=$doctor_id AND status='Accepted'");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Consultation Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultation Management - PetHug</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f8ff; color: #333; }
-        .container { width: 80%; margin: 20px auto; background-color: #bcd2fd; padding: 20px;}
-        h2 { color: #1e90ff; }
-        .table-container, .card-container { margin-top: 20px; }
-        
-        /* Pending Consultations Table */
-        .table-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 20px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7ff;
+            margin: 0;
         }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background-color: white;
-            border: 1px solid #ddd;
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        th, td { 
+        .about{
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+        }
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            position: relative;
+            opacity: 0.7;
+            border-radius: 10px;
+            filter: brightness(70%);
+        }
+        h2 { 
+            position: absolute;
+            color: #333;
+            top: 9%;
+            width: 100%;
+            text-align: center; 
+            font-size: 44px;
+            z-index: 1;
+        }
+        .about-text{
+            position: absolute;
+            top: 27%; 
+            color: black;
+            font-size: 20px;
+            left: 2vw;
+        }
+        h3{
+            width: 100%;
+            text-align: center; 
+            margin-top: 40px; 
+            font-size: 28px;
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
             padding: 10px;
             text-align: center;
-            border: 1px solid #ddd;
         }
-        th { 
+        th {
             background-color: #007bff;
             color: white;
-         }
-        .action-btn, .notes-btn {        
-            padding: 8px 12px; 
-            cursor: pointer; 
-            border: none; 
-            border-radius: 5px;
-         }
-        .accept-btn, .notes-btn{ 
-            background-color: #1e90ff; 
-            color: white; 
         }
-        .reject-btn { 
-            background-color: #ff6347; 
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .accept-btn {
+            background-color: #28a745;
             color: white;
-            margin-top: 3px;
-         }
-
-        /* Upcoming Consultations Cards */
-        .card-container { display: flex; flex-wrap: wrap; gap: 20px; }
-        .consultation-card { background-color: #ffffff; border: 1px solid #dcdcdc; width: 48%; padding: 20px; border-radius: 10px; position: relative; }
-        .consultation-card img { width: 50px; height: 50px; border-radius: 50%; float: left; margin-right: 15px; }
-        .consultation-card h3 { color: #1e90ff; margin-top: 0; }
-        .consultation-card p { margin: 5px 0; color: #555; }
-        .notes-input { display: block; width: 90%; padding: 8px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-        .submit-note-btn, .whatsapp-btn { margin-top: 10px; padding: 8px 12px; border: none; border-radius: 5px; color: white; cursor: pointer; }
-        .submit-note-btn { background-color: #1e90ff; }
-        .whatsapp-btn { background-color: #25D366; }
-/* Modal styling */
-#detailsModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 60%;
-    max-width: 600px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content h2, .modal-content h3 {
-    color: #1e90ff;
-}
-
-/* Close button styling */
-.modal-content button {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 15px;
-   
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-
-.modal-content button:hover {
-    background-color: #1c86ee;
-}
-
-
+        }
+        .cancel-btn, .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .update-notes-btn, .ShowNotes-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        .notes-container {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 5px;
+            background-color: #f9f9f9;
+        }
     </style>
-    <script>
-function viewDetails(petId) {
-    document.getElementById('detailsModal').style.display = 'flex';
-}
+</head>
+<body>
 
-function closeModal() {
-    document.getElementById('detailsModal').style.display = 'none';
+<div class="container">
+    <div class="about">
+        <h2>Consultation Management</h2>
+        <img src="../images/1920-female-hands-playing-with-an-orange-kitten.jpg"alt="Consultation">
+        <p class="about-text">As a dedicated veterinary professional, streamline your consultation management effortlessly 
+            with this organized system. Accept new consultations to keep your schedule full, or cancel and 
+            delete as needed to maintain control over your day. By staying organized with pending, 
+            accepted, and canceled consultations in one place, you can prioritize each pet and client 
+            interaction, ensuring you have the time and focus to deliver the highest level of care. 
+            This system is designed to support your workflow, making it easier to manage appointments and 
+            keep every consultation running smoothly.</p>
+    </div>
+    
+    <?php if (isset($error_message)) { echo "<p style='color:red;text-align:center;'>$error_message</p>"; } ?>
+
+    <h3>Accepted Consultations</h3>
+    <table>
+        <tr>
+            <th>Consultation ID</th>
+            <th>Pet Owner</th>
+            <th>Pet Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <?php while ($row = $acceptedConsultations->fetch_assoc()) { ?>
+            <tr>
+                <td><?php echo $row['consultation_id']; ?></td>
+                <td><?php echo $row['pet_owner_name']; ?></td>
+                <td><?php echo $row['pet_name']; ?></td>
+                <td><?php echo ucfirst($row['status']); ?></td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                        <input type="hidden" name="action" value="update_notes">
+                        <textarea name="dr_notes" id="dr_notes_<?php echo $row['consultation_id']; ?>" placeholder="Enter notes..." required></textarea>
+                        <button type="submit" class="update-notes-btn">Save Notes</button>
+                    </form>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+
+    <h3>Pending Consultations</h3>
+    <table>
+        <tr>
+            <th>Consultation ID</th>
+            <th>Pet Owner</th>
+            <th>Pet Name</th>
+            <th>Date and Time</th>
+            <th>Doctor Notes</th>
+            <th>Actions</th>
+        </tr>
+        <?php while ($row = $pendingConsultations->fetch_assoc()) { ?>
+            <tr>
+                <td><?php echo $row['consultation_id']; ?></td>
+                <td><?php echo $row['pet_owner_name']; ?></td>
+                <td><?php echo $row['pet_name']; ?></td>
+                <td><?php echo $row['created_date']; ?></td>
+                <td>
+                    <button class="ShowNotes-btn" onclick="showNotes(<?php echo $row['pet_id']; ?>)">Show Notes</button>
+                    <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
+                    <?php 
+                        // Fetch all doctor notes related to the pet_id
+                        $notesQuery = "SELECT dr_notes FROM consultation WHERE pet_id = ? AND dr_id = ? ORDER BY created_date DESC";
+                        $notesStmt = $conn->prepare($notesQuery);
+                        $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
+                        $notesStmt->execute();
+                        $notesResult = $notesStmt->get_result();
+                        
+                        // Display all notes
+                        if ($notesResult->num_rows > 0) {
+                            while ($noteRow = $notesResult->fetch_assoc()) {
+                                echo "<p>" . htmlspecialchars($noteRow['dr_notes']) . "</p>";
+                            }
+                        } else {
+                            echo "<p>No notes available for this pet.</p>";
+                        }
+                        ?>
+                    </div>
+                </td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                        <input type="hidden" name="action" value="accept">
+                        <button type="submit" class="accept-btn">Accept</button>
+                    </form>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                        <input type="hidden" name="action" value="cancel">
+                        <button type="submit" class="cancel-btn">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>
+
+
+ <!-- Canceled Appointments -->
+ <h3>Canceled Appointments</h3>
+<table>
+    <tr>
+        <th>Consultation ID</th>
+        <th>Pet Owner</th>
+        <th>Pet Name</th>
+        <th>Date and Time</th>
+        <th>Actions</th> <!-- Add Actions header -->
+    </tr>
+    <?php while ($row = $canceledConsultations->fetch_assoc()) { ?>
+        <tr>
+            <td><?php echo $row['consultation_id']; ?></td>
+            <td><?php echo $row['pet_owner_name']; ?></td>
+            <td><?php echo $row['pet_name']; ?></td>
+            <td><?php echo $row['created_date']; ?></td>
+            <td>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
+
+</div>
+
+<script>
+function showNotes(petId) {
+    var notesContainer = document.getElementById("notes_" + petId);
+    if (notesContainer.style.display === "block") {
+        notesContainer.style.display = "none";
+    } else {
+        notesContainer.style.display = "block";
+    }
 }
 </script>
 
-</head>
-<body>
-<div class="container">
-
-<h2>Upcoming Consultations</h2>
-<div class="card-container">
-    <?php while ($row = $upcomingConsultations->fetch_assoc()) :
-        $user_id = $row['user_id'];
-        $userResult = $conn->query("SELECT * FROM user WHERE user_id=$user_id");
-        $user = $userResult->fetch_assoc();
-
-        $pet_id = $row['pet_id'];
-        $petResult = $conn->query("SELECT * FROM pet WHERE pet_id=$pet_id");
-        $pet = $petResult->fetch_assoc();
-    ?>
-        <div class="consultation-card">
-            <img src="../uploads/<?= $pet['pet_image'] ?>" alt="Pet Image">
-            <h3><?= $row['consultation_id'] ?> - <?= $row['consultation_reason'] ?></h3>
-            <p><strong>Owner:</strong> <?= $user['user_first_name'] . ' ' . $user['user_last_name'] ?></p>
-            <p><strong>Date:</strong> <?= (new DateTime($row['consultation_time']))->format("Y-m-d") ?></p>
-            <p><strong>Time:</strong> <?= (new DateTime($row['consultation_time']))->format("H:i:s") ?></p>
-            <p><strong>Doctor Notes:</strong> <button onclick="viewDetails(<?= $pet_id ?>)">View Details  </button></p>
-
-            <form method="post">
-                <input type="hidden" name="consultation_id" value="<?= $row['consultation_id'] ?>">
-                <input type="text" name="details" class="notes-input" placeholder="Add doctor notes">
-                <button type="submit" name="add_note" class="submit-note-btn">Save Note</button>
-            </form>
-            
-            <a href="https://wa.me/<?= $user['user_phone'] ?>" target="_blank">
-                <button class="whatsapp-btn">Consult via WhatsApp</button>
-            </a>
-        </div>
-    <?php endwhile; ?>
-</div>
-</div>
-
-<div class="container">
-    
-    <h2>Pending Consultations</h2>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Consultation ID</th>
-                    <th>Reason</th>
-                    <th>Pet Name</th>
-                    <th>Owner Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $pendingConsultations->fetch_assoc()) :
-         
-                    $user_id = $row['user_id'];
-            $userResult = $conn->query("SELECT * FROM user WHERE user_id=$user_id");
-            $user = $userResult->fetch_assoc();
-        
-            $pet_id = $row['pet_id']; 
-            $petResult = $conn->query("SELECT * FROM pet WHERE pet_id=$pet_id");
-            $pet = $petResult->fetch_assoc();
- 
-                ?>
-                    <tr>
-                        <td><?= $row['consultation_id'] ?></td>
-                        <td><?= $row['consultation_reason'] ?> </td>
-                        <td><?= $pet['pet_name'] ?><br> <p><strong>Doctor Notes:</strong> <button class="notes-btn" onclick="viewDetails(<?= $row['pet_id'] ?>)">View Details  </button></p></td>
-
-                        <td><?= $user['user_first_name'] . ' ' . $user['user_last_name'] ?></td>
-                        <td><?= (new DateTime($row['consultation_time']))->format("Y-m-d") ?></td>
-                        <td><?= (new DateTime($row['consultation_time']))->format("H:i:s") ?></td>
-                        <td>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="consultation_id" value="<?= $row['consultation_id'] ?>">
-                                <button type="submit" name="accept" class="action-btn accept-btn">Confirm</button>
-                            </form>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="consultation_id" value="<?= $row['consultation_id'] ?>">
-                                <button type="submit" name="reject" class="action-btn reject-btn">Reject</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
- <!-- Modal Structure -->
-<div id="detailsModal" style="display: none;">
-    <div class="modal-content">
-        <h2>Pet Details</h2>
-        
-        <?php 
-      
-        if (isset($pet_id)) {
-            $petResult = $conn->query("SELECT * FROM pet WHERE pet_id=$pet_id");
-            $pet = $petResult->fetch_assoc();
-            ?>
-            <p><strong>Name:</strong> <?= $pet['pet_name'] ?></p>
-            <p><strong>Age:</strong> <?= $pet['age'] ?> years</p>
-            <p><strong>Weight:</strong> <?= $pet['weight'] ?> kg</p>
-            <p><strong>Breed:</strong> <?= $pet['breed'] ?></p>
-            <p><strong>Species:</strong> <?= $pet['species'] ?></p>
-        <?php 
-        } else { 
-            echo "<p>No pet details available.</p>";
-        } 
-        ?>
-
-        <h3>Doctor Notes</h3>
-        <div style="max-height: 300px; overflow-y: auto;">
-            <table>
-                <tr>
-                    <th>Date</th>
-                    <th>Doctor Note</th>
-                </tr>
-                <?php
-                // Fetch notes from both appointments and consultations for the specific pet
-                $appointmentNotes = $conn->query("SELECT appointment_time, details FROM appointment WHERE pet_id=$pet_id AND details IS NOT NULL AND status='Completed'");
-                $consultationNotes = $conn->query("SELECT consultation_time, details FROM consultation WHERE pet_id=$pet_id AND details IS NOT NULL AND status='Completed'");
-                
-                // Display appointment notes
-                while ($note = $appointmentNotes->fetch_assoc()) {
-                    echo "<tr><td>" . $note['appointment_time'] . "</td><td>" . $note['details'] . "</td></tr>";
-                }
-
-                // Display consultation notes
-                while ($note = $consultationNotes->fetch_assoc()) {
-                    echo "<tr><td>" . $note['consultation_time'] . "</td><td>" . $note['details'] . "</td></tr>";
-                }
-                
-                // If no notes are available
-                if ($appointmentNotes->num_rows === 0 && $consultationNotes->num_rows === 0) {
-                    echo "<tr><td colspan='2'>No doctor notes available.</td></tr>";
-                }
-                ?>
-            </table>
-        </div>
-        
-        <button onclick="closeModal()">Close</button>
-    </div>
-</div>
 </body>
 </html>
-
-
-<?php $conn->close(); ?>
 <?php
-include_once 'footer_dr.php';
+include_once "footer_dr.php";
 ?>
