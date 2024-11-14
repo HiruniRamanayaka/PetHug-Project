@@ -18,7 +18,7 @@
             <h5>The Best Pet Care Services</h5>
             <h2>Care of Your Little Pets!</h2>
             <p>Receive a wide range of quality services for the care of your beloved pets. Let our expert help you ensure the health and happiness of your little friends.</p><br><br>
-            <button class="btn"><a href="select_user_type_for_signup.php">Book Your Appoinment Now &nbsp;<i class="fas fa-arrow-right"></i></a></button>
+            <button class="btn"><a href="user/user_signup.php">Book Your Appoinment Now &nbsp;<i class="fas fa-arrow-right"></i></a></button>
         </div>
 
         <!--image mask-->
@@ -35,7 +35,7 @@
     <div id="toRegister">
         <h2>Need high-quality veterinary care you can trust?</h2>
         <div id="toRegisterLink">
-            <a href="select_user_type_for_signup.php"><button>Register Now &nbsp;<i class="fas fa-arrow-right"></i></button></a>
+            <a href="signupAs.php"><button>Register Now &nbsp;<i class="fas fa-arrow-right"></i></button></a>
         </div>
         <br><p>Walk-Ins Accepted!</p>
     </div>

@@ -28,8 +28,8 @@
                 <li><a href="about.php" class="<?php if($current_page == 'about.php'){echo 'active';} ?>">About Us</a></li>
                 <li><a href="services.php" class="<?php if($current_page == 'services.php'){echo 'active';} ?>">Services</a></li>
                 <li><a href="contact.php" class="<?php if($current_page == 'contact.php'){echo 'active';} ?>">Contact</a></li>
-                <li><a id="login-btn" href="select_user_type_for_login.php">Log In</a></li>
-                <li><a id="signup-btn" href="select_user_type_for_signup.php">Sign Up</a></li>
+                <li><a id="login-btn" href="loginAs.php">Log In</a></li>
+                <li><a id="signup-btn" href="signupAs.php">Sign Up</a></li>
             </ul>
         </nav>
     </header>

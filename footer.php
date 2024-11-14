@@ -5,7 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Footer</title>
     <?php echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">';?>
-    <link rel="stylesheet" href="beforeLogin_style/footer.css">
+    <style> 
+    
+    /* General Footer Styles */
+ footer {
+     background-color: #262b6a; 
+     color: #f0f8ff; 
+     padding: 50px 0;
+     font-family: Arial, sans-serif;
+     margin-top: 50px;
+ }
+ 
+ .footer-container {
+     display: flex;
+     justify-content: space-between;
+     flex-wrap: wrap;
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 20px;
+ }
+ 
+ .footer-section {
+     flex: 1 1 250px;
+     margin: 20px;
+ }
+ 
+ .footer-section h4 {
+     font-size: 20px;
+     color: #fff;
+     margin-bottom: 15px;
+     border-bottom: 2px solid #3498db; 
+     padding-bottom: 5px;
+ }
+ 
+ .footer-section p, .footer-section a, .footer-section li {
+     font-size: 14px;
+     color: #dcdde1; 
+     line-height: 1.8;
+ }
+ 
+ .footer-section a {
+     color: #3498db; 
+     text-decoration: none;
+ }
+ 
+ .footer-section a:hover {
+     color: #9b59b6; 
+     text-decoration: underline;
+ }
+ 
+ .footer-section ul {
+     list-style-type: none;
+     padding: 0;
+ }
+ 
+ .footer-section li {
+     margin: 5px 0;
+ }
+ 
+ /* Follow Us Section Icons */
+ .footer-section img {
+     width: 24px;
+     height: 24px;
+     margin-right: 15px;
+     vertical-align: middle;
+ }
+ 
+ /* Footer Bottom Styles */
+ .footer-bottom {
+     background-color: #221b40; 
+     color: #dcdde1; 
+     text-align: center;
+     padding: 20px 0;
+     border-top: 1px solid #3498db; 
+ }
+ 
+ .footer-bottom p {
+     margin: 0;
+     font-size: 13px;
+ }
+ 
+ /* Responsive Design */
+ @media (max-width: 768px) {
+     .footer-container {
+         flex-direction: column;
+         align-items: center;
+     }
+     .footer-section {
+         margin-bottom: 20px;
+         text-align: center;
+     }
+ }
+ 
+    
+     </style>
 </head>
 <body>
     

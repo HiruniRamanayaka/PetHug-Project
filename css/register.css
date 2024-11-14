@@ -1,0 +1,78 @@
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Container for Form */
+.container {
+  width: 400px;
+  margin: 50px auto;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  color: #0044cc; /* Theme Blue */
+  margin-bottom: 20px;
+}
+
+/* Form Label */
+form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Form Input */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="file"]{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button Styles */
+.button-group {
+  text-align: center;
+}
+
+.btn {
+  background-color: #0044cc; /* Blue Theme */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reset {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Hover Effects */
+.btn:hover {
+  background-color: #003399;
+}
+
+.reset:hover {
+  background-color: #999;
+}
