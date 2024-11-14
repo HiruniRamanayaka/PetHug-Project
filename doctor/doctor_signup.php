@@ -1,110 +1,197 @@
 <?php
+include_once "../connection.php";
 
-    include_once "../connection.php";
 
-    $error_message = "";
-    $success_message = "";
+// Handling form submission
+$registrationMessage = "";
 
-    if(isset($_POST['signup'])){
-        $name = $_POST['dr_name'];
-        $phone = $_POST['dr_phone'];
-        $specialization = $_POST['specialization'];
-        $license_number = $_POST['license_number'];
-        $email = $_POST['dr_email'];
-        $password = $_POST['dr_password'];
-        $confirmpassword = $_POST['confirmpassword'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['dr_name'];
+    $phone = $_POST['dr_phone'];
+    $license = $_POST['license'];
+    $specialization = $_POST['specialization'];
+    $email = $_POST['dr_email'];
+    $password = password_hash($_POST['dr_password'], PASSWORD_BCRYPT); // Hash the password
 
-    //Validation 
-    if (empty($name) || empty($phone) || empty($specialization) ||empty($license_number) || empty($email) || empty($password) || empty($confirmpassword)) {
-        $error_message = "All fields are required.";
-    } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
-        $error_message = "Phone number must be 10 digits.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error_message = "Invalid email format.";
-    } elseif ($password !== $confirmpassword) {
-        $error_message = "Passwords do not match.";
+    // Check if email already exists
+    $checkEmail = "SELECT * FROM doctor WHERE dr_email = '$email'";
+    $result = $conn->query($checkEmail);
+
+    if ($result->num_rows > 0) {
+        // Email already exists
+        $registrationMessage = "This email is already registered. Please use a different email.";
     } else {
-        // Check if email already exists
-        $email_check = "SELECT * FROM doctor WHERE dr_email = '$email'";
-        $result = mysqli_query($conn, $email_check);
+        // Insert data into the database
+        $sql = "INSERT INTO doctor (dr_name, dr_phone, license_number, specialization, dr_email, dr_password) 
+                VALUES ('$name', '$phone', '$license', '$specialization', '$email', '$password')";
 
-        if (mysqli_num_rows($result) > 0) {
-            $error_message = "Email already registered.";
-        } else { 
-
-            // Prepare the SQL statement
-            $sql = "INSERT INTO doctor (dr_name, dr_phone, specialization, license_number, dr_email, dr_password) VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = mysqli_stmt_init($conn);
-
-            if(mysqli_stmt_prepare($stmt,$sql)){
-                // Hash the password
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                mysqli_stmt_bind_param($stmt, "ssssss", $name, $phone, $specialization, $license_number, $email, $hashed_password);
-
-                if (mysqli_stmt_execute($stmt)) {
-                    header("Location: doctor_login.php");
-                    exit();
-                } else {
-                    $error_message = "Error: Could not execute the query.";
-                }
-            }else{
-                $error_message = "Error: " . $stmt->error;
-            }
-            mysqli_stmt_close($stmt);
+        if ($conn->query($sql) === TRUE) {
+            $registrationMessage = "Doctor registered successfully!";
+            header("Location: ../index.php");
+        } else {
+            $registrationMessage = "Error: " . $sql . "<br>" . $conn->error;
         }
-        
     }
-}
 
-mysqli_close($conn);
+    $conn->close();
+}
 ?>
 
+<?php
+// Get the current page's file name
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup form</title>
-    <link rel="stylesheet" href="../afterLoginUser_style/signup.css">
+    <title>Header</title>
+    <style>
+        *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body{
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #bcd2fd;
+  padding: 5px 5% 5px 0;
+}
+
+#logo{
+  display: flex;
+  justify-content: left;
+  width: 300px;
+  height: 100px;
+}
+
+#logo img{
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transform: scale(1.8); /* Scale the logo up (adjust scale value as needed) */
+  transform-origin: center; /* Adjust the origin point of the scaling */
+}
+
+.nav-links{
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links a{
+  text-decoration: none;
+  color:#333;
+  font-weight: 500;
+}
+
+#login-btn{
+  padding: 10px 20px;
+  border: 2px solid #2b55eb;
+  border-radius: 20px;
+  
+}
+
+#signup-btn{
+  background-color: #2b55eb;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.nav-links a:hover{
+  color: #2b55eb;
+}
+
+.nav-links a.active {
+  color: #2b55eb !important; /* Color for the active page */
+  font-weight: bold; 
+}
+
+        </style>
 </head>
 <body>
-        <!-- Error and Success message containers -->
-        <div class="error-box" id="error-message"><?php echo $error_message; ?></div>
-        <div class="success-box" id="success-message"><?php echo $success_message; ?></div>
-
-        <div class="form">
-            <h2>Create your PetHug Account</h2>
-            <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
-                <input id="name" type="text" name="dr_name" placeholder="Name"><br><br>
-                <input id="pnumber" type="text" name="dr_phone" placeholder="Phone Number"><br><br>
-                <input id="specialization" type="text" name="specialization" placeholder="Specialization"><br><br>
-                <input id="license_number" type="text" name="license_number" placeholder="license_number"><br><br>
-                <input id="email" type="email" name="dr_email" placeholder="Email"><br><br>
-                <input id="password" type="password" name="dr_password" placeholder="Password" maxlength="15"><br><br>
-                <input id="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password" maxlength="15"><br><br>
-                <input id="submit" type="submit" name="signup" value="Sign up">
-            </form>
-        </div>
     
-        <script>
-        // Display messages if they exist
-        const errorMessage = "<?php echo addslashes($error_message); ?>";
-        const successMessage = "<?php echo addslashes($success_message); ?>";
-
-        if (errorMessage) {
-            const errorBox = document.getElementById('error-message');
-            errorBox.style.display = 'block';
-            errorBox.innerText = errorMessage;
-        }
-
-        if (successMessage) {
-            const successBox = document.getElementById('success-message');
-            successBox.style.display = 'block';
-            successBox.innerText = successMessage;
-        }
-    </script>
+    <!--header section-->
+    <header class="header">
+        <div id="logo">
+            <img src="../images/PetHugLogo.png">
+        </div>
+        <nav class="nav-bar">
+            <ul class="nav-links">
+                <li><a href="../index.php" class="<?php if ($current_page == 'index.php'){echo 'active';} ?>">Home</a></li>
+                <li><a href="../about.php" class="<?php if($current_page == 'about.php'){echo 'active';} ?>">About Us</a></li>
+                <li><a href="../services.php" class="<?php if($current_page == 'services.php'){echo 'active';} ?>">Services</a></li>
+                <li><a href="../contact.php" class="<?php if($current_page == 'contact.php'){echo 'active';} ?>">Contact</a></li>
+                <li><a id="login-btn" href="doctorLogin.php">Log In</a></li>
+                
+            </ul>
+        </nav>
+    </header>
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration</title>
+    <link rel="stylesheet" href="../css/register.css">
+    <script src="doctorRegister.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Register as a Doctor</h2>
+        <?php if (!empty($registrationMessage)): ?>
+            <p class="<?php echo ($registrationMessage == 'Doctor registered successfully!') ? 'success' : 'error'; ?>">
+                <?php echo $registrationMessage; ?>
+            </p>
+        <?php endif; ?>
+        <form action="doctorRegister.php" method="POST" id="registerForm">
+            <label for="dr_name">Name:</label>
+            <input type="text" id="dr_name" name="dr_name" required>
+
+            <label for="dr_phone">Phone Number:</label>
+            <input type="text" id="dr_phone" name="dr_phone" maxlength="10" required>
+
+            <label for="license">Doctor License:</label>
+            <input type="text" id="license" name="license" required>
+
+            <label for="specialization">Specialization:</label>
+            <input type="text" id="specialization" name="specialization" required>
+
+            <label for="dr_email">Email:</label>
+            <input type="email" id="dr_email" name="dr_email" required>
+
+            <label for="dr_password">Password:</label>
+            <input type="password" id="dr_password" name="dr_password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" required>
+
+            <div class="button-group">
+                <button type="submit" class="btn">Register</button>
+                <button type="reset" class="btn reset">Reset</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<?php
+include_once "../footer.php";
+?>

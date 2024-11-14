@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h2 {
+  text-align: center;
+  color: #0044cc;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0044cc;
+}
+
+input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-group {
+  text-align: center;
+}
+
+.btn {
+  background-color: #0044cc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #003399;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
