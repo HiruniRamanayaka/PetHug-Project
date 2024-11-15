@@ -11,12 +11,12 @@ include_once 'header_user.php';
 $user_id = $_SESSION['user_id'];
 
 // Fetch appointments based on status
-$query = "SELECT a.appointment_id, a.date, a.dr_notes, a.status, p.pet_name, d.dr_name, p.pet_image 
+$query = "SELECT a.appointment_id, a.appointment_reason, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
           FROM appointment a
           JOIN pet p ON a.pet_id = p.pet_id
-          JOIN doctor d ON a.dr_id = d.dr_id
+          JOIN doctor d ON a.doctor_id = d.dr_id
           WHERE a.user_id = ? 
-          ORDER BY a.date ASC";
+          ORDER BY a.appointment_time ASC";
 
 $stmt = $conn->prepare($query);
 if ($stmt === false) {
@@ -304,12 +304,12 @@ $statuses = ['Pending', 'Accepted', 'Canceled'];
 
 // Loop through the statuses to fetch and display appointments
 foreach ($statuses as $status) {
-    $queryByStatus = "SELECT a.appointment_id, a.date, a.dr_notes, a.status, p.pet_name, d.dr_name, p.pet_image 
+    $queryByStatus = "SELECT a.appointment_id, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
                       FROM appointment a
                       JOIN pet p ON a.pet_id = p.pet_id
-                      JOIN doctor d ON a.dr_id = d.dr_id
+                      JOIN doctor d ON a.doctor_id = d.dr_id
                       WHERE a.user_id = ? AND a.status = ?
-                      ORDER BY a.date ASC";
+                      ORDER BY a.appointment_time ASC";
 
     $stmtByStatus = $conn->prepare($queryByStatus);
     $stmtByStatus->bind_param("is", $user_id, $status);
@@ -335,7 +335,7 @@ foreach ($statuses as $status) {
             </thead>
             <tbody>
                 <?php while ($row = $resultByStatus->fetch_assoc()) { 
-                    $datetime = new DateTime($row['date']);
+                    $datetime = new DateTime($row['appointment_time']);
                     $date = $datetime->format("Y-m-d"); 
                     $time = $datetime->format("H:i:s"); 
                 ?>
@@ -345,7 +345,7 @@ foreach ($statuses as $status) {
                         <td><?php echo $row['dr_name']; ?></td>
                         <td><?php echo $date; ?></td>
                         <td><?php echo $time; ?></td>
-                        <td><?php echo $row['dr_notes']; ?></td>
+                        <td><?php echo $row['details']; ?></td>
                         <?php if ($status === 'Pending') { ?>
                         <td>
                             <form method="POST" onsubmit="return confirmCancel();">

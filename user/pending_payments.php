@@ -1,14 +1,15 @@
 <?php
-session_start();
-include_once "../connection.php"; 
+ session_start();
+ if (!isset($_SESSION['user_id'])) {
+     header("Location: userLogin.php");
+     exit();
+ }
+ 
+ $user_id = $_SESSION['user_id'];
 
-// Check if the user is logged in
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-    header("Location: user_login.php");
-    exit();
-}
-
-$user_id = $_SESSION['user_id'];
+ include_once "../connection.php";
+ //header
+ include_once "header_user.php";
 
 // Fetch pending bills for the user
 $sql = "SELECT bill_id, amount, date, method, status FROM bill WHERE user_id = $user_id AND status = 'Pending'";
