@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['dr_id'])) {
-    header("Location: doctor_login.php");
+    header("Location: doctorLogin.php");
     exit();
 }
 
@@ -30,14 +30,14 @@ if ($doctor) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Home - PetHug</title>
-    <link rel="stylesheet" href="../afterLoginDoctor_style/home.css">
+    <link rel="stylesheet" href="../afterLoginDoctor_style/home.css" type="text/css">
   
 </head>
 <body>
 
 <div class="container">
     <div class="about">
-        <img src="../images/vecteezy_checking-the-breath-male-veterinarian-in-work-uniform_16854904.jpg" alt="doctor">
+        <img src="../images/banner_wellness2.jpg" alt="doctor">
         <h2>Welcome,  <?php echo htmlspecialchars($doctor_name); ?></h2>
         <p>Manage your appointments, consultations, earnings, and reports efficiently with PetHug.</p>
     </div>
@@ -60,13 +60,13 @@ if ($doctor) {
             <img src="../images/wallet.png" alt="Earnings">
             <h3>Check Earnings</h3>
             <p>View and track your earnings from consultations and treatments.</p>
-            <a href="doctor_earnings.php">View Earnings</a>
+            <a href="check_earnings.php">View Earnings</a>
         </div>
         <div class="card">
             <img src="../images/reports.png" alt="Reports">
             <h3>Get Reports</h3>
             <p>Generate detailed reports of your activity and consultations.</p>
-            <a href="doctor_view_report.php">Generate Reports</a>
+            <a href="get_reports.php">Generate Reports</a>
         </div>
     </div>
 </div>
@@ -77,5 +77,3 @@ if ($doctor) {
 <?php
 include_once "footer_dr.php";
 ?>
-
-<?php $conn->close(); ?>
