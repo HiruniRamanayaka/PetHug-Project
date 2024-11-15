@@ -1,17 +1,16 @@
 <?php 
-    session_start();
-    
-    include_once "../connection.php"; 
-    //header
-    include_once "header_user.php";
+   session_start();
+   if (!isset($_SESSION['user_id'])) {
+       header("Location: userLogin.php");
+       exit();
+   }
+   
+   $user_id = $_SESSION['user_id'];
 
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-        header("Location: user_login.php");
-        exit();
-    }
-    
-    $user_id = $_SESSION['user_id'];
-    $email = $_SESSION['user_email'];
+   include_once "../connection.php";
+   //header
+   include_once "header_user.php";
+   
 
     $upcomingAppointments = []; // Initialize with an empty array if there's no data
     $relevantPets = []; // Initialize with an empty array if there's no data

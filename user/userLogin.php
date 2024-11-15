@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $user['user_password'])) {
             // Set session variable
             $_SESSION['user_id'] = $user['user_id'];
-            header("Location:../user/home.php"); // Redirect to user home page
+            header("Location:../user/dashboard.php"); // Redirect to user home page
             exit();
         } else {
             $error_message = "Incorrect password. Please try again.";

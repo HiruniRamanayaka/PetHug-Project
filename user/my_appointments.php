@@ -11,7 +11,7 @@ include_once 'header_user.php';
 $user_id = $_SESSION['user_id'];
 
 // Fetch appointments based on status
-$query = "SELECT a.appointment_id, a.appointment_time, a.appointment_reason, a.status, p.pet_name, d.dr_name, p.pet_image 
+$query = "SELECT a.appointment_id, a.appointment_reason, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
           FROM appointment a
           JOIN pet p ON a.pet_id = p.pet_id
           JOIN doctor d ON a.doctor_id = d.dr_id
@@ -304,7 +304,7 @@ $statuses = ['Pending', 'Accepted', 'Canceled'];
 
 // Loop through the statuses to fetch and display appointments
 foreach ($statuses as $status) {
-    $queryByStatus = "SELECT a.appointment_id, a.appointment_time, a.appointment_reason, a.status, p.pet_name, d.dr_name, p.pet_image 
+    $queryByStatus = "SELECT a.appointment_id, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
                       FROM appointment a
                       JOIN pet p ON a.pet_id = p.pet_id
                       JOIN doctor d ON a.doctor_id = d.dr_id
@@ -345,7 +345,7 @@ foreach ($statuses as $status) {
                         <td><?php echo $row['dr_name']; ?></td>
                         <td><?php echo $date; ?></td>
                         <td><?php echo $time; ?></td>
-                        <td><?php echo $row['appointment_reason']; ?></td>
+                        <td><?php echo $row['details']; ?></td>
                         <?php if ($status === 'Pending') { ?>
                         <td>
                             <form method="POST" onsubmit="return confirmCancel();">

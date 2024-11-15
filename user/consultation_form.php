@@ -1,31 +1,28 @@
 <?php
     session_start();
-
-    include_once "../connection.php";
-    //header
-    include_once "header_user.php";
-
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-        header("Location: user_login.php");
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: userLogin.php");
         exit();
     }
     
     $user_id = $_SESSION['user_id'];
-    $email = $_SESSION['user_email'];
+ 
+    include_once "../connection.php";
+    //header
+    include_once "header_user.php";
 
     if (isset($_POST["submit"])) {    
         $pet_id = $_POST['pet_id'];
         $dr_id = $_POST['dr_id'];              
         $message = $_POST['consultation_reason'];
-        $date = $_POST['date'];
-        $time = $_POST['time'];
+       
 
         $datetime = date('Y-m-d H:i:s', strtotime("$date $time"));
 
         // Insert data into the consultation table
-        $stmt = $conn->prepare("INSERT INTO consultation (user_id, pet_id, dr_id, consultation_time, consultation_reason) 
-                        VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("iiiss", $user_id, $pet_id, $dr_id, $datetime, $message);
+        $stmt = $conn->prepare("INSERT INTO consultation (user_id, pet_id, dr_id, consultation_reason) 
+                        VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiis", $user_id, $pet_id, $dr_id,  $message);
 
         if ($stmt->execute()) {
             $_SESSION['success_message5'] = "Consultation request submitted successfully!";
@@ -53,8 +50,6 @@
             const petBreed = document.querySelector("[name='pet_breed']").value;
             const veterinarian = document.querySelector("[name='dr_id']").value;
             const consultationType = document.querySelector("[name='consultation_type']").value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
             const message = document.getElementById('message').value;
 
             
@@ -81,18 +76,6 @@
                 alert("Please select the consultation type.");
                 return false;
             }
-
-            // Check if date and time are selected
-            if (!date) {
-                alert("Please select a date.");
-                return false;
-            }
-
-            if (!time) {
-                alert("Please select a time.");
-                return false;
-            }
-
             // Check if message is at least 10 characters
             if (message.length < 10) {
                 alert("Please describe your pet's issue with at least 10 characters.");
@@ -176,12 +159,6 @@
                             }
                         ?>
                     </select>
-
-                    <label for="time">Time :</label>
-                    <input id="time" type="time" name="time" size="35" placeholder="Time">
-
-                    <label for="date">Date :</label>
-                    <input id="date" type="date" name="date" size="35" placeholder="Date">
 
                     <label for="message">Describe your pet's issue:</label>
                     <textarea id="message" name="consultation_reason" rows="4" required></textarea>
