@@ -91,6 +91,18 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
             <p>Generate and view reports for the platform.</p>
             <a href="hospital_info.php">Hospital Info</a>
         </div>
+        <div class="card">
+            <img src="" alt="contact">
+            <h3>Manage Contact Message</h3>
+           
+            <a href="admin_contact.php">Contact Messages</a>
+        </div>
+        <div class="card">
+            <img src="" alt="feedback">
+            <h3>Manage Feedback</h3>
+            
+            <a href="admin_feedback.php">Feedback</a>
+        </div>
     </div>
 </div>
 
