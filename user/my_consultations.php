@@ -250,12 +250,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .modal-content {
+            display: block;
+            position: relative;
             background-color: #fefefe;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%; 
             max-width: 500px; 
+        }
+
+        .modal-content h2 {
+            position: absolute;
+            text-align: center;
+            font-size: 28px;      
+        }
+
+        .modal-content form {
+            margin-top: 10px;
+            
         }
 
         .close {
