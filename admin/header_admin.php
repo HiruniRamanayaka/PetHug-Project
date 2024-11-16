@@ -31,7 +31,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li><a href="admin_user_management.php" class="<?php if($current_page == 'admin_user_management.php'){echo 'active';} ?>">User <br> Management</a></li>
                 <li><a href="admin_doctor_management.php" class="<?php if($current_page == 'admin_doctor_management.php'){echo 'active';} ?>">Doctor <br>Management</a></li>
                 <li><a href="hostel_management.php" class="<?php if($current_page == 'hostel_management.php'){echo 'active';} ?>">Hostel <br> Management</a></li>
-                <li><a href="admin_notifications.php" class="<?php if($current_page == 'admin_notifications.php'){echo 'active';} ?>">Notification <br> Management</a></li>
+                <li><a href="admin_send_notifications.php" class="<?php if($current_page == 'admin_notifications.php'){echo 'active';} ?>">Notification <br> Management</a></li>
                 <li><a href="payment_management.php" class="<?php if($current_page == 'payment_management.php'){echo 'active';} ?>">Payment <br> Management</a></li>
 
                 <li><button><a href="admin_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></button></li>

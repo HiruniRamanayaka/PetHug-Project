@@ -1,18 +1,16 @@
 <?php
 
-    session_start();
+session_start();
+if (!isset($_SESSION['dr_id'])) {
+    header("Location: doctorLogin.php");
+    exit();
+}
 
-    include_once "../connection.php";
-    //header
-    include_once "header_dr.php";
+require '../connection.php'; // Include the database connection file
+include_once 'header_dr.php';
 
-    if (!isset($_SESSION['dr_id']) || !isset($_SESSION['dr_email'])) {
-        header("Location: doctor_login.php");
-        exit();
-    }
-    
-    $dr_id = $_SESSION['dr_id'];
-    $email = $_SESSION['dr_email'];
+$doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using it in query
+
 
     if (isset($_POST['search'])) {
         $pet_id = $_POST['pet_id'];

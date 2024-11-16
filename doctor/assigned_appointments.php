@@ -15,7 +15,7 @@ $today = date('Y-m-d');
 $acceptedQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                   JOIN pet ON appointment.pet_id = pet.pet_id 
                   JOIN user ON appointment.user_id = user.user_id 
-                  WHERE appointment.dr_id = ? AND appointment.date = ? AND appointment.status = 'accepted'";
+                  WHERE appointment.doctor_id = ? AND appointment.appointment_time = ? AND appointment.status = 'accepted'";
 $acceptedStmt = $conn->prepare($acceptedQuery);
 $acceptedStmt->bind_param("is", $doctor_id, $today);
 $acceptedStmt->execute();
@@ -25,7 +25,7 @@ $acceptedAppointments = $acceptedStmt->get_result();
 $pendingQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                  JOIN pet ON appointment.pet_id = pet.pet_id 
                  JOIN user ON appointment.user_id = user.user_id 
-                 WHERE appointment.dr_id = ? AND appointment.status = 'Pending'";
+                 WHERE appointment.doctor_id = ? AND appointment.status = 'Pending'";
 $pendingStmt = $conn->prepare($pendingQuery);
 $pendingStmt->bind_param("i", $doctor_id);
 $pendingStmt->execute();
@@ -35,7 +35,7 @@ $pendingAppointments = $pendingStmt->get_result();
 $canceledQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                   JOIN pet ON appointment.pet_id = pet.pet_id 
                   JOIN user ON appointment.user_id = user.user_id 
-                  WHERE appointment.dr_id = ? AND appointment.status = 'canceled'";
+                  WHERE appointment.doctor_id = ? AND appointment.status = 'canceled'";
 $canceledStmt = $conn->prepare($canceledQuery);
 $canceledStmt->bind_param("i", $doctor_id);
 $canceledStmt->execute();
