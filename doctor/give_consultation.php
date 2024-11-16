@@ -248,13 +248,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 <td><?php echo $row['consultation_id']; ?></td>
                 <td><?php echo $row['pet_owner_name']; ?></td>
                 <td><?php echo $row['pet_name']; ?></td>
-                <td><?php echo $row['created_date']; ?></td>
+                <td><?php echo $row['created_at']; ?></td>
                 <td>
                     <button class="ShowNotes-btn" onclick="showNotes(<?php echo $row['pet_id']; ?>)">Show Notes</button>
                     <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
                     <?php 
                         // Fetch all doctor notes related to the pet_id
-                        $notesQuery = "SELECT dr_notes FROM consultation WHERE pet_id = ? AND dr_id = ? ORDER BY created_date DESC";
+                        $notesQuery = "SELECT dr_notes FROM consultation WHERE pet_id = ? AND dr_id = ? ORDER BY created_at DESC";
                         $notesStmt = $conn->prepare($notesQuery);
                         $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
                         $notesStmt->execute();
@@ -303,7 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             <td><?php echo $row['consultation_id']; ?></td>
             <td><?php echo $row['pet_owner_name']; ?></td>
             <td><?php echo $row['pet_name']; ?></td>
-            <td><?php echo $row['created_date']; ?></td>
+            <td><?php echo $row['created_at']; ?></td>
             <td>
                 <form method="POST" style="display:inline;">
                     <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
