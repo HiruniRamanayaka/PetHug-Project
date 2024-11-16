@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $cancelStmt->bind_param("ii", $consultation_id, $user_id);
 
         if ($cancelStmt->execute()) {
-            $cancel_message = "Consultation successfully cancelled!";
+            $cancel_message = "Consultation successfully canceled!";
             header("location: my_consultations.php");
             exit();
         } else {
@@ -64,6 +64,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             $error_message = "Error rescheduling consultation.";
+        }
+    }
+    if(isset($_POST['delete_consultation'])) {
+
+        $deleteQuery = "DELETE FROM consultation WHERE consultation_id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteQuery);
+        $deleteStmt->bind_param("ii", $consultation_id, $user_id);
+        if ($deleteStmt->execute()) {
+            $success_message = "Consultation successfully deleted!";
+            header("location: my_consultations.php");
+            exit();
+        } else {
+            $error_message = "Error deleting consultation.";
         }
     }
 }
@@ -215,6 +228,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center; 
             top: 40vh; 
         }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            margin-top: 3px;
+        }
 
         /* Modal styles */
         .modal {
@@ -294,7 +312,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php
     // Fetch separate consultations by status
-    $statuses = ['Pending', 'Accepted', 'Cancelled'];
+    $statuses = ['Pending', 'Accepted', 'Canceled'];
     
     foreach ($statuses as $status) {
         $queryByStatus = "SELECT c.consultation_id, c.created_at, c.consultation_reason, c.status, p.pet_name, d.dr_name, p.pet_image 
@@ -320,7 +338,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>Doctor</th>
                         <th>Consultation Date and Time</th>
                         <th>Reason</th>
-                        <?php if ($status !== 'Accepted' || $status === 'Accepted') { ?>
+                        <?php if ($status !== 'Accepted') { ?>
                         <th>Actions</th>
                         <?php } ?>
                     </tr>
@@ -330,11 +348,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tr>
                             <td><?php echo $row['consultation_id']; ?></td>
                             <td>
-                                <img src="<?php echo "uploads/" . $row['pet_image']; ?>" alt="Pet">
-                                <br><?php echo $row['pet_name']; ?>
+                            <img src="<?php echo $row['pet_image']; ?>" alt="<?php echo $row['pet_name']; ?>"><?php echo $row['pet_name']; ?>
                             </td>
                             <td><?php echo $row['dr_name']; ?></td>
-                            <td><?php echo $row['created_date']; ?></td>
+                            <td><?php echo $row['created_at']; ?></td>
                             <td><?php echo $row['consultation_reason']; ?></td>
                             <?php if ($status !== 'Accepted') { ?>
                             <td>
@@ -343,19 +360,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
                                         <button type="submit" name="cancel_consultation" class="cancel-btn">Cancel</button>
                                     </form>
-                                <?php } elseif ($status == 'Cancelled') { ?>
-                                    <button onclick="openModal(<?php echo $row['consultation_id']; ?>, '<?php echo $row['created_date']; ?>', '<?php echo $row['consultation_reason']; ?>')" class="reschedule-btn">Reschedule</button>
+                                <?php } elseif ($status == 'Canceled') { ?>
+                                    <button onclick="openModal(<?php echo $row['consultation_id']; ?>, '<?php echo $row['created_at']; ?>', '<?php echo $row['consultation_reason']; ?>')" class="reschedule-btn">Reschedule</button>
+                                    <form method="POST" style="display:inline;">
+                                      <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                                      <button type="submit" name="delete_consultation" class="delete-btn">Delete</button>
+                                    </form>
                                 <?php } ?>
                             </td>
-                            <?php } else { ?>
-                            <td>
-                                <!-- Pay Bill button for Accepted Consultations -->
-                                <form method="POST" action="payBill.php">
-                                    <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
-                                    <button type="submit" name="pay_bill" class="pay-btn">Pay Bill</button>
-                                </form>
-                            </td>
-                            <?php } ?>
+                            <?php }  ?>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -377,7 +390,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Reschedule Consultation</h2>
             <form method="POST" >
                 <input type="hidden" id="consultation_id" name="consultation_id" value="">
-                <input type="time" id="time" name="time" required><br><br>
                 <label for="consultation_reason">New Reason:</label>
                 <textarea id="consultation_reason" name="consultation_reason" required></textarea><br><br>
                 <button type="submit" class="pay-btn" name="reschedule_consultation" id="reschedule_consultation">Reschedule</button>
