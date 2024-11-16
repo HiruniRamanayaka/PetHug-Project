@@ -1,17 +1,16 @@
 <?php
     session_start();
-
-    include_once "../connection.php";
-    //header
-    include_once "header_admin.php";
-
-    if (!isset($_SESSION['admin_id']) || !isset($_SESSION['admin_email'])) {
-        header("Location: doctor_login.php");
+    if (!isset($_SESSION['admin_id'])) {
+        header("Location: adminLogin.php");
         exit();
     }
+    include_once 'header_admin.php';
+    // Database connection
+    require '../connection.php';
     
+    // Admin ID from session
     $admin_id = $_SESSION['admin_id'];
-    $email = $_SESSION['admin_email'];
+    
 
 
     // Fetch doctor details from the database
