@@ -17,7 +17,7 @@
         $message = $_POST['consultation_reason'];
        
 
-        $datetime = date('Y-m-d H:i:s', strtotime("$date $time"));
+       
 
         // Insert data into the consultation table
         $stmt = $conn->prepare("INSERT INTO consultation (user_id, pet_id, dr_id, consultation_reason) 

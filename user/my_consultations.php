@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
+    header("Location: userLogin.php");
     exit();
 }
 
@@ -11,12 +11,12 @@ include_once 'header_user.php';
 $user_id = $_SESSION['user_id'];
 
 // Fetch consultations based on status
-$query = "SELECT c.consultation_id, c.consultation_time, c.consultation_reason, c.status, p.pet_name, d.dr_name, p.pet_image 
+$query = "SELECT c.consultation_id, c.consultation_reason, c.status, p.pet_name, d.dr_name, p.pet_image
           FROM consultation c
           JOIN pet p ON c.pet_id = p.pet_id
           JOIN doctor d ON c.dr_id = d.dr_id
           WHERE c.user_id = ? 
-          ORDER BY c.consultation_time ASC";
+          ORDER BY c.created_at ASC";
 
 $stmt = $conn->prepare($query);
 if ($stmt === false) {
@@ -48,17 +48,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
 
     if (isset($_POST['reschedule_consultation'])) {
-        $new_date = $_POST['date'];
-        $new_time = $_POST['time'];
-        $new_reason = $_POST['reason'];
+        $new_reason = $_POST['consultation_reason'];
         $consultation_id = $_POST['consultation_id'];
         $user_id = $_SESSION['user_id'];
-        $new_datetime = $new_date . " " . $new_time;
+       
 
-        $rescheduleQuery = "UPDATE consultation SET consultation_time = ?, consultation_reason = ?, status = 'Pending' 
+        $rescheduleQuery = "UPDATE consultation SET consultation_reason = ?, status = 'Pending' 
                             WHERE consultation_id = ? AND user_id = ? AND status='Canceled'";
         $rescheduleStmt = $conn->prepare($rescheduleQuery);
-        $rescheduleStmt->bind_param("ssii", $new_datetime, $new_reason, $consultation_id, $user_id);
+        $rescheduleStmt->bind_param("sii", $new_reason, $consultation_id, $user_id);
 
         if ($rescheduleStmt->execute()) {
             $success_message = "Consultation successfully rescheduled!";
@@ -263,9 +261,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         function openModal(consultationId, currentDate, currentTime, currentReason) {
             document.getElementById("consultation_id").value = consultationId;
-            document.getElementById("date").value = currentDate;
-            document.getElementById("time").value = currentTime;
-            document.getElementById("reason").value = currentReason;
+            document.getElementById("consultation_reason").value = currentReason;
             document.getElementById("myModal").style.display = "block";
         }
 
@@ -298,15 +294,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php
     // Fetch separate consultations by status
-    $statuses = ['Pending', 'Accepted', 'Canceled'];
+    $statuses = ['Pending', 'Accepted', 'Cancelled'];
     
     foreach ($statuses as $status) {
-        $queryByStatus = "SELECT c.consultation_id, c.consultation_time, c.consultation_reason, c.status, p.pet_name, d.dr_name, p.pet_image 
+        $queryByStatus = "SELECT c.consultation_id, c.created_at, c.consultation_reason, c.status, p.pet_name, d.dr_name, p.pet_image 
                           FROM consultation c
                           JOIN pet p ON c.pet_id = p.pet_id
                           JOIN doctor d ON c.dr_id = d.dr_id
                           WHERE c.user_id = ? AND c.status = ?
-                          ORDER BY c.consultation_time ASC";
+                          ORDER BY c.created_at ASC";
     
         $stmtByStatus = $conn->prepare($queryByStatus);
         $stmtByStatus->bind_param("is", $user_id, $status);
@@ -322,8 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>Consultation ID</th>
                         <th>Pet</th>
                         <th>Doctor</th>
-                        <th>Consultation Date</th>
-                        <th>Time</th>
+                        <th>Consultation Date and Time</th>
                         <th>Reason</th>
                         <?php if ($status !== 'Accepted' || $status === 'Accepted') { ?>
                         <th>Actions</th>
@@ -331,20 +326,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $resultByStatus->fetch_assoc()) { 
-                        $datetime = new DateTime($row['consultation_time']);
-                        $date = $datetime->format("Y-m-d"); 
-                        $time = $datetime->format("H:i:s"); 
-                    ?>
+                    <?php while ($row = $resultByStatus->fetch_assoc()) { ?>
                         <tr>
                             <td><?php echo $row['consultation_id']; ?></td>
                             <td>
-                                <img src="<?php echo "../uploads/" . $row['pet_image']; ?>" alt="Pet">
+                                <img src="<?php echo "uploads/" . $row['pet_image']; ?>" alt="Pet">
                                 <br><?php echo $row['pet_name']; ?>
                             </td>
                             <td><?php echo $row['dr_name']; ?></td>
-                            <td><?php echo $date; ?></td>
-                            <td><?php echo $time; ?></td>
+                            <td><?php echo $row['created_date']; ?></td>
                             <td><?php echo $row['consultation_reason']; ?></td>
                             <?php if ($status !== 'Accepted') { ?>
                             <td>
@@ -353,14 +343,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
                                         <button type="submit" name="cancel_consultation" class="cancel-btn">Cancel</button>
                                     </form>
-                                <?php } elseif ($status == 'Canceled') { ?>
-                                    <button onclick="openModal('<?php echo $row['consultation_id']; ?>', '<?php echo $date; ?>', '<?php echo $time; ?>', '<?php echo $row['consultation_reason']; ?>')" class="reschedule-btn">Reschedule</button>
+                                <?php } elseif ($status == 'Cancelled') { ?>
+                                    <button onclick="openModal(<?php echo $row['consultation_id']; ?>, '<?php echo $row['created_date']; ?>', '<?php echo $row['consultation_reason']; ?>')" class="reschedule-btn">Reschedule</button>
                                 <?php } ?>
                             </td>
                             <?php } else { ?>
                             <td>
                                 <!-- Pay Bill button for Accepted Consultations -->
-                                <form method="POST" action="bill.php">
+                                <form method="POST" action="payBill.php">
                                     <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
                                     <button type="submit" name="pay_bill" class="pay-btn">Pay Bill</button>
                                 </form>
@@ -387,12 +377,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Reschedule Consultation</h2>
             <form method="POST" >
                 <input type="hidden" id="consultation_id" name="consultation_id" value="">
-                <label for="date">New Date:</label>
-                <input type="date" id="date" name="date" required><br><br>
-                <label for="time">New Time:</label>
                 <input type="time" id="time" name="time" required><br><br>
-                <label for="reason">New Reason:</label>
-                <textarea id="reason" name="reason" required></textarea><br><br>
+                <label for="consultation_reason">New Reason:</label>
+                <textarea id="consultation_reason" name="consultation_reason" required></textarea><br><br>
                 <button type="submit" class="pay-btn" name="reschedule_consultation" id="reschedule_consultation">Reschedule</button>
             </form>
         </div>
