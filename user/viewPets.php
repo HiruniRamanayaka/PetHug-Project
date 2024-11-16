@@ -1,16 +1,16 @@
 <?php
 
-    session_start();
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: userLogin.php");
+    exit();
+}
 
-        include_once "../connection.php";
+$user_id = $_SESSION['user_id'];
 
-        if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-            header("Location: user_login.php");
-            exit();
-        }
-        
-        $user_id = $_SESSION['user_id'];
-        $email = $_SESSION['user_email'];
+include_once "../connection.php";
+//header
+include_once "header_user.php";
     
 ?>
 
