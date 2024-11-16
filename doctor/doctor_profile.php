@@ -1,21 +1,18 @@
 <?php
-    session_start();
-
-    include_once "../connection.php";
-    //header
-    include_once "header_dr.php";
-
-    if (!isset($_SESSION['dr_id']) || !isset($_SESSION['dr_email'])) {
-        header("Location: doctor_login.php");
-        exit();
-    }
-    
-    $dr_id = $_SESSION['dr_id'];
-    $email = $_SESSION['dr_email'];
-
+   session_start();
+   if (!isset($_SESSION['dr_id'])) {
+       header("Location: doctorLogin.php");
+       exit();
+   }
+   
+   require '../connection.php'; // Include the database connection file
+   include_once 'header_dr.php';
+   
+   $doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using it in query
+   
 
     // Fetch doctor details from the database
-    $sql = "SELECT * FROM doctor WHERE dr_id = $dr_id";
+    $sql = "SELECT * FROM doctor WHERE dr_id = $doctor_id";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {

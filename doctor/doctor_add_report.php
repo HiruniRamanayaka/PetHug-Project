@@ -1,17 +1,15 @@
 <?php
     session_start();
-
-    include_once "../connection.php";
-    //header
-    include_once "header_dr.php";
-
-    if (!isset($_SESSION['dr_id']) || !isset($_SESSION['dr_email'])) {
-        header("Location: doctor_login.php");
+    if (!isset($_SESSION['dr_id'])) {
+        header("Location: doctorLogin.php");
         exit();
     }
     
-    $dr_id = $_SESSION['dr_id'];
-    $email = $_SESSION['dr_email'];
+    require '../connection.php'; // Include the database connection file
+    include_once 'header_dr.php';
+    
+    $doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using it in query
+    
 
     // Handle Appointment Report submission
     if (isset($_POST['submit_appointment'])) {
