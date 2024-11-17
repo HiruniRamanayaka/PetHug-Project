@@ -5,13 +5,12 @@ include_once "../connection.php";
 //header
 include_once "header_user.php";
 
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-    header("Location: user_login.php");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: userLogin.php");
     exit();
 }
 
 $user_id = $_SESSION['user_id'];     
-$email = $_SESSION['user_email'];
 
 // Fetch hospital fee
 $hospital_fee_result = $conn->query("SELECT hospital_fee FROM hospital LIMIT 1");

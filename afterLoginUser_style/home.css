@@ -7,87 +7,104 @@ body {
 }
 
 .home-info {
+    max-width: 90%;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 /* welcome note */
 
 .welcome{
-    margin: auto;
-    width: 90%;
-    background-color: #4c46f85d;
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    /*background-color: #4c46f85d;*/
     padding: 20px;
 }
 
+.welcome img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    width: 100%; /* Adjusted to 100% to make use of .about's 95% width */
+    position: relative;
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
 .welcome h1 {
-    font-size: 40px;
+    position: absolute;
+    top: 15%; 
+    font-size: 40px; 
     color: #1d3272;
-    font-family: serif;
+    margin-top: auto;
+    margin-left: 10px;
 }
 
 .welcome p {
+    position: absolute;
+    top: 35%; /* Position p below h2 */
+    color: #171717;
     font-size: 20px;
-    margin-bottom: 30px;
+    margin-left: 10px;
+    width: 50%;
 }
 
-/* Accordion Styles */
-.accordion {
-    margin: 3% 5% 30px;
+/* Feature Styles */
+.features {
+    margin: 10px auto;
     width: 90%;
-    max-width: 600px;
 }
 
-.accordion h1{
+.features h1{
     text-align: left;
     font-family: serif;
     margin-bottom: 20px;
     color: #2b4699;
 }
 
-.accordion-item {
-    border: 1px solid #0056b3;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    overflow: hidden;
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+.card {
+    background-color: #f0f8ff;
+    border: 1px solid #b0d4ff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.card img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+.card h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 
-.accordion-header {
-    border: 1px solid blue;
-    color: black;
-    padding: 15px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: left;
-    transition: background-color 0.3s ease;
-}
-
-.accordion-header:hover {
-    background-color: #89a2e2;
-}
-
-.accordion-header i {
-    text-align: right;
-    transition: transform 0.3s ease;
-}
-
-.accordion-header i.fa-chevron-up {
-    transform: rotate(180deg); /* Rotate the arrow when accordion is expanded */
-}
-
-.accordion-content {
-    background-color: #f7f7f7;
-    padding: 15px;
-    display: none; /* Hidden by default */
-    border-top: 1px solid #dedede;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .accordion {
-        width: 100%;
-    }
-}
 
 /*main features*/
 .nav-to-about-services-contact h1{
