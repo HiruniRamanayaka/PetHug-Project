@@ -1,126 +1,89 @@
-/* Container */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e0f7ff;
+    margin: 0;
+}
+   
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-}
-
-.container h2 {
-    font-family: 'Georgia', serif;
-    color: #0c1b49;
-    margin-bottom: 20px;
-}
-
-.container p {
-    font-size: 18px;
-    color: #666;
+    margin: auto;
+    margin-top: 50px;
     margin-bottom: 50px;
-}
-
-/* Dashboard cards */
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    justify-content: center;
-    align-items: center;
-}
-
-.card {
+    padding: 20px;
     background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about3{
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+.card {
+    background-color: #f0f8ff;
+    border: 1px solid #b0d4ff;
+    border-radius: 10px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
-
 .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
-
 .card img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
     margin-bottom: 20px;
 }
-
 .card h3 {
-    font-size: 22px;
-    color: #0c1b49;
+    color: #007bff;
     margin-bottom: 15px;
 }
-
-.card p {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-.card .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #0a36d4;
-    color: white;
+a {
+    color: #007bff;
     text-decoration: none;
-    border-radius: 10px;
-    transition: background-color 0.3s;
+}
+a:hover {
+    text-decoration: underline;
 }
 
-.card .btn:hover {
-    background-color: #0b5ed7;
-}
 
-.about {
-    position: relative;
-    width: 95%;
-    margin: 0 auto;
-  }
-  
-  .about img {
+
+.about3 img {
     display: block;
     margin-left: auto;
     margin-right: auto;
     height: auto;
     width: 100%; /* Adjusted to 100% to make use of .about's 95% width */
     position: relative;
-  }
-  
-  .about h2,
-  .about p {
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
+.about3 h2 {
     position: absolute;
-    left: 10px; /* Position text on the left side */
-    text-align: left; /* Align text to the left */
-    color: #007bff; /* or your preferred color */
-    width: 45%; /* Adjusted width to fit left side */
-  }
-  
-  .about h2 {
-    top: 20px; /* Position h2 slightly from the top */
-    font-size: 24px; /* Adjust size as needed */
-  }
-  
-  .about p {
-    top: 60px; /* Position p below h2 */
-    color: #333;
-    font-size: 16px; /* Adjust size as needed */
-  }
-  
+    top: 5vh; /* Position h2 slightly from the top */
+    font-size: 40px; 
+    color: #007bff;
+    margin: auto;
+    margin-left: 10px;
+}
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .container p {
-        font-size: 16px;
-    }
-
-    .card h3 {
-        font-size: 20px;
-    }
-
-    .card p {
-        font-size: 14px;
-    }
+.about3 p {
+    position: absolute;
+    top: 12vh; /* Position p below h2 */
+    color: #545454;
+    font-size: 20px;
+    margin-left: 10px;
+    width: 60%;
 }
