@@ -163,7 +163,7 @@ header{
 <body>
     <div class="container">
         <h2>Create your PetHug Account</h2>
-        <form action="registerUser.php" method="POST" enctype="multipart/form-data" id="registerForm">
+        <form action="user_signup.php" method="POST" enctype="multipart/form-data" id="registerForm">
             <label for="first_name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required>
 
@@ -186,7 +186,7 @@ header{
             <input type="password" id="confirm_password" name="confirm_password" required>
 
             <label for="image">Upload Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+            <input type="file" id="image" name="image" accept="image/*">
 
             <div class="button-group">
                 <button type="submit" class="btn">Register</button>

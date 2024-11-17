@@ -60,13 +60,13 @@ if ($doctor) {
             <img src="../images/wallet.png" alt="Earnings">
             <h3>Check Earnings</h3>
             <p>View and track your earnings from consultations and treatments.</p>
-            <a href="check_earnings.php">View Earnings</a>
+            <a href="doctor_earnings.php">View Earnings</a>
         </div>
         <div class="card">
             <img src="../images/reports.png" alt="Reports">
             <h3>Get Reports</h3>
             <p>Generate detailed reports of your activity and consultations.</p>
-            <a href="get_reports.php">Generate Reports</a>
+            <a href="doctor_view_report.php">Generate Reports</a>
         </div>
     </div>
 </div>

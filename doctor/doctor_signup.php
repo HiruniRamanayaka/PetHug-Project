@@ -21,9 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Email already exists
         $registrationMessage = "This email is already registered. Please use a different email.";
     } else {
+
+      $target_dir = "uploads/";
+      $target_file = $target_dir . basename($_FILES["image"]["name"]);
+
         // Insert data into the database
-        $sql = "INSERT INTO doctor (dr_name, dr_phone, license_number, specialization, dr_email, dr_password) 
-                VALUES ('$name', '$phone', '$license', '$specialization', '$email', '$password')";
+        $sql = "INSERT INTO doctor (dr_name, dr_phone, license_number, specialization, dr_email, doctor_image, dr_password) 
+                VALUES ('$name', '$phone', '$license', '$specialization', '$email', '$target_file', '$password')";
 
         if ($conn->query($sql) === TRUE) {
             $registrationMessage = "Doctor registered successfully!";
@@ -162,7 +166,7 @@ header{
                 <?php echo $registrationMessage; ?>
             </p>
         <?php endif; ?>
-        <form action="doctorRegister.php" method="POST" id="registerForm">
+        <form action="doctor_signup.php" method="POST" id="registerForm">
             <label for="dr_name">Name:</label>
             <input type="text" id="dr_name" name="dr_name" required>
 
@@ -183,6 +187,9 @@ header{
 
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" id="confirm_password" required>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
 
             <div class="button-group">
                 <button type="submit" class="btn">Register</button>
