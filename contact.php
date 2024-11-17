@@ -177,8 +177,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span class='carousel-dot' onclick='moveSlide(2)'></span>
                     <!-- Add more dots as per the number of feedback items -->
                 </div>";
-            } else {
-                echo "No feedback available.";
             }
         ?>
 
