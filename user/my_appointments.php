@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
+    header("Location: userLogin.php");
     exit();
 }
 
@@ -11,7 +11,7 @@ include_once 'header_user.php';
 $user_id = $_SESSION['user_id'];
 
 // Fetch appointments based on status
-$query = "SELECT a.appointment_id, a.appointment_reason, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
+$query = "SELECT a.appointment_id, a.appointment_time, a.appointment_reason, a.status, p.pet_name, d.dr_name, p.pet_image 
           FROM appointment a
           JOIN pet p ON a.pet_id = p.pet_id
           JOIN doctor d ON a.doctor_id = d.dr_id
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['reschedule_appointment'])) {
         $new_date = $_POST['date'];
         $new_time = $_POST['time'];
-        $new_details = $_POST['appointment_reason'];
+        $new_details = $_POST['details'];
         $new_datetime = $new_date . " " . $new_time;
 
         $rescheduleQuery = "UPDATE appointment SET appointment_time = ?, appointment_reason = ?, status = 'Pending' 
@@ -62,6 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             $error_message = "Error rescheduling appointment.";
+        }
+    }
+    if(isset($_POST['delete_appointment'])) {
+
+        $deleteQuery = "DELETE FROM appointment WHERE appointment_id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteQuery);
+        $deleteStmt->bind_param("ii", $appointment_id, $user_id);
+        if ($deleteStmt->execute()) {
+            $success_message = "Appointment successfully deleted!";
+            header("location: my_appointments.php");
+            exit();
+        } else {
+            $error_message = "Error deleting appointment.";
         }
     }
 }
@@ -181,8 +194,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .pay-btn { 
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
             background-color: #28a745; 
-            color: white; 
+            color: white;
         }
 
         .reschedule-btn { 
@@ -218,6 +235,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center; 
             top: 40vh; 
         }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            margin-top: 3px;
+        }
 
         /* Modal styles */
         .modal {
@@ -241,6 +263,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: 1px solid #888;
             width: 80%; 
             max-width: 500px; 
+        }
+
+        .modal-content form{
+
         }
 
         .close {
@@ -304,7 +330,7 @@ $statuses = ['Pending', 'Accepted', 'Canceled'];
 
 // Loop through the statuses to fetch and display appointments
 foreach ($statuses as $status) {
-    $queryByStatus = "SELECT a.appointment_id, a.appointment_time, a.details, a.status, p.pet_name, d.dr_name, p.pet_image 
+    $queryByStatus = "SELECT a.appointment_id, a.appointment_time, a.appointment_reason, a.status, p.pet_name, d.dr_name, p.pet_image 
                       FROM appointment a
                       JOIN pet p ON a.pet_id = p.pet_id
                       JOIN doctor d ON a.doctor_id = d.dr_id
@@ -328,7 +354,7 @@ foreach ($statuses as $status) {
                     <th>Appointment Date</th>
                     <th>Time</th>
                     <th>Details</th>
-                    <?php if ($status !== 'Rejected') { ?>
+                    <?php if ( $status !== 'Accepted') { ?>
                     <th>Actions</th>
                     <?php } ?>
                 </tr>
@@ -345,7 +371,7 @@ foreach ($statuses as $status) {
                         <td><?php echo $row['dr_name']; ?></td>
                         <td><?php echo $date; ?></td>
                         <td><?php echo $time; ?></td>
-                        <td><?php echo $row['details']; ?></td>
+                        <td><?php echo $row['appointment_reason']; ?></td>
                         <?php if ($status === 'Pending') { ?>
                         <td>
                             <form method="POST" onsubmit="return confirmCancel();">
@@ -356,13 +382,10 @@ foreach ($statuses as $status) {
                         <?php } elseif ($status === 'Canceled') { ?>
                         <td>
                         <button onclick="openModal('<?php echo $row['appointment_id']; ?>', '<?php echo $date; ?>', '<?php echo $time; ?>', '<?php echo $row['appointment_reason']; ?>')" class="reschedule-btn">Reschedule</button>
-                        </td>
-                        <?php } elseif ($status === 'Accepted') { ?>
-                        <td>
-                            <form method="POST" action="pay.php">
-                                <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
-                                <button type="submit" name="pay_appointment" class="pay-btn">Pay Bill</button>
-                            </form>
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
+                            <button type="submit" name="delete_appointment" class="delete-btn">Delete</button>
+                        </form>
                         </td>
                         <?php } ?>
                     </tr>
@@ -381,16 +404,16 @@ foreach ($statuses as $status) {
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Reschedule Appointment</h2>
+        <h2>Reschedule Appointment</h2><br>
         <form method="POST">
             <input type="hidden" name="appointment_id" id="appointment_id">
             <label for="date">New Date:</label>
-            <input type="date" name="date" id="date" required>
+            <input type="date" name="date" id="date" required><br><br>
             <label for="time">New Time:</label>
-            <input type="time" name="time" id="time" required>
+            <input type="time" name="time" id="time" required><br><br>
             <label for="details">New Details:</label>
-            <textarea name="details" id="details" required></textarea>
-            <button type="submit" name="reschedule_appointment">Reschedule Appointment</button>
+            <textarea name="details" id="details" required></textarea><br><br>
+            <button type="submit" class="pay-btn" name="reschedule_appointment">Reschedule Appointment</button>
         </form>
     </div>
 </div>

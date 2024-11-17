@@ -3,7 +3,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
+    header("Location: userLogin.php");
     exit();
 }
 
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message = "Start date cannot be after end date.";
     } else {
         // Insert request into the database
-        $sql = "INSERT INTO hostel (user_id, pet_id, start_date, end_date, comments, status) 
+        $sql = "INSERT INTO hostel (user_id, pet_id, start_date, end_date, details, status) 
                 VALUES (?, ?, ?, ?, ?, 'Pending')";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iisss", $user_id, $pet_id, $start_date, $end_date, $comments);

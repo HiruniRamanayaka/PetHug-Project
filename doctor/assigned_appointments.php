@@ -15,7 +15,7 @@ $today = date('Y-m-d');
 $acceptedQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                   JOIN pet ON appointment.pet_id = pet.pet_id 
                   JOIN user ON appointment.user_id = user.user_id 
-                  WHERE appointment.doctor_id = ? AND appointment.appointment_time = ? AND appointment.status = 'accepted'";
+                  WHERE appointment.doctor_id = ? AND DATE(appointment.appointment_time) = ? AND appointment.status = 'Accepted'";
 $acceptedStmt = $conn->prepare($acceptedQuery);
 $acceptedStmt->bind_param("is", $doctor_id, $today);
 $acceptedStmt->execute();
@@ -35,7 +35,7 @@ $pendingAppointments = $pendingStmt->get_result();
 $canceledQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                   JOIN pet ON appointment.pet_id = pet.pet_id 
                   JOIN user ON appointment.user_id = user.user_id 
-                  WHERE appointment.doctor_id = ? AND appointment.status = 'canceled'";
+                  WHERE appointment.doctor_id = ? AND appointment.status = 'Canceled'";
 $canceledStmt = $conn->prepare($canceledQuery);
 $canceledStmt->bind_param("i", $doctor_id);
 $canceledStmt->execute();
@@ -48,17 +48,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     switch ($action) {
         case "accept":
-            $updateQuery = "UPDATE appointment SET status = 'accepted' WHERE appointment_id = ?";
+            $updateQuery = "UPDATE appointment SET status = 'Accepted' WHERE appointment_id = ?";
             break;
         case "cancel":
-            $updateQuery = "UPDATE appointment SET status = 'canceled' WHERE appointment_id = ?";
+            $updateQuery = "UPDATE appointment SET status = 'Canceled' WHERE appointment_id = ?";
             break;
         case "delete":
             $updateQuery = "DELETE FROM appointment WHERE appointment_id = ?";
             break;
         case "update_notes":
-            $dr_notes = $_POST['dr_notes'];
-            $updateQuery = "UPDATE appointment SET dr_notes = ?, status = 'completed' WHERE appointment_id = ?";
+            $details = $_POST['details'];
+            $updateQuery = "UPDATE appointment SET details = ?, status = 'Completed' WHERE appointment_id = ?";
             break;
         default:
             $updateQuery = ""; // No action matched
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     if (!empty($updateQuery)) {
         $updateStmt = $conn->prepare($updateQuery);
         if ($action === "update_notes") {
-            $updateStmt->bind_param("si", $dr_notes, $appointment_id);
+            $updateStmt->bind_param("si", $details, $appointment_id);
         } else {
             $updateStmt->bind_param("i", $appointment_id);
         }
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Management - PetHug</title>
     <style>
-        body {
+             body {
             font-family: Arial, sans-serif;
             background-color: #e0f7ff;
             margin: 0;
@@ -200,7 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     <img src="../images/42360162_shutterstock_760460794.webp" alt="Pet" >
     <p class="about-text">As a trusted veterinary professional, you can easily manage your appointments through this platform. With options to accept, cancel, or delete bookings, you have complete control to keep your schedule organized. PetHug ensures that managing your patient appointments is streamlined, allowing you to focus on delivering the best care to every pet in need.</p>
     </div>
-    
     <?php if (isset($error_message)) { echo "<p style='color:red;text-align:center;'>$error_message</p>"; } ?>
 
     <!-- Today's Accepted Appointments -->
@@ -214,18 +213,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             <th>Status</th>
             <th>Actions</th>
         </tr>
-        <?php while ($row = $acceptedAppointments->fetch_assoc()) { ?>
+        <?php while ($row = $acceptedAppointments->fetch_assoc()) { 
+            $datetime = new DateTime($row['appointment_time']);
+            $date = $datetime->format("Y-m-d"); 
+            $time = $datetime->format("H:i:s"); 
+        ?>
             <tr>
                 <td><?php echo $row['appointment_id']; ?></td>
                 <td><?php echo $row['pet_owner_name']; ?></td>
                 <td><?php echo $row['pet_name']; ?></td>
-                <td><?php echo $row['time']; ?></td>
+                <td><?php echo $time; ?></td>
                 <td><?php echo ucfirst($row['status']); ?></td>
                 <td>
                    <form method="POST" style="display:inline;">
                       <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
                       <input type="hidden" name="action" value="update_notes">
-                      <textarea name="dr_notes" id="dr_notes_<?php echo $row['appointment_id']; ?>" placeholder="Enter notes..." required></textarea>
+                      <textarea name="details" id="details_<?php echo $row['appointment_id']; ?>" placeholder="Enter notes..." required></textarea>
                      <button type="submit" class="update-notes-btn">Save Notes</button>
                    </form>
                 </td>
@@ -246,19 +249,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             <th>Doctor Notes</th>
             <th>Actions</th>
         </tr>
-        <?php while ($row = $pendingAppointments->fetch_assoc()) { ?>
+        <?php while ($row = $pendingAppointments->fetch_assoc()) { 
+            $datetime = new DateTime($row['appointment_time']);
+            $date = $datetime->format("Y-m-d"); 
+            $time = $datetime->format("H:i:s"); 
+        ?>
             <tr>
                 <td><?php echo $row['appointment_id']; ?></td>
                 <td><?php echo $row['pet_owner_name']; ?></td>
                 <td><?php echo $row['pet_name']; ?></td>
-                <td><?php echo $row['date']; ?></td>
-                <td><?php echo $row['time']; ?></td>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $time; ?></td>
                 <td>
                     <button class="ShowNotes-btn" onclick="showNotes(<?php echo $row['pet_id']; ?>)">Show Notes</button>
                     <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
                         <?php 
                         // Fetch all doctor notes related to the pet_id
-                        $notesQuery = "SELECT dr_notes FROM appointment WHERE pet_id = ? AND dr_id = ? ORDER BY created_at DESC";
+                        $notesQuery = "SELECT details FROM appointment WHERE pet_id = ? AND doctor_id = ? ORDER BY created_at DESC";
                         $notesStmt = $conn->prepare($notesQuery);
                         $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
                         $notesStmt->execute();
@@ -267,7 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         // Display all notes
                         if ($notesResult->num_rows > 0) {
                             while ($noteRow = $notesResult->fetch_assoc()) {
-                                echo "<p>" . htmlspecialchars($noteRow['dr_notes']) . "</p>";
+                                echo "<p>" . htmlspecialchars($noteRow['details']) . "</p>";
                             }
                         } else {
                             echo "<p>No notes available for this pet.</p>";
@@ -302,13 +309,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         <th>Time</th>
         <th>Actions</th> <!-- Add Actions header -->
     </tr>
-    <?php while ($row = $canceledAppointments->fetch_assoc()) { ?>
+    <?php while ($row = $canceledAppointments->fetch_assoc()) { 
+        $datetime = new DateTime($row['appointment_time']);
+        $date = $datetime->format("Y-m-d"); 
+        $time = $datetime->format("H:i:s"); 
+    ?>
         <tr>
             <td><?php echo $row['appointment_id']; ?></td>
             <td><?php echo $row['pet_owner_name']; ?></td>
             <td><?php echo $row['pet_name']; ?></td>
-            <td><?php echo $row['date']; ?></td>
-            <td><?php echo $row['time']; ?></td>
+            <td><?php echo $date; ?></td>
+            <td><?php echo $time; ?></td>
             <td>
                 <form method="POST" style="display:inline;">
                     <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
@@ -335,6 +346,6 @@ function showNotes(petId) {
 
 </body>
 </html>
-<?php
-include_once "footer_dr.php";
-?>
+
+<!-- footer -->
+<?php include_once "footer_dr.php"?>

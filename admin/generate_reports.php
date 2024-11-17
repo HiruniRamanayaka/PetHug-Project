@@ -1,12 +1,5 @@
 <?php
-// Include database connection (replace with your database connection file)
-include('../connection.php');
 
-
-// Default values for reports
-$selectedCategory = "appointments"; // Default report category
-$startDate = ""; // Start date filter
-$endDate = ""; // End date filter
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

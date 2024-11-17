@@ -5,8 +5,8 @@
     //header
     include_once "header_user.php";
 
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_email'])) {
-        header("Location: user_login.php");
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: userLogin.php");
         exit();
     }
     

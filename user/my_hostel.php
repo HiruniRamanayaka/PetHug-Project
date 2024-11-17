@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: user_login.php");
+    header("Location: userLogin.php");
     exit();
 }
 
@@ -13,7 +13,11 @@ $success_message = "";
 $error_message = "";
 
 // Fetch pending requests
-$pending_sql = "SELECT * FROM hostel WHERE user_id = ? AND status = 'Pending'";
+$pending_sql = "SELECT h.hostel_id, h.start_date, h.end_date, h.details, p.pet_name, p.pet_image, h.status
+                FROM hostel h
+                JOIN pet p ON h.pet_id = p.pet_id
+                WHERE h.user_id = ? AND h.status = 'Pending'
+                ORDER BY h.start_date ASC";
 $pending_stmt = $conn->prepare($pending_sql);
 if (!$pending_stmt) {
     die("Error preparing statement for pending requests: " . $conn->error);
@@ -23,7 +27,11 @@ $pending_stmt->execute();
 $pending_result = $pending_stmt->get_result();
 
 // Fetch confirmed requests
-$confirmed_sql = "SELECT * FROM hostel WHERE user_id = ? AND status = 'Accepted'";
+$confirmed_sql = "SELECT h.hostel_id, h.start_date, h.end_date, h.details, p.pet_name, p.pet_image, h.status
+                  FROM hostel h
+                  JOIN pet p ON h.pet_id = p.pet_id
+                  WHERE h.user_id = ? AND h.status = 'Accepted'
+                  ORDER BY h.start_date ASC";
 $confirmed_stmt = $conn->prepare($confirmed_sql);
 if (!$confirmed_stmt) {
     die("Error preparing statement for confirmed requests: " . $conn->error);
@@ -31,9 +39,25 @@ if (!$confirmed_stmt) {
 $confirmed_stmt->bind_param("i", $user_id);
 $confirmed_stmt->execute();
 $confirmed_result = $confirmed_stmt->get_result();
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $hostel_id = $_POST['hostel_id'];
+    if(isset($_POST['delete_hostel_request'])) {
+        $deleteQuery = "DELETE FROM hostel WHERE hostel_id = ? AND user_id = ?";
+        $deleteStmt = $conn->prepare($deleteQuery);
+        $deleteStmt->bind_param("ii", $hostel_id, $user_id);
+        if ($deleteStmt->execute()) {
+            $success_message = "Hostel request successfully deleted!";
+            header("location: my_hostel.php");
+            exit();
+        } else {
+            $error_message = "Error deleting hostel request.";
+        }
+    }
+
+}
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,6 +158,11 @@ $confirmed_result = $confirmed_stmt->get_result();
             position: sticky;
             top: 0;
         }
+        td img { 
+            max-width: 50px; 
+            height: auto; 
+            border-radius: 50%; 
+        }
         td {
             background-color: #f9f9f9;
         }
@@ -155,7 +184,7 @@ $confirmed_result = $confirmed_stmt->get_result();
             cursor: pointer;
         }
         .action-cancel {
-            background-color: red;
+            background-color: #dc3545;
             color: white;
         }
         .fee-display {
@@ -195,6 +224,7 @@ $confirmed_result = $confirmed_stmt->get_result();
             <thead>
                 <tr>
                     <th>Hostel ID</th>
+                    <th>Pet</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Details</th>
@@ -206,13 +236,14 @@ $confirmed_result = $confirmed_stmt->get_result();
                 <?php while ($row = $pending_result->fetch_assoc()) { ?>
                 <tr>
                     <td><?php echo $row['hostel_id']; ?></td>
+                    <td><img src="<?php echo $row['pet_image']; ?>" alt="<?php echo $row['pet_name']; ?>"><?php echo $row['pet_name']; ?></td>
                     <td><?php echo $row['start_date']; ?></td>
                     <td><?php echo $row['end_date']; ?></td>
                     <td><?php echo $row['details']; ?></td>
                     <td>
-                        <form method="POST" action="cancel_hostel.php">
+                    <form method="POST" style="display:inline;">
                             <input type="hidden" name="hostel_id" value="<?php echo $row['hostel_id']; ?>">
-                            <button type="submit" class="action-button action-cancel">Cancel</button>
+                            <button type="submit" name="delete_hostel_request" class="action-button action-cancel">Cancel</button>
                         </form>
                     </td>
                 </tr>
@@ -227,10 +258,10 @@ $confirmed_result = $confirmed_stmt->get_result();
             <thead>
                 <tr>
                     <th>Hostel ID</th>
+                    <th>Pet</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Details</th>
-                    <th>Fee</th>
                 </tr>
             </thead>
             <tbody>
@@ -238,12 +269,10 @@ $confirmed_result = $confirmed_stmt->get_result();
                 <?php while ($row = $confirmed_result->fetch_assoc()) { ?>
                 <tr>
                     <td><?php echo $row['hostel_id']; ?></td>
+                    <td><img src="<?php echo $row['pet_image']; ?>" alt="<?php echo $row['pet_name']; ?>"><?php echo $row['pet_name']; ?></td>
                     <td><?php echo $row['start_date']; ?></td>
                     <td><?php echo $row['end_date']; ?></td>
                     <td><?php echo $row['details']; ?></td>
-                    <td>
-                        <span class="fee-display">Pay Bill<?php echo $row['bill_id']; ?></span> <!-- Displaying fee -->
-                    </td>
                 </tr>
                 <?php } ?>
             </tbody>

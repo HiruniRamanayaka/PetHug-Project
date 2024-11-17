@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     switch ($action) {
         case "accept":
-            $updateQuery = "UPDATE consultation SET status = 'accepted', created_date = NOW() WHERE consultation_id = ?";
+            $updateQuery = "UPDATE consultation SET status = 'accepted', created_at = NOW() WHERE consultation_id = ?";
             break;
         case "cancel":
             $updateQuery = "UPDATE consultation SET status = 'canceled' WHERE consultation_id = ?";
@@ -57,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $updateQuery = "DELETE FROM consultation WHERE consultation_id = ?";
             break;
         case "update_notes":
-            $dr_notes = $_POST['dr_notes'];
-            $updateQuery = "UPDATE consultation SET dr_notes = ?, status = 'completed' WHERE consultation_id = ?";
+            $dr_notes = $_POST['details'];
+            $updateQuery = "UPDATE consultation SET details = ?, status = 'completed' WHERE consultation_id = ?";
             break;
         default:
             $updateQuery = "";
@@ -225,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <form method="POST" style="display:inline;">
                         <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
                         <input type="hidden" name="action" value="update_notes">
-                        <textarea name="dr_notes" id="dr_notes_<?php echo $row['consultation_id']; ?>" placeholder="Enter notes..." required></textarea>
+                        <textarea name="details" id="details_<?php echo $row['consultation_id']; ?>" placeholder="Enter notes..." required></textarea>
                         <button type="submit" class="update-notes-btn">Save Notes</button>
                     </form>
                 </td>
@@ -254,7 +254,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                     <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
                     <?php 
                         // Fetch all doctor notes related to the pet_id
-                        $notesQuery = "SELECT dr_notes FROM consultation WHERE pet_id = ? AND dr_id = ? ORDER BY created_at DESC";
+                        $notesQuery = "SELECT details FROM consultation WHERE pet_id = ? AND dr_id = ? ORDER BY created_at DESC";
                         $notesStmt = $conn->prepare($notesQuery);
                         $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
                         $notesStmt->execute();
@@ -263,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         // Display all notes
                         if ($notesResult->num_rows > 0) {
                             while ($noteRow = $notesResult->fetch_assoc()) {
-                                echo "<p>" . htmlspecialchars($noteRow['dr_notes']) . "</p>";
+                                echo "<p>" . htmlspecialchars($noteRow['details']) . "</p>";
                             }
                         } else {
                             echo "<p>No notes available for this pet.</p>";
