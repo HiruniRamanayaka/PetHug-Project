@@ -194,8 +194,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .pay-btn { 
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
             background-color: #28a745; 
-            color: white; 
+            color: white;
         }
 
         .reschedule-btn { 
@@ -259,6 +263,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: 1px solid #888;
             width: 80%; 
             max-width: 500px; 
+        }
+
+        .modal-content form{
+
         }
 
         .close {
@@ -396,16 +404,16 @@ foreach ($statuses as $status) {
 <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Reschedule Appointment</h2>
+        <h2>Reschedule Appointment</h2><br>
         <form method="POST">
             <input type="hidden" name="appointment_id" id="appointment_id">
             <label for="date">New Date:</label>
-            <input type="date" name="date" id="date" required>
+            <input type="date" name="date" id="date" required><br><br>
             <label for="time">New Time:</label>
-            <input type="time" name="time" id="time" required>
+            <input type="time" name="time" id="time" required><br><br>
             <label for="details">New Details:</label>
-            <textarea name="details" id="details" required></textarea>
-            <button type="submit" name="reschedule_appointment">Reschedule Appointment</button>
+            <textarea name="details" id="details" required></textarea><br><br>
+            <button type="submit" class="pay-btn" name="reschedule_appointment">Reschedule Appointment</button>
         </form>
     </div>
 </div>
