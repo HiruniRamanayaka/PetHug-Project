@@ -5,7 +5,7 @@ include_once "../connection.php";
 include_once 'header_admin.php';
 
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: admin_login.php");
+    header("Location: adminLogin.php");
     exit();
 }
 
