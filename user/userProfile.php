@@ -80,6 +80,7 @@
     ?>
 
     <div class="profile-container">
+
         <div class="profile">
             <div class="dr_img">
             <img src="../images/17246491.png" alt="user pic" width="100px">
@@ -122,6 +123,7 @@
                 </div>
             </form>
         </div>
+        
     </div>
     
 </body>
