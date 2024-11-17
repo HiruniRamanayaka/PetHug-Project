@@ -1,61 +1,153 @@
 <?php
+session_start(); // Start the session
 
+// Include database connection
+include('../connection.php');
 
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $selectedCategory = $_POST['category'] ?? "appointments";
-    $startDate = $_POST['start_date'] ?? "";
-    $endDate = $_POST['end_date'] ?? "";
-    // Generate the report based on selected category and date filters
-    $reportData = generateReport($selectedCategory, $startDate, $endDate);
+// Function to get the monthly summary
+function getMonthlySummary($conn) {
+    $summary = [];
+
+    // Users count
+    $result = $conn->query("SELECT COUNT(*) AS user_count FROM user WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $summary['users'] = $result->fetch_assoc()['user_count'];
+
+    // Doctors count
+    $result = $conn->query("SELECT COUNT(*) AS doctor_count FROM doctor WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $summary['doctors'] = $result->fetch_assoc()['doctor_count'];
+
+    // Pets count
+    $result = $conn->query("SELECT COUNT(*) AS pet_count FROM pet WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $summary['pets'] = $result->fetch_assoc()['pet_count'];
+
+    // Appointments count
+    $result = $conn->query("SELECT COUNT(*) AS appointment_count FROM appointment WHERE MONTH(appointment_time) = MONTH(CURRENT_DATE()) AND YEAR(appointment_time) = YEAR(CURRENT_DATE())");
+    $summary['appointments'] = $result->fetch_assoc()['appointment_count'];
+
+    // Consultations count
+    $result = $conn->query("SELECT COUNT(*) AS consultation_count FROM consultation WHERE MONTH(consultation_time) = MONTH(CURRENT_DATE()) AND YEAR(consultation_time) = YEAR(CURRENT_DATE())");
+    $summary['consultations'] = $result->fetch_assoc()['consultation_count'];
+
+    // Hostels count
+    $result = $conn->query("SELECT COUNT(*) AS hostel_count FROM hostel WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())");
+    $summary['hostels'] = $result->fetch_assoc()['hostel_count'];
+
+    // Payments total
+    $result = $conn->query("SELECT SUM(amount) AS total_payments FROM bill WHERE MONTH(date) = MONTH(CURRENT_DATE()) AND YEAR(date) = YEAR(CURRENT_DATE())");
+    $summary['payments'] = $result->fetch_assoc()['total_payments'] ?? 0;
+
+    return $summary;
 }
 
-// Function to generate report data
-function generateReport($category, $startDate, $endDate) {
-    global $conn;
-    $data = [];
-    $dateFilter = "";
+// Initialize variables
+$reportData = [];
+$reportType = '';
+$fields = [];
 
-    if (!empty($startDate) && !empty($endDate)) {
-        $dateFilter = " WHERE `date` BETWEEN '$startDate' AND '$endDate'";
-    }
+// Generate Report Logic
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_report'])) {
+    // Retrieve the report type
+    $reportType = $_POST['report_type'];
 
-    switch ($category) {
-        case "appointments":
-            $sql = "SELECT COUNT(*) AS total_appointments, 
-                           SUM(hospital_charge + service_charge + dr_fee) AS total_earnings
-                    FROM appointment $dateFilter";
+    switch ($reportType) {
+        case 'consultations':
+            $query = "SELECT consultation_id, consultation_time, consultation.user_id, pet_id, dr_id, consultation.status, consultation_fee, bill.amount FROM consultation JOIN bill ON consultation.bill_id = bill.bill_id";
             break;
 
-        case "users":
-            $sql = "SELECT COUNT(*) AS total_users FROM users";
+        case 'appointments':
+            $query = "SELECT appointment_id, appointment_time, appointment.user_id, pet_id, doctor_id, appointment.status, appointment_fee, bill.amount FROM appointment JOIN bill ON appointment.bill_id = bill.bill_id";
             break;
 
-        case "doctors":
-            $sql = "SELECT COUNT(DISTINCT doctor_id) AS total_doctors,
-                           SUM(dr_fee) AS total_earnings 
-                    FROM appointment $dateFilter";
+        case 'hostels':
+            $query = "SELECT hostel_id, h.user_id, pet_id, start_date, end_date, h.status, hostel_fee, bill.amount FROM hostel AS h JOIN bill ON h.bill_id = bill.bill_id";
             break;
 
-        case "hostel":
-            $sql = "SELECT SUM(hostel_charge_per_day * DATEDIFF(check_out_date, check_in_date)) AS total_earnings,
-                           COUNT(DISTINCT pet_id) AS total_pets
-                    FROM hostel $dateFilter";
+        case 'admin':
+            $query = "SELECT admin_id, admin_name, admin_email, admin_phone, admin_address, created_at FROM admin";
+            break;
+
+        case 'users':
+            $query = "SELECT user_id, user_email, user_phone, user_first_name, user_last_name, created_at FROM user";
+            break;
+
+        case 'doctors':
+            $query = "SELECT d.dr_id, dr_name, earnings_date, appointment_earnings, consultation_earnings, hostel_earnings, total_earnings FROM doctor_daily_earnings JOIN doctor d ON doctor_daily_earnings.doctor_id = d.dr_id";
             break;
 
         default:
-            return ["error" => "Invalid category selected"];
+            echo "Invalid report type.";
+            exit;
     }
 
-    $result = $conn->query($sql);
+    $result = $conn->query($query);
+
     if ($result) {
-        $data = $result->fetch_assoc();
-    } else {
-        $data = ["error" => "Failed to generate report: " . $conn->error];
-    }
+        // Store the result in an array for display
+        while ($row = $result->fetch_assoc()) {
+            $reportData[] = $row;
+        }
 
-    return $data;
+        // Store report data and fields in session for later use
+        if (!empty($reportData)) {
+            $_SESSION['reportData'] = $reportData;
+            $_SESSION['reportType'] = $reportType;
+            $_SESSION['fields'] = array_keys($reportData[0]);
+        }
+    } else {
+        echo "Error generating report: " . $conn->error;
+    }
 }
+
+// Export Report Logic
+if (isset($_GET['export']) && !empty($_SESSION['reportData'])) {
+    // Start output buffering to use PHP's built-in Excel export functionality
+    ob_start(); // Start output buffering
+
+    $reportData = $_SESSION['reportData'];
+    $fields = $_SESSION['fields'];
+    $reportType = $_SESSION['reportType'];
+
+    // Output report results in Excel format (HTML)
+    echo "<table border='1'><tr>";
+
+    // Get column names
+    foreach ($fields as $field) {
+        echo "<th>{$field}</th>";
+    }
+    echo "</tr>";
+
+    // Fetch and output data
+    foreach ($reportData as $row) {
+        echo "<tr>";
+        foreach ($row as $value) {
+            echo "<td>{$value}</td>";
+        }
+        echo "</tr>";
+    }
+    
+    echo "</table>";
+
+    // Capture the buffered output
+    $reportOutput = ob_get_clean(); // Get the output buffer and clean it
+
+    // Set the headers for the browser to download the report as an Excel file
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"report_{$reportType}.xls\"");
+    
+    // Output the generated report
+    echo $reportOutput;
+
+    // Unset session variables after exporting
+    unset($_SESSION['reportData']);
+    unset($_SESSION['reportType']);
+    unset($_SESSION['fields']);
+
+    // End the script and send the response
+    exit; 
+}
+
+// Get the summary data
+$summary = getMonthlySummary($conn);
 ?>
 
 <!DOCTYPE html>
@@ -63,106 +155,216 @@ function generateReport($category, $startDate, $endDate) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Report Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Admin - Advanced Reporting</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        /* Basic styling for the admin interface */
         body {
-            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f8fb; /* Soft light blue background */
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
+
         .container {
-            margin-top: 30px;
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .card {
+
+        h1, h2 {
+            color: #007bff; /* Light blue for headings */
             margin-bottom: 20px;
+        }
+
+        .summary-section {
+            background: #e0f7fa; /* Light cyan background for summary */
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+
+        .summary-item {
+            background: #007bff; /* Blue background for summary items */
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1 1 150px; /* Grow, shrink, and set base width */
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .summary-item:hover {
+            background: #0056b3; /* Darker blue on hover */
+        }
+
+        .filters {
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .filters label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .filters select,
+        .filters button {
+            padding: 12px 18px;
+            border: 1px solid #007bff; /* Light blue border */
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .filters select:focus,
+        .filters button:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+
+        .filters button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .filters button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 class="text-center mb-4">Admin Report Dashboard</h1>
+    <h1>Advanced Reporting</h1>
 
-    <!-- Filters Section -->
-    <div class="card">
-        <div class="card-header bg-primary text-white">Filters</div>
-        <div class="card-body">
-            <form method="POST" class="row g-3">
-                <div class="col-md-4">
-                    <label for="category" class="form-label">Report Category</label>
-                    <select id="category" name="category" class="form-select">
-                        <option value="appointments" <?= $selectedCategory === "appointments" ? "selected" : "" ?>>Appointments</option>
-                        <option value="users" <?= $selectedCategory === "users" ? "selected" : "" ?>>Users</option>
-                        <option value="doctors" <?= $selectedCategory === "doctors" ? "selected" : "" ?>>Doctors</option>
-                        <option value="hostel" <?= $selectedCategory === "hostel" ? "selected" : "" ?>>Hostel</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" id="start_date" name="start_date" class="form-control" value="<?= $startDate ?>">
-                </div>
-                <div class="col-md-4">
-                    <label for="end_date" class="form-label">End Date</label>
-                    <input type="date" id="end_date" name="end_date" class="form-control" value="<?= $endDate ?>">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-success">Generate Report</button>
-                </div>
-            </form>
+    <div class="summary-section">
+        <h2>Monthly Summary</h2>
+        <div class="summary-items">
+            <div class="summary-item">
+                <p>Total Users</p>
+                <p><?= $summary['users'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Doctors</p>
+                <p><?= $summary['doctors'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Pets</p>
+                <p><?= $summary['pets'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Appointments</p>
+                <p><?= $summary['appointments'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Consultations</p>
+                <p><?= $summary['consultations'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Hostel Requests</p>
+                <p><?= $summary['hostels'] ?></p>
+            </div>
+            <div class="summary-item">
+                <p>Total Payments</p>
+                <p><?= number_format($summary['payments'], 2) ?></p>
+            </div>
         </div>
     </div>
 
-    <!-- Report Display Section -->
-    <div class="card">
-        <div class="card-header bg-success text-white">Report Results</div>
-        <div class="card-body">
-            <?php if (isset($reportData)) : ?>
-                <?php if (!empty($reportData['error'])) : ?>
-                    <p class="text-danger"><?= $reportData['error'] ?></p>
-                <?php else : ?>
-                    <ul class="list-group">
-                        <?php foreach ($reportData as $key => $value) : ?>
-                            <li class="list-group-item">
-                                <strong><?= ucfirst(str_replace('_', ' ', $key)) ?>:</strong> <?= is_numeric($value) ? number_format($value) : $value ?>
-                            </li>
+    <div class="filters">
+        <form method="POST" action="">
+            <label for="report_type">Select Report Type:</label>
+            <select name="report_type" id="report_type" required>
+                <option value="appointments">Appointments</option>
+                <option value="consultations">Consultations</option>
+                <option value="hostels">Hostels</option>
+                <option value="users">Users</option>
+                <option value="doctors">Doctors</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit" name="generate_report">Generate Report</button>
+        </form>
+    </div>
+
+    <?php if (isset($_SESSION['reportData'])): ?>
+        <h2>Generated Report</h2>
+        <table>
+            <thead>
+                <tr>
+                    <?php foreach ($_SESSION['fields'] as $field): ?>
+                        <th><?= ucfirst(str_replace('_', ' ', $field)) ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($_SESSION['reportData'] as $row): ?>
+                    <tr>
+                        <?php foreach ($row as $column): ?>
+                            <td><?= htmlspecialchars($column) ?></td>
                         <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            <?php else : ?>
-                <p class="text-muted">No report generated. Please use the filters above to generate a report.</p>
-            <?php endif; ?>
-        </div>
-    </div>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
-    <!-- Visual Chart Section -->
-    <div class="card">
-        <div class="card-header bg-info text-white">Visual Data</div>
-        <div class="card-body">
-            <canvas id="chartCanvas"></canvas>
-        </div>
-    </div>
+        <a href="?export=true" class="button">Export Report</a>
+    <?php endif; ?>
 </div>
-
-<script>
-    const ctx = document.getElementById('chartCanvas').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Appointments', 'Users', 'Doctors', 'Hostel'],
-            datasets: [{
-                label: 'Report Summary',
-                data: [<?= $reportData['total_appointments'] ?? 0 ?>, <?= $reportData['total_users'] ?? 0 ?>, <?= $reportData['total_doctors'] ?? 0 ?>, <?= $reportData['total_pets'] ?? 0 ?>],
-                backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)']
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
-        }
-    });
-</script>
 
 </body>
 </html>
