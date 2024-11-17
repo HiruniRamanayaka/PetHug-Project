@@ -1,150 +1,168 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: adminLogin.php");
-    exit();
+
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $selectedCategory = $_POST['category'] ?? "appointments";
+    $startDate = $_POST['start_date'] ?? "";
+    $endDate = $_POST['end_date'] ?? "";
+    // Generate the report based on selected category and date filters
+    $reportData = generateReport($selectedCategory, $startDate, $endDate);
 }
 
-include_once 'header_admin.php';
-require '../connection.php';
-
-// Function to get the count of entries based on a time period
-function getCount($conn, $table, $column, $startDate, $endDate) {
-    $query = "SELECT COUNT(*) AS count FROM $table WHERE $column BETWEEN ? AND ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $startDate, $endDate);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    return $row['count'];
-}
-
-// Function to get earnings for each doctor
-function getDoctorEarnings($conn) {
-    $query = "SELECT doctor.dr_id, doctor.dr_name, SUM(appointment.amount) AS earning 
-              FROM appointment
-              JOIN doctor ON appointment.doctor_id = doctor.dr_id
-              GROUP BY doctor.dr_id";
-    $result = $conn->query($query);
+// Function to generate report data
+function generateReport($category, $startDate, $endDate) {
+    global $conn;
     $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+    $dateFilter = "";
+
+    if (!empty($startDate) && !empty($endDate)) {
+        $dateFilter = " WHERE `date` BETWEEN '$startDate' AND '$endDate'";
     }
+
+    switch ($category) {
+        case "appointments":
+            $sql = "SELECT COUNT(*) AS total_appointments, 
+                           SUM(hospital_charge + service_charge + dr_fee) AS total_earnings
+                    FROM appointment $dateFilter";
+            break;
+
+        case "users":
+            $sql = "SELECT COUNT(*) AS total_users FROM users";
+            break;
+
+        case "doctors":
+            $sql = "SELECT COUNT(DISTINCT doctor_id) AS total_doctors,
+                           SUM(dr_fee) AS total_earnings 
+                    FROM appointment $dateFilter";
+            break;
+
+        case "hostel":
+            $sql = "SELECT SUM(hostel_charge_per_day * DATEDIFF(check_out_date, check_in_date)) AS total_earnings,
+                           COUNT(DISTINCT pet_id) AS total_pets
+                    FROM hostel $dateFilter";
+            break;
+
+        default:
+            return ["error" => "Invalid category selected"];
+    }
+
+    $result = $conn->query($sql);
+    if ($result) {
+        $data = $result->fetch_assoc();
+    } else {
+        $data = ["error" => "Failed to generate report: " . $conn->error];
+    }
+
     return $data;
 }
-
-// Set date ranges for daily, monthly, yearly
-$today = date("Y-m-d");
-$firstDayOfMonth = date("Y-m-01");
-$firstDayOfYear = date("Y-01-01");
-
-// Get counts for each section
-$reportData = [
-    'daily' => [
-        'user' => getCount($conn, 'user', 'created_at', $today, $today),
-        'pet' => getCount($conn, 'pet', 'created_at', $today, $today),
-        'doctor' => getCount($conn, 'doctor', 'created_at', $today, $today),
-        'appointment' => getCount($conn, 'appointment', 'created_at', $today, $today),
-        'hostel' => getCount($conn, 'hostel', 'created_at', $today, $today),
-        'earning' => getDoctorEarnings($conn),
-    ],
-    'monthly' => [
-        'user' => getCount($conn, 'user', 'created_at', $firstDayOfMonth, $today),
-        'pet' => getCount($conn, 'pet', 'created_at', $firstDayOfMonth, $today),
-        'doctor' => getCount($conn, 'doctor', 'created_at', $firstDayOfMonth, $today),
-        'appointment' => getCount($conn, 'appointment', 'created_at', $firstDayOfMonth, $today),
-        'hostel' => getCount($conn, 'hostel', 'created_at', $firstDayOfMonth, $today),
-        'earning' => getDoctorEarnings($conn),
-    ],
-    'yearly' => [
-        'user' => getCount($conn, 'user', 'created_at', $firstDayOfYear, $today),
-        'pet' => getCount($conn, 'pet', 'created_at', $firstDayOfYear, $today),
-        'doctor' => getCount($conn, 'doctor', 'created_at', $firstDayOfYear, $today),
-        'appointment' => getCount($conn, 'appointment', 'created_at', $firstDayOfYear, $today),
-        'hostel' => getCount($conn, 'hostel', 'created_at', $firstDayOfYear, $today),
-        'earning' => getDoctorEarnings($conn),
-    ],
-];
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Generate Report - PetHug Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Report Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f7f9fc; margin: 0; padding: 0; }
-        .container { width: 80%; margin: auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h2 { text-align: center; color: #333; }
-        .report-section { margin: 20px 0; }
-        .report-section h3 { color: #007bff; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
-        th { background-color: #007bff; color: #fff; }
-        .earnings-table { margin-top: 20px; }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h2>Admin Report - PetHug</h2>
-    
-    <!-- Daily Report -->
-    <div class="report-section">
-        <h3>Daily Report</h3>
-        <table>
-            <tr><th>Users Added</th><td><?= $reportData['daily']['user'] ?></td></tr>
-            <tr><th>Pets Added</th><td><?= $reportData['daily']['pet'] ?></td></tr>
-            <tr><th>Doctors Added</th><td><?= $reportData['daily']['doctor'] ?></td></tr>
-            <tr><th>Appointments Made</th><td><?= $reportData['daily']['appointment'] ?></td></tr>
-            <tr><th>Hostels Booked</th><td><?= $reportData['daily']['hostel'] ?></td></tr>
-        </table>
+    <h1 class="text-center mb-4">Admin Report Dashboard</h1>
+
+    <!-- Filters Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">Filters</div>
+        <div class="card-body">
+            <form method="POST" class="row g-3">
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Report Category</label>
+                    <select id="category" name="category" class="form-select">
+                        <option value="appointments" <?= $selectedCategory === "appointments" ? "selected" : "" ?>>Appointments</option>
+                        <option value="users" <?= $selectedCategory === "users" ? "selected" : "" ?>>Users</option>
+                        <option value="doctors" <?= $selectedCategory === "doctors" ? "selected" : "" ?>>Doctors</option>
+                        <option value="hostel" <?= $selectedCategory === "hostel" ? "selected" : "" ?>>Hostel</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="<?= $startDate ?>">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label">End Date</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="<?= $endDate ?>">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success">Generate Report</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <!-- Monthly Report -->
-    <div class="report-section">
-        <h3>Monthly Report</h3>
-        <table>
-            <tr><th>Users Added</th><td><?= $reportData['monthly']['user'] ?></td></tr>
-            <tr><th>Pets Added</th><td><?= $reportData['monthly']['pet'] ?></td></tr>
-            <tr><th>Doctors Added</th><td><?= $reportData['monthly']['doctor'] ?></td></tr>
-            <tr><th>Appointments Made</th><td><?= $reportData['monthly']['appointment'] ?></td></tr>
-            <tr><th>Hostels Booked</th><td><?= $reportData['monthly']['hostel'] ?></td></tr>
-        </table>
+    <!-- Report Display Section -->
+    <div class="card">
+        <div class="card-header bg-success text-white">Report Results</div>
+        <div class="card-body">
+            <?php if (isset($reportData)) : ?>
+                <?php if (!empty($reportData['error'])) : ?>
+                    <p class="text-danger"><?= $reportData['error'] ?></p>
+                <?php else : ?>
+                    <ul class="list-group">
+                        <?php foreach ($reportData as $key => $value) : ?>
+                            <li class="list-group-item">
+                                <strong><?= ucfirst(str_replace('_', ' ', $key)) ?>:</strong> <?= is_numeric($value) ? number_format($value) : $value ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php else : ?>
+                <p class="text-muted">No report generated. Please use the filters above to generate a report.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <!-- Yearly Report -->
-    <div class="report-section">
-        <h3>Yearly Report</h3>
-        <table>
-            <tr><th>Users Added</th><td><?= $reportData['yearly']['user'] ?></td></tr>
-            <tr><th>Pets Added</th><td><?= $reportData['yearly']['pet'] ?></td></tr>
-            <tr><th>Doctors Added</th><td><?= $reportData['yearly']['doctor'] ?></td></tr>
-            <tr><th>Appointments Made</th><td><?= $reportData['yearly']['appointment'] ?></td></tr>
-            <tr><th>Hostels Booked</th><td><?= $reportData['yearly']['hostel'] ?></td></tr>
-        </table>
-    </div>
-
-    <!-- Doctor Earnings -->
-    <div class="report-section earnings-table">
-        <h3>Doctor Earnings</h3>
-        <table>
-            <thead>
-                <tr><th>Doctor ID</th><th>Doctor Name</th><th>Earnings</th></tr>
-            </thead>
-            <tbody>
-            <?php foreach ($reportData['yearly']['earning'] as $earn): ?>
-                <tr>
-                    <td><?= $earn['dr_id'] ?></td>
-                    <td><?= htmlspecialchars($earn['dr_name']) ?></td>
-                    <td>$<?= number_format($earn['earning'], 2) ?></td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+    <!-- Visual Chart Section -->
+    <div class="card">
+        <div class="card-header bg-info text-white">Visual Data</div>
+        <div class="card-body">
+            <canvas id="chartCanvas"></canvas>
+        </div>
     </div>
 </div>
+
+<script>
+    const ctx = document.getElementById('chartCanvas').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Appointments', 'Users', 'Doctors', 'Hostel'],
+            datasets: [{
+                label: 'Report Summary',
+                data: [<?= $reportData['total_appointments'] ?? 0 ?>, <?= $reportData['total_users'] ?? 0 ?>, <?= $reportData['total_doctors'] ?? 0 ?>, <?= $reportData['total_pets'] ?? 0 ?>],
+                backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
-
-<!--footerr-->
-<?php include_once 'footer_admin.php';?>
