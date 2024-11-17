@@ -1,4 +1,5 @@
 <?php
+
 include_once "connection.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -6,14 +7,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rating = $_POST['rating'];
     $feedback_text = $_POST['feedback'];
 
-    // Validate data (you can add more validations)
+    // Validate data
     if (empty($rating) || empty($feedback_text)) {
         echo "Please fill in all fields.";
     } else {
+        // Insert feedback into the database
         $stmt = $conn->prepare("INSERT INTO feedback (rating, feedback_text) VALUES (?, ?)");
         $stmt->bind_param("is", $rating, $feedback_text);
+
         if ($stmt->execute()) {
-            echo "Thank you for your feedback!";
+            // Get the feedback ID for notification
+            $feedback_id = $stmt->insert_id;
+
+            // Insert notification for admin
+            $notification_stmt = $conn->prepare("INSERT INTO notifications (recipient_type, recipient_id, title, message, service_type, service_id) VALUES ('admin', 1, ?, ?, 'feedback', ?)");
+            $title = 'New Feedback Submission';
+            $message = "A new feedback has been submitted with ID: $feedback_id. Please review it.";
+            $notification_stmt->bind_param("ssi", $title, $message, $feedback_id);
+
+            if ($notification_stmt->execute()) {
+                echo "Thank you for your feedback! Admin has been notified.";
+            } else {
+                echo "Feedback submitted, but there was an error notifying the admin.";
+            }
+
+            $notification_stmt->close();
         } else {
             echo "Error: " . $stmt->error;
         }
@@ -21,7 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
 }
+
+
 ?>
+
+
 
 
 
