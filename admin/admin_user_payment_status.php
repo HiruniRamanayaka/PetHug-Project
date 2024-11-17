@@ -7,7 +7,7 @@ include_once 'header_admin.php';
 
 // Check if the admin is logged in (you can adjust this as needed)
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: admin_login.php");
+    header("Location: adminLogin.php");
     exit();
 }
 

@@ -4,8 +4,8 @@
 
     include_once "../connection.php";
 
-    if (!isset($_SESSION['user_id']) || !isset($_GET['pet_id'])) {
-        header("Location: user_login.php");
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: userLogin.php");
         exit();
     }
 
