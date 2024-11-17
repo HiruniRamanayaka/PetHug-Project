@@ -4,7 +4,7 @@ include_once "../connection.php";
 
 // Redirect if not logged in
 if (!isset($_SESSION['dr_id'])) {
-    header("Location: doctor_login.php");
+    header("Location: doctorLogin.php");
     exit();
 }
 

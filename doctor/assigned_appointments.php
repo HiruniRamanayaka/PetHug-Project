@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['dr_id'])) {
-    header("Location: doctor_login.php");
+    header("Location: doctorLogin.php");
     exit();
 }
 

@@ -6,7 +6,7 @@ include_once 'header_dr.php';
 
 // Check if doctor is logged in
 if (!isset($_SESSION['dr_id'])) {
-    header("Location: doctor_login.php");
+    header("Location: doctorLogin.php");
     exit();
 }
 
