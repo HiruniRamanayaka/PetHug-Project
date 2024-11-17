@@ -159,7 +159,7 @@ $conn->close();
             </select><br>
 
             <lable for="fileToUpload">Add image: </lable>
-            <input id="fileToUpload" type="file" name="fileToUpload">
+            <input id="fileToUpload" type="file" name="fileToUpload" >
             
             <input id="submit" type="submit" name="submit" value="Submit">            
         </form>

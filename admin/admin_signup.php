@@ -20,9 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Email already exists
         echo "<script>alert('This email is already registered. Please use a different email.');</script>";
     } else {
+
+      $target_dir = "uploads/";
+      $target_file = $target_dir . basename($_FILES["image"]["name"]);
+
         // Proceed with registration
-        $sql = "INSERT INTO admin (admin_name, admin_email, admin_password, admin_phone, admin_address) 
-                VALUES ('$adminName', '$email', '$password', '$phone', '$address')";
+        $sql = "INSERT INTO admin (admin_name, admin_email, admin_image, admin_password, admin_phone, admin_address) 
+                VALUES ('$adminName', '$email', '$target_file', '$password', '$phone', '$address')";
 
         if ($conn->query($sql) === TRUE) {
             echo "<script>alert('New admin registered successfully');</script>";
@@ -169,7 +173,7 @@ header{
 <body>
     <div class="container">
         <h2>Admin Registration</h2>
-        <form action="registerAdmin.php" method="POST" id="registerForm">
+        <form action="admin_signup.php" method="POST" id="registerForm">
             <label for="admin_name">Admin Name:</label>
             <input type="text" id="admin_name" name="admin_name" required>
 
@@ -187,6 +191,10 @@ header{
 
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
 
             <div class="button-group">
                 <button type="submit" class="btn">Register</button>
