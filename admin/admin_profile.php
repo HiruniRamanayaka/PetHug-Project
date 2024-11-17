@@ -82,9 +82,16 @@
     ?>
 
     <div class="profile-container">
-        <div class="dr_img">
-            <img src="../images/17246491.png" alt="admin pic" width="100px">
+        <div class="profile">
+            <div class="dr_img">
+                <img src="../images/17246491.png" alt="admin pic" width="100px">
+            </div>   
+            
+            <div class="dr_name">
+                    <?php echo "<h2>" . htmlspecialchars($row['admin_name']). "</h2>"; ?>
+            </div>
         </div>
+    
 
         <?php
             if (isset($_SESSION['success_message'])) {
