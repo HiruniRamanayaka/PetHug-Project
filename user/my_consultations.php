@@ -192,7 +192,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: white; 
         }
 
-        .pay-btn { 
+        .pay-btn {
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
             background-color: #28a745; 
             color: white; 
         }
@@ -250,25 +254,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .modal-content {
-            display: block;
-            position: relative;
             background-color: #fefefe;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%; 
             max-width: 500px; 
-        }
-
-        .modal-content h2 {
-            position: absolute;
-            text-align: center;
-            font-size: 28px;      
-        }
-
-        .modal-content form {
-            margin-top: 10px;
-            
         }
 
         .close {
@@ -393,14 +384,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     ?>
     
+</div>
 
-  
-
-    <!-- Modal for Rescheduling Consultation -->
-    <div id="myModal" class="modal">
+  <!-- Modal for Rescheduling Consultation -->
+  <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Reschedule Consultation</h2>
+            <h2>Reschedule Consultation</h2><br>
             <form method="POST" >
                 <input type="hidden" id="consultation_id" name="consultation_id" value="">
                 <label for="consultation_reason">New Reason:</label>
@@ -410,7 +400,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-</div>
 
 </body>
 </html>
