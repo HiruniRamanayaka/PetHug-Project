@@ -143,7 +143,7 @@ while ($row = $result->fetch_assoc()) {
         }
         .container {
             max-width: 1200px;
-            margin: 10px auto;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -152,15 +152,23 @@ while ($row = $result->fetch_assoc()) {
         h2 {
             text-align: center;
             color: #333;
+            font-size: 30px;
         }
         .table-container {
             max-height: 400px;
             overflow-y: auto;
+        }
+        h3{
+            text-align: center;
+            font-size: 24px;
+            color: #007bff;
             margin-top: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 5px; 
+            margin-bottom: 20px;
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -172,6 +180,9 @@ while ($row = $result->fetch_assoc()) {
         th {
             background-color: #007bff;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
         button {
             padding: 5px 10px;
@@ -226,7 +237,7 @@ while ($row = $result->fetch_assoc()) {
                     <td><?php echo $row['appointment_id']; ?></td>
                     <td><?php echo $date; ?></td>
                     <td><?php echo $time; ?></td>
-                    <td><?php echo $row['details']; ?></td>
+                    <td><?php echo $row['appointment_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
                     <td><?php echo $row['dr_id']; ?></td>
@@ -268,7 +279,7 @@ while ($row = $result->fetch_assoc()) {
                     <td><?php echo $row['appointment_id']; ?></td>
                     <td><?php echo $date; ?></td>
                     <td><?php echo $time; ?></td>
-                    <td><?php echo $row['details']; ?></td>
+                    <td><?php echo $row['appointment_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
                     <td><?php echo $row['dr_id']; ?></td>
@@ -309,7 +320,7 @@ while ($row = $result->fetch_assoc()) {
                     <td><?php echo $row['appointment_id']; ?></td>
                     <td><?php echo $date; ?></td>
                     <td><?php echo $time; ?></td>
-                    <td><?php echo $row['details']; ?></td>
+                    <td><?php echo $row['appointment_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
                     <td><?php echo $row['dr_id']; ?></td>

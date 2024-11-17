@@ -168,7 +168,7 @@ while ($row = $result->fetch_assoc()) {
         }
         .container {
             max-width: 1200px;
-            margin: 50px auto;
+            margin: auto;
             padding: 20px;
             background-color: white;
             border-radius: 10px;
@@ -176,7 +176,14 @@ while ($row = $result->fetch_assoc()) {
         }
         .container h2 {
             text-align: center;
+            color: #333;
+            font-size: 30px;
+        }
+        h3{
+            text-align: center;
+            font-size: 24px;
             color: #007bff;
+            margin-top: 20px;
         }
         .section {
             margin-bottom: 30px;
@@ -189,32 +196,49 @@ while ($row = $result->fetch_assoc()) {
             text-align: center;
             color: red;
         }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 5px; 
+            margin-bottom: 20px;
         }
-        thead {
-            background-color: #007bff;
-            color: white;
+        table,th, td {
+            border: 1px solid #ccc;
         }
         th, td {
             padding: 10px;
             text-align: center;
-            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
         .container button {
             padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 3px;
-            transition: background-color 0.3s ease;
+
         }
-        .container button:hover {
-            background-color: #0056b3;
+        .accept-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: #ff4500;
+            color: white;
+        }
+        .reminder-btn {
+            background-color: #3498db;
+            color: white;
         }
     </style>
 </head>
@@ -255,8 +279,8 @@ while ($row = $result->fetch_assoc()) {
                         <td>
                             <form method="POST" action="" style="display:inline-block;">
                                 <input type="hidden" name="hostel_id" value="<?php echo $row['hostel_id']; ?>">
-                                <button type="submit" name="action" value="accept">Accept</button>
-                                <button type="submit" name="action" value="cancel">Cancel</button>
+                                <button type="submit" class="accept-btn" name="action" value="accept">Accept</button>
+                                <button type="submit" class="cancel-btn" name="action" value="cancel">Cancel</button>
                             </form>
                         </td>
                     </tr>
@@ -291,7 +315,7 @@ while ($row = $result->fetch_assoc()) {
                             <?php if (!$row['reminder_sent']) { ?>
                                 <form method="POST" action="" style="display:inline-block;">
                                     <input type="hidden" name="hostel_id" value="<?php echo $row['hostel_id']; ?>">
-                                    <button type="submit" name="action" value="send_reminder">Send Reminder</button>
+                                    <button type="submit" class="reminder-btn" name="action" value="send_reminder">Send Reminder</button>
                                 </form>
                             <?php } else { ?>
                                 <span>Already reminded</span>
@@ -329,7 +353,7 @@ while ($row = $result->fetch_assoc()) {
                             <?php if (!$row['reminder_sent']) { ?>
                                 <form method="POST" action="" style="display:inline-block;">
                                     <input type="hidden" name="hostel_id" value="<?php echo $row['hostel_id']; ?>">
-                                    <button type="submit" name="action" value="send_reminder">Send Reminder</button>
+                                    <button type="submit" class="reminder-btn" name="action" value="send_reminder">Send Reminder</button>
                                 </form>
                             <?php } else { ?>
                                 <span>Already reminded</span>

@@ -165,15 +165,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
         h2 {
             text-align: center;
             color: #333;
+            font-size: 30px;
+        }
+        h3{
+            text-align: center;
+            font-size: 24px;
+            color: #007bff;
+            margin-top: 20px;
         }
         .table-container {
             max-height: 400px;
             overflow-y: auto;
-            margin-top: 20px;
+        
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 5px; 
+            margin-bottom: 20px;
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -185,6 +194,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
         th {
             background-color: #007bff;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
         button {
             padding: 5px 10px;
@@ -232,7 +244,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
             <?php foreach ($acceptedConsultations as $row) { ?>
                 <tr>
                     <td><?php echo $row['consultation_id']; ?></td>
-                    <td><?php echo $row['consultation_time']; ?></td>
+                    <td><?php echo $row['created_at']; ?></td>
                     <td><?php echo $row['consultation_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
@@ -267,7 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
             <?php foreach ($pendingConsultations as $row) { ?>
                 <tr>
                     <td><?php echo $row['consultation_id']; ?></td>
-                    <td><?php echo $row['consultation_time']; ?></td>
+                    <td><?php echo $row['created_at']; ?></td>
                     <td><?php echo $row['consultation_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
@@ -302,7 +314,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
             <?php foreach ($cancelledConsultations as $row) { ?>
                 <tr>
                     <td><?php echo $row['consultation_id']; ?></td>
-                    <td><?php echo $row['consultation_time']; ?></td>
+                    <td><?php echo $row['created_at']; ?></td>
                     <td><?php echo $row['consultation_reason']; ?></td>
                     <td><?php echo $row['user_id']; ?></td>
                     <td><?php echo $row['pet_id']; ?></td>
