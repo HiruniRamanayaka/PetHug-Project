@@ -5,11 +5,12 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+include_once "../connection.php";
+//header
+include_once "header_user.php";
+
 $user_id = $_SESSION['user_id'];
 
-    include_once "../connection.php";
-    //header
-    include_once "header_user.php";
 ?>
 
 <!DOCTYPE html>
@@ -22,100 +23,84 @@ $user_id = $_SESSION['user_id'];
     <?php echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">';?>
 </head>
 <body>
-    <!--header-->
-    <?php include_once "header_user.php" ?>
 
     <!--home-content-->
     <div class="home-info">
         <section class="welcome">
+            <img src="../images/Slider1.jpg" alt="user">
             <h1>Welcome to PetHug Veterinary Hospital!</h1><br>
             <p>We are dedicated to providing the best care for your pets. Explore our services and manage your appointments effortlessly.</p>
         </section>
 
         <!-- Main features section -->
-        <div class="accordion">
+        <div class="features">
             <h1>Features</h1>
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">View Pets
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Manage your pets' profiles, vaccination details, and health records. <a href="viewPets.php">View More</a></p>
-                </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Add Pet
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Add new pets and create their profiles instantly. <a href="add_pets.php">Add Now</a></p>
+            <div class="cards">
+                <div class="card">
+                    <img src="../images/animal.png" alt="View Pets">
+                    <h3>View Pets</h3>
+                    <p>Manage your pets' profiles, vaccination details, and health records.</p>
+                    <a href="viewPets.php">View Pets</a>
                 </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Make Appointment
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Schedule a visit or consultation with our veterinarians. <a href="makeAppointment.php">Schedule Appointment</a></p>
+            
+                <div class="card">
+                    <img src="../images/service_16040658.png" alt="Add Pet">
+                    <h3>Add Pets</h3>
+                    <p>Add new pets and create their profiles instantly.</p>
+                    <a href="add_pets.php">View Pets</a>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Schedule Consultations
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Get expert advice from our veterinarians from the comfort of your home.<br> <a href="consultation_form.php">Consult Now</a></p>
+                <div class="card">
+                    <img src="../images/calendar_10057943.png" alt="Make Appointment">
+                    <h3>Make Appointment</h3>
+                    <p>Schedule a visit or consultation with our veterinarians.</p>
+                    <a href="makeAppointment.php">Schedule Appointment</a>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Request Hostel
-                    <i class="fas fa-chevron-down"></i></h2>
-                <div class="accordion-content">
-                    <p>Leave your pet in good hands with our reliable boarding services.<br> <a href="request_hostel.php">Request Hostel</a></p>
+                <div class="card">
+                    <img src="../images/outgoing-call_12406886.png" alt="Schedule Consultations">
+                    <h3>Schedule Consultations</h3>
+                    <p>Get expert advice from our veterinarians from the comfort of your home.</p>
+                    <a href="consultation_form.php">Consult Now</a>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Medical Records
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Access detailed medical reports for your pets and track their health. <br><a href="medical_records.php">View Medical Records</a></p>
+                <div class="card">
+                    <img src="../images/dog.png" alt="Request Hostel">
+                    <h3>Request Hostel</h3>
+                    <p>Leave your pet in good hands with our reliable boarding services.</p>
+                    <a href="request_hostel.php">Request Hostel</a>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">View Billing
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Keep track of your bills and make secure payments easily. <a href="bill.php">View Billing</a></p>
+                <div class="card">
+                    <img src="../images/veterinary.png" alt="Medical Records">
+                    <h3>Medical Records</h3>
+                    <p>Access detailed medical reports for your pets and track their health.</p>
+                    <a href="medical_records.php">View Medical Records</a>
                 </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Pending Payments
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Keep track of your bills and find payments approved or not. (This is for online bank transfer and cash payments.) <a href="pending_payments.php">Pending Payments</a></p>
+                
+                <div class="card">
+                    <img src="../images/bill_6295833.png" alt="View Billing">
+                    <h3>View Billing</h3>
+                    <p>Keep track of your bills and make secure payments easily.</p>
+                    <a href="bill.php">View Billing</a>
                 </div>
-            </div>
 
-            <div class="accordion-item">
-                <h2 class="accordion-header" onclick="toggleAccordion(this)">Notifications
-                    <i class="fas fa-chevron-down"></i>
-                </h2>
-                <div class="accordion-content">
-                    <p>Stay updated with reminders and important alerts for your pets. <a href="user_notifications.php">Check Notifications</a></p>
+                <div class="card">
+                    <img src="../images/payment.png" alt="Pending Payments">
+                    <h3>Pending Payments</h3>
+                    <p>Keep track of your bills and find payments approved or not. (This is for online bank transfer and cash payments.)</p>
+                    <a href="pending_payments.php">Pending Payments</a>
+                </div>
+
+                <div class="card">
+                    <img src="../images/notification.png" alt="Notifications">
+                    <h3>Notifications</h3>
+                    <p>Stay updated with reminders and important alerts for your pets.</p>
+                    <a href="user_notifications.php">Check Notifications</a>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Sections to go to About, Services, Contact -->
     <div class="nav-to-about-services-contact">
@@ -125,21 +110,21 @@ $user_id = $_SESSION['user_id'];
                 <img src="../images/about.png" alt="About Us">
                 <h2>Learn More About Us</h2>
                 <p>Discover our story, our team, and our dedication to pet care.</p>
-                <a href="../beforeLogin/about.php" class="btn">Learn More</a>
+                <a href="../about.php" class="btn">Learn More</a>
             </div>
 
             <div class="feature-card">
                 <img src="../images/services.png" alt="Services">
                 <h2>Our Services</h2>
                 <p>Explore the range of services we offer for your beloved pets.</p>
-                <a href="../beforeLogin/services.php" class="btn">Explore Services</a>
+                <a href="../services.php" class="btn">Explore Services</a>
             </div>
 
             <div class="feature-card">
                 <img src="../images/contact.png" alt="Contact Us">
                 <h2>Get In Touch</h2>
                 <p>Have any questions? Reach out to us anytime.</p>
-                <a href="../beforeLogin/contact.php" class="btn">Contact Us</a>
+                <a href="../contact.php" class="btn">Contact Us</a>
             </div>
         </section>
     <div>

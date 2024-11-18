@@ -11,7 +11,6 @@
     }
     
     $user_id = $_SESSION['user_id'];
-    $email = $_SESSION['user_email'];
 
     // check pet_id passerd from url
     if (isset($_GET['pet_id'])) {
