@@ -7,14 +7,14 @@
 
 body{
     font-family: 'Arial', sans-serif;
-    color: #333;
+    
 }
 
 .header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e1eafc;
+    background-color:  #03045e ;
     padding: 5px 5% 5px 0;
     height: 130px;
 }
@@ -43,31 +43,29 @@ body{
 
 .nav-links a{
     text-decoration: none;
-    color:#333;
-    font-weight: 500;
+    color:white;
+    font-weight:700;
 }
 
 #login-btn{
     padding: 10px 20px;
-    border: 2px solid #2b55eb;
+    border: 2px solid   #90e0ef;
     border-radius: 20px;
 }
 
 #signup-btn{
-    background-color: #2b55eb;
-    color: white;
     padding: 10px 20px;
+    border: 2px solid   #90e0ef;
     border-radius: 20px;
-    text-decoration: none;
 }
 
 .nav-links a:hover{
-    color: #2b55eb;
+    color:   #90e0ef;
 }
 
 .nav-links a.active {
-    color: #2b55eb !important; 
-    font-weight: bold; 
+    color:  #90e0ef !important; 
+    font-weight: 700; 
 }
 
 .hamburger {
@@ -85,11 +83,11 @@ body{
     .nav-links {
         display: none;  /* Initially hidden */
         flex-direction: column;
-        width: 100%;
-        background-color: rgba(255, 255, 255, 0.8); 
+        width: 30%;
+        background-color: #03045e; 
         position: absolute; 
         top: 100px;  
-        left: 0;
+        right: 0;
         z-index: 1000; /* Make sure it's above other content */
         padding: 10px 0;
         margin: 0;
@@ -106,13 +104,13 @@ body{
     }
 
     .nav-links li {
-        text-align: right; 
+        text-align: center; 
         padding: 10px 20px;
     }
 
     .nav-links li a {
         text-decoration: none;
-        color: #333;
+        color: #90e0ef; 
     }
 
     #login-btn, #signup-btn {

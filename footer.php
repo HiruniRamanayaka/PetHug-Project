@@ -9,8 +9,8 @@
     
     /* General Footer Styles */
  footer {
-     background-color: #262b6a; 
-     color: #f0f8ff; 
+     background-color: #03045e; 
+     color: #ffffff; 
      padding: 50px 0;
      font-family: Arial, sans-serif;
      margin-top: 50px;
@@ -34,7 +34,7 @@
      font-size: 20px;
      color: #fff;
      margin-bottom: 15px;
-     border-bottom: 2px solid #3498db; 
+     border-bottom: 2px solid #00b4d8; 
      padding-bottom: 5px;
  }
  
@@ -45,12 +45,12 @@
  }
  
  .footer-section a {
-     color: #3498db; 
+     color: #fff; 
      text-decoration: none;
  }
  
  .footer-section a:hover {
-     color: #9b59b6; 
+     color: #3498db; 
      text-decoration: underline;
  }
  
