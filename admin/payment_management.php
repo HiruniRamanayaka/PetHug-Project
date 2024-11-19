@@ -19,6 +19,9 @@ $admin_id = $_SESSION['admin_id'];
     <meta charset="UTF-8">
     <title>Admin Dashboard - Payment Management</title>
     <style>
+        body{
+            background-color: #e0f7ff;
+        }
         .container {
             width: 100%;
             max-width: 400px; /* Set a max-width for larger screens */

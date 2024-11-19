@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 body{
   font-family: 'Arial', sans-serif;
   color: #333;
+  background-color: #e0f7ff;
 }
 
 header{

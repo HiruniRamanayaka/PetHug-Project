@@ -40,7 +40,7 @@ $result = $conn->query($sql);
    body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f4f4f9;
+    background-color: #e0f7ff;
 }
 
 h1 {

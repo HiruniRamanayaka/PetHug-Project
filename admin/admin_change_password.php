@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once 'header_admin.php';
 include_once "../connection.php";
 
 // Redirect if not logged in
@@ -82,3 +83,6 @@ if (isset($_POST['change_password'])) {
  <?php
     $conn->close();
  ?>
+ <?php
+include_once 'footer_admin.php';
+?>
