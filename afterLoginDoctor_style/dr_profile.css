@@ -1,4 +1,8 @@
 /* Container for Profile and Form */
+body{
+    background-color: #e0f7ff;
+}
+
 .profile-container {
     display: flex;
     align-items: flex-start;
