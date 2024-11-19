@@ -11,9 +11,7 @@
     // Admin ID from session
     $admin_id = $_SESSION['admin_id'];
     
-
-
-    // Fetch doctor details from the database
+    // Fetch user details from the database
     $sql = "SELECT * FROM admin WHERE admin_id = $admin_id";
     $result = mysqli_query($conn, $sql);
 
@@ -82,8 +80,23 @@
     ?>
 
     <div class="profile-container">
-        <div class="dr_img">
-            <img src="../images/17246491.png" alt="admin pic" width="100px">
+        <div class="profile">
+        <?php
+            // Check if the user has a photo in the database
+            if (!empty($row['admin_image'])) {
+                echo "<div class='dr_img'>";
+                echo "<img src='" . htmlspecialchars($row['admin_image']) . "' alt='Admin Photo' width='100px' height='auto'>";
+                echo "</div>";
+            } else {
+                // Use the default image if no photo exists
+                echo "<div class='dr_img'>";
+                echo "<img src='../images/17246491.png' alt='Default Photo' width='100px'>";
+                echo "</div>";
+            }
+            ?>
+            <div class="dr_name">
+                    <?php echo "<h2>" . htmlspecialchars($row['admin_name']) . "</h2>"; ?>
+            </div>
         </div>
 
         <?php
@@ -95,7 +108,7 @@
 
         <div class="form">
             <h2>Edit Profile</h2>
-            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                 <label for="name">Name:</label>
                 <input id="name" type="text" name="admin_name" value="<?php echo htmlspecialchars($row['admin_name']);?>"><br><br>
                 <label for="email">Email:</label>

@@ -90,6 +90,7 @@
                         <th>Pet name</th>
                         <th>Appointment time</th>
                         <th>Appointment reason</th>
+                        <th>Actions</th>
                     </tr>";
 
                     while ($row = mysqli_fetch_assoc($result_appointments)) {
@@ -100,6 +101,7 @@
                             <td>" . $row['pet_name'] . "</td>
                             <td style='color:red;'>" . $row['appointment_time'] . "</td>
                             <td>" . $row['appointment_reason'] . "</td> 
+                            
                         </tr>";
                         }
 
@@ -118,15 +120,15 @@
                 $sql_consultations = "SELECT 
                             c.consultation_id,
                             c.consultation_reason,
-                            c.consultation_time,
+                            c.created_at,
                             p.pet_id,
                             p.pet_name,
                             d.dr_name
                         FROM consultation c
                         INNER JOIN pet p ON c.pet_id = p.pet_id
                         INNER JOIN doctor d ON c.dr_id = d.dr_id
-                        WHERE c.dr_id = '$doctor_id' AND c.consultation_time>='$currentDateTime' AND c.status='Accepted'
-                        ORDER BY c.consultation_time ASC
+                        WHERE c.dr_id = '$doctor_id' AND c.created_at>='$currentDateTime' AND c.status='Accepted'
+                        ORDER BY c.created_at ASC
                         LIMIT 3";
 
                 $result_consultations = mysqli_query($conn, $sql_consultations);
@@ -139,6 +141,7 @@
                         <th>Pet name</th>
                         <th>Consultation time</th>
                         <th>Consultation reason</th>
+                        <th>Actions</th>
                     </tr>";
 
                     while ($row = mysqli_fetch_assoc($result_consultations)) {
@@ -147,7 +150,7 @@
                             <td>" . $row['consultation_id'] . "</td>
                             <td>" . $row['pet_id'] . "</td>
                             <td>" . $row['pet_name'] . "</td>
-                            <td style='color:red;'>" . $row['consultation_time'] . "</td>
+                            <td style='color:red;'>" . $row['created_at'] . "</td>
                             <td>" . $row['consultation_reason'] . "</td>
                         </tr>";
                     }

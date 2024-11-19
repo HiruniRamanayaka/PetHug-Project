@@ -37,7 +37,7 @@
         } elseif (!filter_var($dr_email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error_message1'] = "Invalid email format.";
         } else {
-            $sql = "UPDATE doctor SET dr_name='$dr_name', dr_email='$dr_email', specialization='$specialization', dr_phone='$dr_phone' WHERE dr_id='$dr_id'";
+            $sql = "UPDATE doctor SET dr_name='$dr_name', dr_email='$dr_email', specialization='$specialization', dr_phone='$dr_phone' WHERE dr_id='$doctor_id'";
 
                 if (mysqli_query($conn, $sql)) {
                     $_SESSION['success_message1'] = "Doctor details updated successfully.";
@@ -80,9 +80,19 @@
 
     <div class="profile-container">
         <div class="profile">
-            <div class="dr_img">
-            <img src="../images/17246491.png" alt="Dr pic" width="100px">
-            </div>
+        <?php
+            // Check if the user has a photo in the database
+            if (!empty($row['doctor_image'])) {
+                echo "<div class='dr_img'>";
+                echo "<img src='" . htmlspecialchars($row['doctor_image']) . "' alt='Doctor Photo' width='100px' height='auto'>";
+                echo "</div>";
+            } else {
+                // Use the default image if no photo exists
+                echo "<div class='dr_img'>";
+                echo "<img src='../images/17246491.png' alt='Default Photo' width='100px'>";
+                echo "</div>";
+            }
+            ?>
 
             <div class="dr_name">
                 <?php echo "<h2>" . htmlspecialchars($row['dr_name']). "</h2>"; ?>
