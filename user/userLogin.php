@@ -94,7 +94,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <?php 
         if (isset($error_message)) { 
-            echo "<div class='error'>$error_message</div>"; 
+            echo "<div class='error' style='color: red;'>$error_message</div>"; 
         } 
         ?>
 

@@ -3,12 +3,12 @@ session_start();
 include_once "../connection.php";
 
 // Redirect if not logged in
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: adminLogin.php");
+if (!isset($_SESSION['user_id'])) {
+    header("Location: userLogin.php");
     exit();
 }
 
-$admin_id = $_SESSION['admin_id'];
+$user_id = $_SESSION['user_id'];
 
 if (isset($_POST['change_password'])) {
     $current_password = $_POST['current_password'];
@@ -16,12 +16,12 @@ if (isset($_POST['change_password'])) {
     $confirm_password = $_POST['confirm_password'];
 
     // Fetch the current hashed password from the database
-    $sql = "SELECT admin_password FROM admin WHERE admin_id = '$admin_id'";
+    $sql = "SELECT user_password FROM user WHERE user_id = '$user_id'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
 
     // Verify current password using password_verify
-    if (!password_verify($current_password, $row['admin_password'])) {
+    if (!password_verify($current_password, $row['user_password'])) {
         $_SESSION['error_message'] = "Current password is incorrect.";
     } elseif ($new_password !== $confirm_password) {
         $_SESSION['error_message'] = "New passwords do not match.";
@@ -30,10 +30,10 @@ if (isset($_POST['change_password'])) {
         $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
         
         // Update with the new hashed password
-        $update_sql = "UPDATE admin SET admin_password='$hashed_new_password' WHERE admin_id='$admin_id'";
+        $update_sql = "UPDATE user SET user_password='$hashed_new_password' WHERE user_id='$user_id'";
         if (mysqli_query($conn, $update_sql)) {
             $_SESSION['success_message'] = "Password updated successfully.";
-            header("Location: admin_profile.php");
+            header("Location: userProfile.php");
             exit();
         } else {
             $_SESSION['error_message'] = "Error updating password: " . mysqli_error($conn);
@@ -62,7 +62,7 @@ if (isset($_POST['change_password'])) {
                 }
             ?>
 
-            <form action="admin_change_password.php" method="post">
+            <form action="user_change_password.php" method="post">
                 <label for="current_password">Current Password:</label>
                 <input type="password" id="current_password" name="current_password" required><br><br>
                 <label for="new_password">New Password:</label>
@@ -73,7 +73,7 @@ if (isset($_POST['change_password'])) {
                 <input type="submit" name="change_password" value="Change Password">
             </form>
 
-            <a href="admin_profile.php" id="cancel">Cancel</a>
+            <a href="userProfile.php" id="cancel">Cancel</a>
         </div>
     </div>
 
