@@ -88,9 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_reminder'])) {
         }
 
         // Insert notification
-        $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message) VALUES (?, ?, ?, ?)";
+        $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message,service_type, service_id) VALUES (?, ?, ?, ?, 'consultation', ?)";
         $insertStmt = $conn->prepare($insertNotification);
-        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message);
+        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message, $consultation_id);
 
         if ($insertStmt->execute()) {
             // Update consultation to mark reminder as sent
