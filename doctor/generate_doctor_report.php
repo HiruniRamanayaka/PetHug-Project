@@ -7,6 +7,7 @@ if (!isset($_SESSION['dr_id'])) {
 
 // Include database connection
 include_once '../connection.php';
+include_once 'header_dr.php';
 
 // Get doctor ID from session
 $doctor_id = $_SESSION['dr_id'];
@@ -45,7 +46,7 @@ $total_consultations = count($consultations);
             font-family: Arial, sans-serif;
             background-color: #e0f7ff;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
         .container {
             max-width: 1200px;
@@ -146,3 +147,6 @@ $total_consultations = count($consultations);
     </div>
 </body>
 </html>
+<?php
+include_once "../footer.php";
+?>

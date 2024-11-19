@@ -29,7 +29,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li><a href="give_consultation.php" class="<?php if($current_page == 'give_consultation.php'){echo 'active';} ?>"> Consultations</a></li>
                 <li><a href="assigned_appointments.php" class="<?php if($current_page == 'assigned_appointments.php'){echo 'active';} ?>">Appointments</a></li>
 
-                <li><a href="doctor_view_report.php" class="<?php if($current_page == 'doctor_view_report.php'){echo 'active';} ?>">Reports</a></li>
+                <li><a href="generate_doctor_report.php" class="<?php if($current_page == 'generate_doctor_report.php'){echo 'active';} ?>">Reports</a></li>
                 <li><a href="doctor_earnings.php" class="<?php if($current_page == 'doctor_earnings.php'){echo 'active';} ?>">Earnings</a></li>
                 
                 <li><a href="doctor_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></li>
