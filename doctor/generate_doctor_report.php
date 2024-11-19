@@ -7,6 +7,10 @@ if (!isset($_SESSION['dr_id'])) {
 
 // Include database connection
 include_once '../connection.php';
+include_once 'header_dr.php';
+   
+
+
 
 // Get doctor ID from session
 $doctor_id = $_SESSION['dr_id'];
@@ -45,7 +49,7 @@ $total_consultations = count($consultations);
             font-family: Arial, sans-serif;
             background-color: #e0f7ff;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
         .container {
             max-width: 1200px;
@@ -109,7 +113,7 @@ $total_consultations = count($consultations);
                 <tr>
                     <th>ID</th>
                     <th>Date</th>
-                    <th>Time</th>
+                    
                     <th>Details</th>
                 </tr>
             </thead>
@@ -117,8 +121,8 @@ $total_consultations = count($consultations);
                 <?php foreach ($appointments as $appointment): ?>
                     <tr>
                         <td><?php echo $appointment['appointment_id']; ?></td>
-                        <td><?php echo $appointment['date']; ?></td>
-                        <td><?php echo $appointment['time']; ?></td>
+                        <td><?php echo $appointment['appointment_time']; ?></td>
+                       
                         <td><?php echo $appointment['details']; ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -146,3 +150,6 @@ $total_consultations = count($consultations);
     </div>
 </body>
 </html>
+
+<?php
+include_once "../footer.php";

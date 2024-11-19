@@ -76,6 +76,7 @@ tr:hover {
     color: #e74c3c;
     font-weight: bold;
 }
+
 .update-notes-btn{
     padding: 5px 10px;
     border: none;
@@ -97,3 +98,5 @@ tr:hover {
     display: inline-block;
     text-align: center; 
 }
+
+

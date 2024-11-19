@@ -10,8 +10,7 @@
     }
     
     $user_id = $_SESSION['user_id'];     
-    $email = $_SESSION['user_email'];
-
+   
     if (!isset($_SESSION['total_amount'])) {
         header("Location: bill.php");
         exit();

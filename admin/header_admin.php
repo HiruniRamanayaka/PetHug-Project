@@ -24,7 +24,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
 
             <ul class="nav-links">
-                <li><a href="admin_home.php" class="<?php if ($current_page == 'admin_home.php'){echo 'active';} ?>">Home</a></li>
+                <li><a href="home.php" class="<?php if ($current_page == 'admin_home.php'){echo 'active';} ?>">Home</a></li>
                 <li><a href="admin_dashboard.php" class="<?php if($current_page == 'admin_dashboard.php'){echo 'active';} ?>">Dashboard</a></li>
                 <li><a href="admin_consultation_management.php" class="<?php if($current_page == 'admin_consultation_management.php'){echo 'active';} ?>">Consultation</a></li>
                 <li><a href="admin_appointment_management.php" class="<?php if($current_page == 'admin_appointment_management.php'){echo 'active';} ?>">Appointment</a></li>
