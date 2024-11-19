@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_reminder'])) {
             $title = "Appointment Reminder";
             $message = "You have an appointment scheduled on " . $date . " at " . $time . ".";
         } elseif ($appointment['status'] == 'Pending') {
-            $recipient_id = $appointment['dr_id'];
+            $recipient_id = $appointment['doctor_id'];
             $recipient_type = 'doctor';
             $title = "Appointment Reminder to Doctor";
             $message = "You have a pending appointment on " . $date . " at " . $time . ". Please review.";
@@ -57,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_reminder'])) {
         }
 
         // Prepare and insert notification
-        $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message) VALUES (?, ?, ?, ?)";
+        $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message,service_type, service_id) VALUES (?, ?, ?, ?, 'appointment', ?)";
         $insertStmt = $conn->prepare($insertNotification);
-        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message);
+        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message, $appointment_id);
 
         if ($insertStmt->execute()) {
             // Update appointment to mark reminder as sent
