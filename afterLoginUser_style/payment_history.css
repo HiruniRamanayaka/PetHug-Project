@@ -4,6 +4,7 @@ body{
 
 .container {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff;
     max-width: 70%;
     margin: 20px auto;
     padding: 20px;
