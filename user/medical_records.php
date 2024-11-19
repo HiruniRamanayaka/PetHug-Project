@@ -158,11 +158,11 @@ if (!$pet_result) {
              $Consultations_conditions .= " AND c.pet_id = $pet_id";
          }
          if ($start_date && $end_date) {
-             $Consultations_conditions .= " AND c.consultation_time BETWEEN '$start_date' AND '$end_date'";
+             $Consultations_conditions .= " AND c.created_at BETWEEN '$start_date' AND '$end_date'";
          } elseif ($start_date) {
-             $Consultations_conditions .= " AND c.consultation_time >= '$start_date'";
+             $Consultations_conditions .= " AND c.created_at >= '$start_date'";
          } elseif ($end_date) {
-             $Consultations_conditions .= " AND c.consultation_time <= '$end_date'";
+             $Consultations_conditions .= " AND c.created_at <= '$end_date'";
          }
 
         // Appointments Query
@@ -216,7 +216,7 @@ if (!$pet_result) {
         // Consultations Query
         if ($report_type === "consultations" || $report_type === "both") {
             $consultation_sql = "
-                SELECT c.consultation_id, DATE(c.consultation_time) AS date, d.dr_name, c.details 
+                SELECT c.consultation_id, DATE(c.created_at) AS date, d.dr_name, c.details 
                 FROM consultation c
                 JOIN doctor d ON c.dr_id = d.dr_id
                 WHERE c.status = 'Completed' AND $Consultations_conditions

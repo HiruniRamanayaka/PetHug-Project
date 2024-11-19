@@ -265,9 +265,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             max-width: 500px; 
         }
 
-        .modal-content form{
-
-        }
 
         .close {
             color: #aaa;

@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $insert_notification_sql = "INSERT INTO notifications (recipient_type, recipient_id, title, message,service_type, service_id) VALUES (?, ?, ?, ?, 'hostel', ?)";
             $recipient_type = 'user'; // Assuming the recipient is a user
             $insert_notification_stmt = $conn->prepare($insert_notification_sql);
-            $insert_notification_stmt->bind_param("siss", $recipient_type, $user_id, $notification_title, $notification_message);
+            $insert_notification_stmt->bind_param("sissi", $recipient_type, $user_id, $notification_title, $notification_message,$request_id);
             
             if ($insert_notification_stmt->execute()) {
                 $success_message = "Request successfully updated and notification sent.";
