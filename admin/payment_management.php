@@ -23,15 +23,15 @@ $admin_id = $_SESSION['admin_id'];
             background-color: #e0f7ff;
         }
         .container {
-            width: 100%;
-            max-width: 400px; /* Set a max-width for larger screens */
+            width: fit-content;
+            margin: auto;
+            margin-top: 50px;
             padding: 30px;
             border-radius: 10px;
             background-color: #ffffff;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin: 10px;
-            margin-top: 50px;
+            
         }
 
         h2 {
