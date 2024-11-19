@@ -321,8 +321,14 @@ while ($row = $result->fetch_assoc()) {
                             <?php } else { ?>
                                 <span>Already reminded</span>
                             <?php } ?>
-                        </td>
-                    </tr>
+
+                            <!-- Add Set Fee button -->
+                            <form action="admin_set_fees.php" method="GET" style="display:inline-block;">
+                                <input type="hidden" name="hostel_id" value="<?php echo $row['hostel_id']; ?>">
+                                <button type="submit" class="reminder-btn" style="background-color: #28a745;">Set Fee</button>
+                            </form>
+                            </td>
+                        </tr>
                 <?php } ?>
             </tbody>
         </table>

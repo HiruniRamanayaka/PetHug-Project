@@ -136,7 +136,7 @@ $result = $conn->query("SELECT * FROM bill WHERE status = 'Pending' AND (method 
                 <?php endwhile; ?>
             </table>
         <?php else: ?>
-            <p class="error">No pending payments for Bank Transfer or Cash.</p>
+            <p class="error">No pending payments for Cash.</p>
         <?php endif; ?>
     </div>
 
