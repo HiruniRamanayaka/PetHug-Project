@@ -259,6 +259,62 @@ if ($user_data) {
 </body>
 </html>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History</title>
+    <link rel="stylesheet" href="../afterLoginUser_style/payment_history.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Payment History</h1>
+    <div class="table-container">       
+                <?php
+                if ($result->num_rows > 0) {
+                    echo "
+                        <table class='table table-bordered'>
+                            <thead>
+                                <tr>
+                                    <th>Bill ID</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Transaction Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    ";
+
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$row['bill_id']}</td>
+                                <td>{$row['amount']}</td>
+                                <td>{$row['date']}</td>
+                                <td>{$row['method']}</td>
+                                <td>{$row['status']}</td>
+                                <td>{$row['transaction_reference']}</td>
+                              </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6' class='text-center'>No payment history found.</td></tr>";
+                }
+
+                echo "
+                    </tbody>
+                </table>
+                ";
+                ?>
+    </div>
+</div>
+
+</body>
+</html>
+
+
 <!--footer-->
 <?php include_once "../footer.php"?>
 

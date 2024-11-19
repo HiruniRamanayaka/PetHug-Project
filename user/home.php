@@ -75,13 +75,13 @@ $user_first_name = $user['user_first_name']; // Assuming the user's name is stor
             <img src="../images/payments.png" alt="My Payments">
             <h3>My Payments</h3>
             <p>Keep track of your payments and transactions for services.</p>
-            <a href="my_payments.php" class="btn">View Payments</a>
+            <a href="bill.php" class="btn">View Payments</a>
         </div>
 
         <div class="card">
             <img src="../images/medical-record.png" alt="pet records">
             <h3>Medical Records</h3>
-            <p>Keep track of your payments and transactions for services.</p>
+            <p></p>
             <a href="medical_records.php" class="btn">View records</a>
         </div>
     </div>
