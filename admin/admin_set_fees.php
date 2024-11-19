@@ -13,6 +13,10 @@ if (!isset($_SESSION['admin_id'])) {
 
 $admin_id = $_SESSION['admin_id'];
 
+$appointment_id = isset($_GET['appointment_id']) ? $_GET['appointment_id'] : '';
+$consultation_id = isset($_GET['consultation_id']) ? $_GET['consultation_id'] : '';
+$hostel_id = isset($_GET['hostel_id']) ? $_GET['hostel_id'] : '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check which form was submitted and update the corresponding fee
     if (isset($_POST['update_appointment_fee'])) {
@@ -174,22 +178,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
 
         <div class="update-fees-container">
-        
-            <!-- Update Appointment Fee -->
-            <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
-                <h3>Update Appointment Fee</h3><br>
-                <label for="appointment_id">Appointment ID:</label>
-                <input id="appointment_id"type="number" name="appointment_id" required>
-                <label for="appointment_fee">Appointment Fee:</label>
-                <input id="appointment_fee" type="number" step="0.01" name="appointment_fee" required>
-                <button type="submit" name="update_appointment_fee">Update Appointment Fee</button>
-            </form>
+
+        <!-- Update Appointment Fee -->
+        <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+            <h3>Update Appointment Fee</h3><br>
+            <label for="appointment_id">Appointment ID:</label>
+            <input id="appointment_id" type="number" name="appointment_id" value="<?php echo isset($appointment_id) ? $appointment_id : ''; ?>" required>
+            <label for="appointment_fee">Appointment Fee:</label>
+            <input id="appointment_fee" type="number" step="0.01" name="appointment_fee" required>
+            <button type="submit" name="update_appointment_fee">Update Appointment Fee</button>
+        </form>
+
 
             <!-- Update Consultation Fee -->
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
                 <h3>Update Consultation Fee</h3><br>
                 <label for="consultation_id">Consultation ID:</label>
-                <input id="consultation_id" type="number" name="consultation_id" required>
+                <input id="consultation_id" type="number" name="consultation_id" value="<?php echo isset($consultation_id) ? $consultation_id : ''; ?>" required>
                 <label for="consultation_fee">Consultation Fee:</label>
                 <input id="consultation_fee" type="number" step="0.01" name="consultation_fee" required>
                 <button type="submit" name="update_consultation_fee">Update Consultation Fee</button>
@@ -199,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
                 <h3>Update Hostel Fee</h3><br>
                 <label for="hostel_id">Hostel ID:</label>
-                <input id="hostel_id" type="number" name="hostel_id" required>
+                <input id="hostel_id" type="number" name="hostel_id" value="<?php echo isset($hostel_id) ? $hostel_id : '';?>" required>
                 <label for="hostel_fee">Hostel Fee:</label>
                 <input id="hostel_fee" type="number" step="0.01" name="hostel_fee" required>
                 <button type="submit" name="update_hostel_fee">Update Hostel Fee</button>
