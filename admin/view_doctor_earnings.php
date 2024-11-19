@@ -168,5 +168,5 @@ if (isset($_POST['search'])) {
 </body>
 </html>
 
-<?php include_once "footer_admin.php"; ?>
+<?php include_once "../footer.php"; ?>
 <?php $conn->close(); ?>    

@@ -275,6 +275,6 @@ $paid_result = $conn->query($paid_query);
 </html>
 
 <!--footer-->
-<?php include_once 'footer_admin.php';?>
+<?php include_once '../footer';?>
 
 <?php $conn->close(); ?>

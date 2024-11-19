@@ -184,18 +184,22 @@ while ($row = $result->fetch_assoc()) {
             top: 0;
             z-index: 1;
         }
-        button {
+       
+        .cancel-btn {
+             padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
+            background-color: #ff4500;
+            color: white;
+        }
+        .reminder-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 3px;
-        }
-        .cancel-btn {
-            background-color: #ff4500;
-            color: white;
-        }
-        .reminder-btn {
             background-color: #3498db;
             color: white;
         }
@@ -350,5 +354,5 @@ while ($row = $result->fetch_assoc()) {
 </body>
 </html>
 <?php
-include_once 'footer_admin.php';
+include_once '../footer.php';
 ?>

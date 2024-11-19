@@ -108,22 +108,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_doctor'])) {
             top: 0;
             z-index: 1;
         }
-        button {
+        
+        .edit-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 3px;
-        }
-        .edit-btn {
             background-color: #007bff;
             color: white;
         }
         .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
             background-color: #ff4500;
             color: white;
         }
         .view-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
             background-color: #28a745;
             color: white;
         }
@@ -246,5 +255,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_doctor'])) {
 </body>
 </html>
 <?php
-include_once "footer_admin.php";
+include_once "../footer.php";
 ?>

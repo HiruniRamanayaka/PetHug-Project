@@ -183,6 +183,6 @@ if ($unpaid_activities_result->num_rows > 0) {
 </html>
 
 <!--footer-->
-<?php include_once 'footer_admin.php';?>
+<?php include_once '../footer.php';?>
 
 <?php $conn->close(); ?>

@@ -84,6 +84,6 @@ $admin_id = $_SESSION['admin_id'];
     </div>
 
     <!--footer-->
-    <?php include_once 'footer_admin.php';?>
+    <?php include_once '../footer.php';?>
 </body>
 </html>
