@@ -114,7 +114,7 @@ body{
 <body>
     <div class="container">
         <h2>Select Sign in Option</h2>
-        <p>Please choose how you want to sign in:</p>
+        <p>Please choose how you want to log in:</p>
         <div class="button-group">
             <a href="User/userLogin.php"><button class="btn">Log in as User</button></a>
             <a href="Doctor/doctorLogin.php"><button class="btn">Log in as Doctor</button></a>
