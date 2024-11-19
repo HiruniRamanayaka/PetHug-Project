@@ -1,8 +1,12 @@
 <?php
-session_start(); // Start the session
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: adminLogin.php");
+    exit();
+}
 
-// Include database connection
-include('../connection.php');
+include_once 'header_admin.php';
+require '../connection.php'; // Database connection
 
 // Function to get the monthly summary
 function getMonthlySummary($conn) {
@@ -161,15 +165,16 @@ $summary = getMonthlySummary($conn);
         /* Basic styling for the admin interface */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f8fb; /* Soft light blue background */
+            background-color:  #e0f7ff;; /* Soft light blue background */
             margin: 0;
-            padding: 20px;
+            padding: 0;
             color: #333;
         }
 
         .container {
             max-width: 1200px;
             margin: auto;
+            margin-top: 50px;
             background: white;
             padding: 30px;
             border-radius: 10px;
@@ -177,12 +182,12 @@ $summary = getMonthlySummary($conn);
         }
 
         h1, h2 {
-            color: #007bff; /* Light blue for headings */
+            color: #03045e ; /* Light blue for headings */
             margin-bottom: 20px;
         }
 
         .summary-section {
-            background: #e0f7fa; /* Light cyan background for summary */
+            background: #e0f7ff; /* Light cyan background for summary */
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -197,8 +202,9 @@ $summary = getMonthlySummary($conn);
         }
 
         .summary-item {
-            background: #007bff; /* Blue background for summary items */
-            color: white;
+            background: #9999ff; /* Blue background for summary items */
+            color: black;
+            font-weight: 600;
             padding: 20px;
             border-radius: 8px;
             flex: 1 1 150px; /* Grow, shrink, and set base width */
@@ -208,7 +214,7 @@ $summary = getMonthlySummary($conn);
         }
 
         .summary-item:hover {
-            background: #0056b3; /* Darker blue on hover */
+            background: #6666ff  ; /* Darker blue on hover */
         }
 
         .filters {
@@ -368,3 +374,7 @@ $summary = getMonthlySummary($conn);
 
 </body>
 </html>
+
+<?php
+include_once "../footer.php";
+?>
