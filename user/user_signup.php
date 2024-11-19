@@ -1,6 +1,7 @@
 <?php
 require_once "../connection.php";
 
+$error_message = "";
 
 // Handling form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         // Email already exists
-        echo "This email is already registered. Please use a different email.";
+        $error_message = "This email is already registered. Please use a different email.";
     } else {
         // Proceed with registration if email is not found
         // Image upload
@@ -49,157 +50,85 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header</title>
-    <style>
-        *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
-
-body{
-  font-family: 'Arial', sans-serif;
-  color: #333;
-  background-color: #e0f7ff;
-}
-
-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #bcd2fd;
-  padding: 5px 5% 5px 0;
-}
-
-#logo{
-  display: flex;
-  justify-content: left;
-  width: 300px;
-  height: 100px;
-}
-
-#logo img{
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  transform: scale(1.8); /* Scale the logo up (adjust scale value as needed) */
-  transform-origin: center; /* Adjust the origin point of the scaling */
-}
-
-.nav-links{
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.nav-links a{
-  text-decoration: none;
-  color:#333;
-  font-weight: 500;
-}
-
-#login-btn{
-  padding: 10px 20px;
-  border: 2px solid #2b55eb;
-  border-radius: 20px;
-  
-}
-
-#signup-btn{
-  background-color: #2b55eb;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  text-decoration: none;
-}
-
-.nav-links a:hover{
-  color: #2b55eb;
-}
-
-.nav-links a.active {
-  color: #2b55eb !important; /* Color for the active page */
-  font-weight: bold; 
-}
-
-        </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Page</title>
+  <link rel="stylesheet" href="../afterLoginUser_style/signup.css">
 </head>
 <body>
-    
-    <!--header section-->
-    <header class="header">
-        <div id="logo">
-            <img src="../images/PetHugLogo.png">
-        </div>
-        <nav class="nav-bar">
-            <ul class="nav-links">
-                <li><a href="../index.php" class="<?php if ($current_page == 'index.php'){echo 'active';} ?>">Home</a></li>
-                <li><a href="../about.php" class="<?php if($current_page == 'about.php'){echo 'active';} ?>">About Us</a></li>
-                <li><a href="../services.php" class="<?php if($current_page == 'services.php'){echo 'active';} ?>">Services</a></li>
-                <li><a href="../contact.php" class="<?php if($current_page == 'contact.php'){echo 'active';} ?>">Contact</a></li>
-                <li><a id="login-btn" href="userLogin.php">Log In</a></li>
-                
-            </ul>
-        </nav>
-    </header>
-
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
-    <link rel="stylesheet" href="../css/register.css">
-    <script src="userRegisttation.js" defer></script>
-</head>
-<body>
-    <div class="container">
-        <h2>Create your PetHug Account</h2>
-        <form action="user_signup.php" method="POST" enctype="multipart/form-data" id="registerForm">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
-
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required>
-
-            <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" name="phone" maxlength="10" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
-
-            <label for="image">Upload Image:</label>
-            <input type="file" id="image" name="image" accept="image/*">
-
-            <div class="button-group">
-                <button type="submit" class="btn">Register</button>
-                <button type="reset" class="btn reset">Reset</button>
-            </div>
-        </form>
+  <?php 
+  if (!empty($error_message)) {
+      echo "<div class='error_message'>" . $error_message . "</div>";
+  }
+  ?>
+  <div class="container">
+    <!-- Left Section -->
+    <div class="left-section">
+        <h1>Welcome to PetHug</h1>
+        <p>Your partner in pet care and wellness.</p>
+        <img src="../images/images.png" alt="Pets Illustration" class="left-image">
     </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <h2> Create your PetHug Account </h2>
+      <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST" enctype="multipart/form-data">
+        
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="Enter your address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Enter your confirm password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Upload Image:</label>
+          <input type="file" id="image" name="image" accept="image/*">
+        </div>
+
+        <div class="form-actions">
+          <div>
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Remember me</label>
+          </div>
+          <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="btn-signin">Sign In</button>
+          <button type="reset" class="btn reset">Reset</button>
+        </div>
+      </form>
+      <p class="signup-link">Have an account? <a href="userLogin.php">Log In</a></p>
+    </div>
+  </div>
 </body>
 </html>
-
-
-<?php
-include_once "../footer.php";
-
-?>
