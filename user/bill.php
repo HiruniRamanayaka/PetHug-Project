@@ -199,8 +199,17 @@ if ($user_data) {
     exit; 
 }
 
+//payment history
+
+// SQL query to get payment history
+$sql = "SELECT bill_id, amount, date, method, status, transaction_reference 
+        FROM bill 
+        ORDER BY date DESC";
+
+$result = $conn->query($sql);
 ?>
 
+<!-- all unpaid bills-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -259,6 +268,10 @@ if ($user_data) {
 </body>
 </html>
 
+
+
+
+<!-- payment history-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
