@@ -10,38 +10,29 @@ require '../connection.php'; // Include the database connection file
 include_once 'header_dr.php';
 
 $doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using it in query
+$pet_id = $_GET['pet_id'] ?? null;
+$appointment_id = $_GET['appointment_id'] ?? null;
 
+// Updated SQL query to exclude Hostel details
+$sql = "
+    SELECT 'Appointment' AS report_type, DATE(appointment_time) AS report_date, details AS report_details, d.dr_id, d.dr_name
+    FROM appointment a
+    INNER JOIN doctor d ON a.doctor_id = d.dr_id
+    WHERE a.pet_id = $pet_id
 
-    if (isset($_POST['search'])) {
-        $pet_id = $_POST['pet_id'];
+    UNION ALL
 
-        $sql = "
-            SELECT 'Appointment' AS report_type, DATE(appointment_time) AS report_date, details AS report_details, d.dr_id, d.dr_name
-            FROM appointment a
-            INNER JOIN doctor d ON a.doctor_id = d.dr_id
-            WHERE a.pet_id = $pet_id
+    SELECT 'Consultation' AS report_type, DATE(consultation_time) AS report_date, details AS report_details, d.dr_id, d.dr_name
+    FROM consultation c
+    INNER JOIN doctor d ON c.dr_id = d.dr_id
+    WHERE c.pet_id = $pet_id
 
-            UNION ALL
+    ORDER BY report_date DESC
+";
 
-            SELECT 'Consultation' AS report_type, DATE(consultation_time) AS report_date, details AS report_details, d.dr_id, d.dr_name
-            FROM consultation c
-            INNER JOIN doctor d ON c.dr_id = d.dr_id
-            WHERE c.pet_id = $pet_id
+$result = mysqli_query($conn, $sql);
 
-            UNION ALL
-
-            SELECT 'Hostel' AS report_type, end_date AS report_date, details AS report_details, d.dr_id, d.dr_name
-            FROM hostel h
-            INNER JOIN doctor d ON h.dr_id = d.dr_id
-            WHERE h.pet_id = $pet_id
-
-            ORDER BY report_date DESC
-        ";
-
-        $result = mysqli_query($conn, $sql);
-
-        $conn->close();
-    }
+$conn->close();
 
 ?>
 
@@ -50,21 +41,13 @@ $doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using i
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet reports</title>
+    <title>Pet Reports</title>
     <link rel="stylesheet" href="../afterLoginDoctor_style/doctor_view_report.css">
 </head>
 <body>
     
     <div class="container">
         <h2>Pet Reports</h2><br>
-        
-        <!-- Search Form -->
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-            <label for="pet_id">Enter Pet ID:</label>
-            <input type="text" id="pet_id" name="pet_id" required>
-            <button type="submit" name="search">Search</button>
-        </form>
-    
     <?php
         if (isset($result) && mysqli_num_rows($result) > 0) {
             echo "<h3>Reports for Pet ID: $pet_id</h3>";

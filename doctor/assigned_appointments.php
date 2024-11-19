@@ -179,9 +179,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             background-color: #dc3545;
             color: white;
         }
-        .update-notes-btn, .ShowNotes-btn {
+        .update-notes-btn{
             background-color: #007bff;
             color: white;
+        }
+        .ShowNotes-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white; 
+            text-decoration: none;
+            display: inline-block;
+            text-align: center; 
         }
         .notes-container {
             display: none;
@@ -211,6 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             <th>Pet Name</th>
             <th>Time</th>
             <th>Status</th>
+            <th>Doctor Notes</th>
             <th>Actions</th>
         </tr>
         <?php while ($row = $acceptedAppointments->fetch_assoc()) { 
@@ -225,6 +238,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 <td><?php echo $time; ?></td>
                 <td><?php echo ucfirst($row['status']); ?></td>
                 <td>
+                  <a href="../Doctor/doctor_view_report.php?appointment_id=<?php echo $row['appointment_id']; ?>&pet_id=<?php echo $row['pet_id']; ?>" class="ShowNotes-btn">
+                  Show Notes
+                  </a>
+                </td>
+
+                <td>
                    <form method="POST" style="display:inline;">
                       <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
                       <input type="hidden" name="action" value="update_notes">
@@ -232,7 +251,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                      <button type="submit" class="update-notes-btn">Save Notes</button>
                    </form>
                 </td>
-
             </tr>
         <?php } ?>
     </table>
@@ -261,27 +279,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 <td><?php echo $date; ?></td>
                 <td><?php echo $time; ?></td>
                 <td>
-                    <button class="ShowNotes-btn" onclick="showNotes(<?php echo $row['pet_id']; ?>)">Show Notes</button>
-                    <div id="notes_<?php echo $row['pet_id']; ?>" class="notes-container">
-                        <?php 
-                        // Fetch all doctor notes related to the pet_id
-                        $notesQuery = "SELECT details FROM appointment WHERE pet_id = ? AND doctor_id = ? ORDER BY created_at DESC";
-                        $notesStmt = $conn->prepare($notesQuery);
-                        $notesStmt->bind_param("ii", $row['pet_id'], $doctor_id);
-                        $notesStmt->execute();
-                        $notesResult = $notesStmt->get_result();
-                        
-                        // Display all notes
-                        if ($notesResult->num_rows > 0) {
-                            while ($noteRow = $notesResult->fetch_assoc()) {
-                                echo "<p>" . htmlspecialchars($noteRow['details']) . "</p>";
-                            }
-                        } else {
-                            echo "<p>No notes available for this pet.</p>";
-                        }
-                        ?>
-                    </div>
+                  <a href="../Doctor/doctor_view_report.php?appointment_id=<?php echo $row['appointment_id']; ?>&pet_id=<?php echo $row['pet_id']; ?>" class="ShowNotes-btn">
+                  Show Notes
+                  </a>
                 </td>
+
                 <td>
                     <form method="POST" style="display:inline;">
                         <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
