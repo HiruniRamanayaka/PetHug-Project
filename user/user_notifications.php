@@ -159,6 +159,6 @@ $result_read_notifications = $conn->query($sql_read_notifications);
 </html>
 
 <?php
-include_once "footer_user.php";   
+include_once "../footer.php";   
 $conn->close();
 ?>
