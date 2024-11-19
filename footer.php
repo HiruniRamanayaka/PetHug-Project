@@ -9,7 +9,7 @@
     
     /* General Footer Styles */
  footer {
-     background-color: #03045e; 
+     background-color: #6666ff; 
      color: #ffffff; 
      padding: 50px 0;
      font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@
      font-size: 20px;
      color: #fff;
      margin-bottom: 15px;
-     border-bottom: 2px solid #00b4d8; 
+     border-bottom: 2px solid #03045e; 
      padding-bottom: 5px;
  }
  
@@ -50,7 +50,7 @@
  }
  
  .footer-section a:hover {
-     color: #3498db; 
+     color: #03045e; 
      text-decoration: underline;
  }
  
@@ -73,7 +73,7 @@
  
  /* Footer Bottom Styles */
  .footer-bottom {
-     background-color: #221b40; 
+     background-color: #03045e; 
      color: #dcdde1; 
      text-align: center;
      padding: 20px 0;
