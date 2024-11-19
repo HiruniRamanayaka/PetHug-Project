@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             width: 100%;
             margin: 0 auto;
         }
-        img{
+        .about-image{
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -161,22 +161,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             background-color: #007bff;
             color: white;
         }
-        button {
+       
+        .accept-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-        }
-        .accept-btn {
             background-color: #28a745;
             color: white;
         }
         .cancel-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             background-color: #dc3545;
             color: white;
         }
-        .update-notes-btn {
+        .update-notes-btn, .ShowNotes-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             background-color: #007bff;
             color: white;
         }
@@ -200,6 +209,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             background-color: #f9f9f9;
         }
         .whatsapp-btn button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             background-color: #25D366;
             color: white;
             border: none;
@@ -221,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 <div class="container">
     <div class="about">
         <h2>Consultation Management</h2>
-        <img src="../images/1920-female-hands-playing-with-an-orange-kitten.jpg"alt="Consultation">
+        <img class="about-image" src="../images/1920-female-hands-playing-with-an-orange-kitten.jpg"alt="Consultation">
         <p class="about-text">As a dedicated veterinary professional, streamline your consultation management effortlessly 
             with this organized system. Accept new consultations to keep your schedule full, or cancel and 
             delete as needed to maintain control over your day. By staying organized with pending, 
@@ -353,5 +367,5 @@ function showNotes(petId) {
 </body>
 </html>
 <?php
-include_once "footer_dr.php";
+include_once "../footer.php";
 ?>

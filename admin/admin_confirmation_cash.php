@@ -144,6 +144,6 @@ $result = $conn->query("SELECT * FROM bill WHERE status = 'Pending' AND (method 
 </html>
 
 <!--footer-->
-<?php include_once 'footer_admin.php';?>
+<?php include_once '../footer.php';?>
 
 <?php $conn->close(); ?>

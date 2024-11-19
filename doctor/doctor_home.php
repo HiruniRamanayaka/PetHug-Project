@@ -30,7 +30,7 @@ if ($doctor) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Home - PetHug</title>
-    <link rel="stylesheet" href="../afterLoginDoctor_style/home.css" type="text/css">
+    <link rel="stylesheet" href="../afterLoginUser_style/home.css" type="text/css">
   
 </head>
 <body>
@@ -75,5 +75,5 @@ if ($doctor) {
 </html>
 
 <?php
-include_once "footer_dr.php";
+include_once "../footer.php";
 ?>

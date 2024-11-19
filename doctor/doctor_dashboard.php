@@ -169,6 +169,6 @@
 
 
 <!--footer-->
-<?php include_once "footer_dr.php"?>
+<?php include_once "../footer.php"?>
 
 <?php $conn->close(); ?>

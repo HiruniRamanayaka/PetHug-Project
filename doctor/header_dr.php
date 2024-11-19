@@ -26,19 +26,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <ul class="nav-links">
                 <li><a href="doctor_home.php" class="<?php if ($current_page == 'doctor_home.php'){echo 'active';} ?>">Home</a></li>
                 <li><a href="doctor_dashboard.php" class="<?php if($current_page == 'doctor_dashboard.php'){echo 'active';} ?>">Dashboard</a></li>
-                <li><a href="give_consultation.php" class="<?php if($current_page == 'give_consultation.php'){echo 'active';} ?>">Give <br> Consultations</a></li>
-                <li><a href="assigned_appointments.php" class="<?php if($current_page == 'assigned_appointments.php'){echo 'active';} ?>">Assigned <br> Appointments</a></li>
-                <li><a href="doctor_add_report.php" class="<?php if($current_page == 'doctor_add_report.php'){echo 'active';} ?>">Add <br>Reports</a></li>
-                <li><a href="doctor_view_report.php" class="<?php if($current_page == 'doctor_view_report.php'){echo 'active';} ?>">View <br> Reports</a></li>
+                <li><a href="give_consultation.php" class="<?php if($current_page == 'give_consultation.php'){echo 'active';} ?>"> Consultations</a></li>
+                <li><a href="assigned_appointments.php" class="<?php if($current_page == 'assigned_appointments.php'){echo 'active';} ?>">Appointments</a></li>
+
+                <li><a href="doctor_view_report.php" class="<?php if($current_page == 'doctor_view_report.php'){echo 'active';} ?>">Reports</a></li>
                 <li><a href="doctor_earnings.php" class="<?php if($current_page == 'doctor_earnings.php'){echo 'active';} ?>">Earnings</a></li>
                 
                 <li><a href="doctor_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></li>
                 
                 <li>
-                    <button onclick="togglePopup('profilePopup')"><i style="font-size: 30px" class="fas fa-user-circle"></i></button>
+                    <button onclick="togglePopup('profilePopup')"><i style="font-size: 30px " class="fas fa-user-circle"></i></button>
                     <div id="profilePopup" class="popup">
                         <p><a href="doctor_profile.php">Profile</a></p><br>
-                        <p><a href="doctor_earning_history.php">Earning History</a></p><br>
                         <p><a href="../logout.php">Logout</a></p>
                     </div>
                 </li>

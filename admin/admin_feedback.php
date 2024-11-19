@@ -47,9 +47,9 @@ $result = $conn->query($sql);
     background-color: #e0f7ff;
 }
 
-header {
-    background-color: #0056b3;
-    color: #fff;
+h1 {
+    
+    color: #03045e;
     padding: 20px 10px;
     text-align: center;
 }
@@ -58,11 +58,17 @@ main {
     padding: 20px;
 }
 
-.message {
-    color: green;
-    text-align: center;
-    margin-bottom: 20px;
-}
+.container {
+            max-width: 1200px;
+            margin: 10px auto;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+
 
 table {
     width: 100%;
@@ -96,17 +102,12 @@ table tr:nth-child(even) {
     text-decoration: underline;
 }
 
-footer {
-    background-color: #0056b3;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    margin-top: 20px;
-}
+
 
    </style>
 </head>
 <body>
+    <div class="container">
     <header>
         <h1>Manage Feedback</h1>
     </header>
@@ -144,10 +145,13 @@ footer {
             <p>No feedback available.</p>
         <?php } ?>
     </main>
-    <footer>
-        <p>&copy; 2024 PetHug Veterinary Hospital</p>
-    </footer>
+    </div>
+    
 </body>
 </html>
 
+
+
 <?php $conn->close(); ?>
+
+<?php include_once '../footer.php'; ?>

@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 0 auto;
             
         }
-        img{
+        .about-image{
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -304,7 +304,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container">
 <div class="about">
     <h2>Your Consultations</h2>
-    <img src="../images/consultaion.jpg" alt="Pet" >
+    <img class="about-image" src="../images/consultaion.jpg" alt="Pet" >
     <p class="about-text">This page makes it easy to request new consultations with our veterinary team and manage existing ones. Stay on top of your pet’s health by scheduling and tracking consultations whenever needed—all in one convenient place.</p>    
      <div class="create-btn-container">
         <a href="consultation_form.php" class="new-appointment-btn">Book New Consultation</a>
@@ -406,5 +406,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <?php
-include_once "footer_user.php";
+include_once "../footer.php";
 ?>

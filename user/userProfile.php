@@ -53,15 +53,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: Arial, sans-serif;
             background-color: #e0f7ff;
             margin: 0;
-            padding: 20px;
+            
+          
         }
         .container {
             max-width: 600px;
             margin: auto;
+            margin-top: 50px;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+           
         }
         h2 {
             text-align: center;
@@ -79,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        button {
+        .btn {
             width: 100%;
             padding: 10px;
             background-color: #007bff;
@@ -89,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             cursor: pointer;
             font-size: 16px;
         }
-        button:hover {
+        .btn:hover {
             background-color: #0056b3;
         }
         .success {
@@ -156,11 +159,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <textarea name="address" rows="4" required><?php echo htmlspecialchars($user['user_address']); ?></textarea>
         </div>
         <div>
-            <button type="submit">Update Profile</button>
+            <button class="btn" type="submit">Update Profile</button>
         </div>
     </form>
 </div>
 
 </body>
 </html>
+
+<?php include_once "../footer.php"?>
 <?php $conn->close(); ?>
