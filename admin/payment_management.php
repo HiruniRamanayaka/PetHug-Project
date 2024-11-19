@@ -31,6 +31,7 @@ $admin_id = $_SESSION['admin_id'];
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
             margin: 10px;
+            margin-top: 50px;
         }
 
         h2 {

@@ -183,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             background-color: #dc3545;
             color: white;
         }
-        .update-notes-btn, .ShowNotes-btn {
+        .update-notes-btn{
             padding: 5px 10px;
             border: none;
             border-radius: 5px;

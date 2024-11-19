@@ -144,6 +144,7 @@ while ($row = $result->fetch_assoc()) {
         .container {
             max-width: 1200px;
             margin: auto;
+            margin-top: 50px;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;

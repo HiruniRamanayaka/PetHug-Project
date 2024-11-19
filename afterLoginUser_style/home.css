@@ -26,7 +26,7 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 400px;
+    height: auto;
     width: 100%; /* Adjusted to 100% to make use of .about's 95% width */
     position: relative;
     opacity: 0.8;
