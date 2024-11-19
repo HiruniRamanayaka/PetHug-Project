@@ -88,7 +88,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <div class="container">
     <!-- Left Section -->
     <div class="left-section">
-      <img src="../images/PetHugLogo.png" alt="Logo">
+      <img src="../images/PetHugLogo(1).png" alt="Logo">
       <h2>Login</h2>
       <p class="subtitle">Enter your email and password to access your account.</p>
 
