@@ -75,5 +75,5 @@ if ($doctor) {
 </html>
 
 <?php
-include_once "footer_dr.php";
+include_once "../footer.php";
 ?>

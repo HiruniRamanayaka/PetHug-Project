@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             margin: 0 auto;
             
         }
-        img{
+        .about-image{
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -164,22 +164,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             background-color: #007bff;
             color: white;
         }
-        button {
+        
+        .accept-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
-        }
-        .accept-btn {
             background-color: #28a745;
             color: white;
         }
         .cancel-btn, .delete-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             background-color: #dc3545;
             color: white;
         }
         .update-notes-btn, .ShowNotes-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             background-color: #007bff;
             color: white;
         }
@@ -197,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 <div class="container">
     <div class="about">
     <h2>Appointment Management</h2>
-    <img src="../images/42360162_shutterstock_760460794.webp" alt="Pet" >
+    <img class="about-image" src="../images/42360162_shutterstock_760460794.webp" alt="Pet" >
     <p class="about-text">As a trusted veterinary professional, you can easily manage your appointments through this platform. With options to accept, cancel, or delete bookings, you have complete control to keep your schedule organized. PetHug ensures that managing your patient appointments is streamlined, allowing you to focus on delivering the best care to every pet in need.</p>
     </div>
     <?php if (isset($error_message)) { echo "<p style='color:red;text-align:center;'>$error_message</p>"; } ?>
@@ -348,4 +357,4 @@ function showNotes(petId) {
 </html>
 
 <!-- footer -->
-<?php include_once "footer_dr.php"?>
+<?php include_once "../footer.php"?>
