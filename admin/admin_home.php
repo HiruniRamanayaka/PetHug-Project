@@ -106,6 +106,6 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
 </body>
 </html>
 <?php
-include_once "footer_admin.php";
+include_once "../footer.php";
 
 ?>

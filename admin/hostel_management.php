@@ -370,5 +370,5 @@ while ($row = $result->fetch_assoc()) {
 </html>
 
 <?php
-include 'footer_admin.php';
+include '../footer.php';
 ?>
