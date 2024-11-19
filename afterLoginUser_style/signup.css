@@ -1,59 +1,189 @@
-body{
-    background-color: #e0f7ff;
-}
-
-.form
-{
-    text-align: center;
-    height: 400px;
-    width: 320px;
-    border:rgb(26, 111, 190) solid 2px;
-    border-radius: 20px;
-    margin: 0 auto;
-    margin-top: 50px;
-    padding: 0 10px;
-    padding-top: 8px;
-    padding-bottom: 25px;
-}
-
-h2
-{
-    font-size: 2rem;
-    margin-top: 7px;
-}
-
-input
-{
-    border-radius: 10px;
-    padding:3px 5px;
-}
-
-#submit
-{
-    margin-top:11px;
-    padding: 4px 15px;
-    border-radius: 13px;
-    background-color: #166FE5;
-    border: #166FE5;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    justify-content: center;
+    align-items: center;
+    height: 110vh;
+    background: #f5f5f5;
+    margin: 0;
+  }
+  
+  /* Container */
+  .container {
+    display: flex;
+    width: 70%;
+    max-width: 1200px;
+    height: 90%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin: 10px auto;
+  }
+  
+  /* Left Section */
+  .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #a0cee6, #0831e8);
     color: white;
-}
+    text-align: center;
+  }
+  
+  .left-section h1 {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .left-section p {
+    font-size: 22px;
+    margin-bottom: 30px;
+    opacity: 0.9;
+  }
+  
+  .left-image {
+    width: 70%;
+    max-width: 250px;
+    border-radius: 50%;
+  }
+  
+  /* Right Section */
+  .right-section {
+    flex: 1;
+    background: white;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #000;
+  }
+  
+  .right-section img {
+    position: relative;
+    top: 0px;
+    width: 120px;
+    height: auto;
+  }
+  
+  .right-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  /* Form */
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    font-size: 14px;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  input[type="file"] {
+    padding: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .forgot-password {
+    font-size: 14px;
+    color: #0077ff;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  /* Buttons */
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .btn-signin,
+  .btn.reset {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s;
+  }
+  
+  .btn-signin {
+    background: #000;
+  }
+  
+  .btn-signin:hover {
+    background: #333;
+  }
+  
+  .btn.reset {
+    background: #888;
+  }
+  
+  .btn.reset:hover {
+    background: #555;
+  }
+  
+  /* Sign Up Link */
+  .signup-link {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .signup-link a {
+    color: #0077ff;
+    text-decoration: none;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
 
-.error-box {
-    border: 2px solid red;
-    background-color: #ffe5e5;
+  .error_message {
     color: red;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    display: none; /* Initially hidden */
-}
-
-.success-box {
-    border: 2px solid green;
-    background-color: #e5ffe5;
-    color: green;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    display: none; /* Initially hidden */
-}
+    text-align: center;
+    margin: 20px;
+  }
+  
