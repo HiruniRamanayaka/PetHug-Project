@@ -202,8 +202,8 @@ $summary = getMonthlySummary($conn);
         }
 
         .summary-item {
-            background: #9999ff; /* Blue background for summary items */
-            color: black;
+            background: #007bff; /* Blue background for summary items */
+            color: white;
             font-weight: 600;
             padding: 20px;
             border-radius: 8px;
@@ -214,7 +214,7 @@ $summary = getMonthlySummary($conn);
         }
 
         .summary-item:hover {
-            background: #6666ff  ; /* Darker blue on hover */
+            background: #0056b3  ; /* Darker blue on hover */
         }
 
         .filters {
