@@ -15,9 +15,9 @@ $today = date('Y-m-d');
 $acceptedQuery = "SELECT appointment.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM appointment 
                   JOIN pet ON appointment.pet_id = pet.pet_id 
                   JOIN user ON appointment.user_id = user.user_id 
-                  WHERE appointment.doctor_id = ? AND DATE(appointment.appointment_time) = ? AND appointment.status = 'Accepted'";
+                  WHERE appointment.doctor_id = ?  AND appointment.status = 'Accepted'";
 $acceptedStmt = $conn->prepare($acceptedQuery);
-$acceptedStmt->bind_param("is", $doctor_id, $today);
+$acceptedStmt->bind_param("i", $doctor_id);
 $acceptedStmt->execute();
 $acceptedAppointments = $acceptedStmt->get_result();
 
@@ -48,10 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
     switch ($action) {
         case "accept":
-            $updateQuery = "UPDATE appointment SET status = 'Accepted' WHERE appointment_id = ?";
+            $updateQuery = "UPDATE appointment SET status = 'Accepted', reminder_sent = 0 WHERE appointment_id = ?";
             break;
         case "cancel":
-            $updateQuery = "UPDATE appointment SET status = 'Canceled' WHERE appointment_id = ?";
+            $updateQuery = "UPDATE appointment SET status = 'Canceled', reminder_sent = 0 WHERE appointment_id = ?";
             break;
         case "delete":
             $updateQuery = "DELETE FROM appointment WHERE appointment_id = ?";
@@ -224,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     <?php if (isset($error_message)) { echo "<p style='color:red;text-align:center;'>$error_message</p>"; } ?>
 
     <!-- Today's Accepted Appointments -->
-    <h3>Today's Accepted Appointments</h3>
+    <h3> Accepted Appointments</h3>
     <table>
         <tr>
             <th>Appointment ID</th>
@@ -237,14 +237,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         </tr>
         <?php while ($row = $acceptedAppointments->fetch_assoc()) { 
             $datetime = new DateTime($row['appointment_time']);
-            $date = $datetime->format("Y-m-d"); 
-            $time = $datetime->format("H:i:s"); 
+           
         ?>
             <tr>
                 <td><?php echo $row['appointment_id']; ?></td>
                 <td><?php echo $row['pet_owner_name']; ?></td>
                 <td><?php echo $row['pet_name']; ?></td>
-                <td><?php echo $time; ?></td>
+                <td><?php echo $row['appointment_time']; ?></td>
                 <td><?php echo ucfirst($row['status']); ?></td>
                 <td>
                   <a href="../Doctor/doctor_view_report.php?appointment_id=<?php echo $row['appointment_id']; ?>&pet_id=<?php echo $row['pet_id']; ?>" class="ShowNotes-btn">
