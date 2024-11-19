@@ -254,11 +254,15 @@ while ($row = $result->fetch_assoc()) {
                                 <button type="submit" name="send_reminder" class="reminder-btn">Send Reminder</button>
                             <?php } ?>
                         </form>
-                        <!-- Add Set Fee button -->
-                        <form action="admin_set_fees.php" method="GET" style="display:inline-block;">
-                            <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
-                            <button type="submit" class="reminder-btn" style="background-color: #28a745;">Set Fee</button>
-                        </form>
+                        <!-- Check if the fee is set -->
+                        <?php if (empty($row['appointment_fee'])) { ?>
+                            <form action="admin_set_fees.php" method="GET" style="display:inline-block;">
+                                <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
+                                <button type="submit" class="reminder-btn" style="background-color: #28a745;">Set Fee</button>
+                            </form>
+                        <?php } else { ?>
+                            <span>Fee Set</span>
+                        <?php } ?>
                     </td>
                 </tr>
             <?php } ?>
