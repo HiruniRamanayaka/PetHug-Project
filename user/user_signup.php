@@ -1,7 +1,7 @@
 <?php
-require_once "../connection.php";
+include_once "../connection.php";
 
-$error_message = "";
+$error_messages = [];
 
 // Handling form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -10,41 +10,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $address = $_POST['address'];
     $phone = $_POST['phone'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    // Password confirmation
+    if ($password !== $confirm_password) {
+        $error_messages[] = "Passwords do not match.";
+    }
+
+    // Phone validation
+    if (!preg_match("/^[0-9]{10}$/", $phone)) {
+        $error_messages[] = "Phone number must be 10 digits.";
+    }
 
     // Check if email already exists
-    $checkEmail = "SELECT * FROM user WHERE user_email = '$email'";
-    $result = $conn->query($checkEmail);
+    $checkEmail = "SELECT * FROM user WHERE user_email = ?";
+    $stmt = $conn->prepare($checkEmail);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // Email already exists
-        $error_message = "This email is already registered. Please use a different email.";
+        $error_messages[] = "This email is already registered. Please use a different email.";
+    }
+
+    // File upload validation (only if an image is uploaded)
+    $target_dir = "../uploads/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+
+    if (!empty($_FILES["image"]["name"])) {
+        // Validate file type
+        if (!in_array($imageFileType, $allowed_types)) {
+            $error_messages[] = "Only JPG, JPEG, PNG, and GIF files are allowed.";
+        }
+
+        // Attempt to move the uploaded file only if validations pass
+        if (empty($error_messages)) {
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                $error_messages[] = "File upload failed.";
+            }
+        }
     } else {
-        // Proceed with registration if email is not found
-        // Image upload
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
-       
+        $target_file = null; // Set to null if no image is uploaded
+    }
 
-        // Insert data into the database
+    if (empty($error_messages)) {
+        // Hash the password
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+        // Insert user data
         $sql = "INSERT INTO user (user_first_name, user_last_name, user_email, user_image, user_address, user_phone, user_password) 
-                VALUES ('$firstName', '$lastName', '$email', '$target_file', '$address', '$phone', '$password')";
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssss", $firstName, $lastName, $email, $target_file, $address, $phone, $hashed_password);
 
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
             header("Location: userLogin.php");
             exit();
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            $error_messages[] = "Database error: " . $stmt->error;
         }
     }
-
-    $conn->close();
 }
-?>
-
-<?php
-// Get the current page's file name
-$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 
 <!DOCTYPE html>
@@ -57,8 +86,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </head>
 <body>
   <?php 
-  if (!empty($error_message)) {
-      echo "<div class='error_message'>" . $error_message . "</div>";
+  if (!empty($error_messages)) {
+      foreach ($error_messages as $error) {
+          echo "<div class='error_message'>" . htmlspecialchars($error) . "</div>";
+      }
   }
   ?>
   <div class="container">
@@ -72,7 +103,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Right Section -->
     <div class="right-section">
       <h2> Create your PetHug Account </h2>
-      <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST" enctype="multipart/form-data">
+      <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
         
         <div class="form-group">
           <label for="first_name">First Name:</label>
@@ -106,7 +137,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <div class="form-group">
           <label for="confirm_password">Confirm Password</label>
-          <input type="password" id="confirm_password" name="confirm_password" placeholder="Enter your confirm password" required>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
         </div>
 
         <div class="form-group">
