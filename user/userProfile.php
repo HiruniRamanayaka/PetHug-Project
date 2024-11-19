@@ -8,9 +8,9 @@
     // Database connection
     require '../connection.php';
     
-    // user ID from session
+    // Admin ID from session
     $user_id = $_SESSION['user_id'];
-
+    
     // Fetch user details from the database
     $sql = "SELECT * FROM user WHERE user_id = $user_id";
     $result = mysqli_query($conn, $sql);
@@ -18,7 +18,7 @@
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
     } else {
-        $_SESSION['error_message1'] = "<p>User not found or you do not have permission to edit this profile.</p>";
+        $_SESSION['error_message1'] = "<p>Admin not found or you do not have permission to edit this profile.</p>";
         exit();
     }
 
@@ -31,19 +31,18 @@
         $user_address = $_POST['user_address'];
 
         // Validate the input
-        if (empty($user_first_name) || empty($user_last_name) || empty($user_email) ||empty($user_phone) || empty($user_address)) {
-
+        if (empty($user_first_name) || ($user_last_name) || empty($user_email) ||empty($user_phone) || empty($user_address)) {
             $_SESSION['error_message1'] = "All fields is required.";
         } elseif (!preg_match("/^[0-9]{10}$/", $user_phone)) {
             $_SESSION['error_message1'] = "Phone number must be 10 digits.";
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error_message1'] = "Invalid email format.";
         } else {
-            $sql = "UPDATE user SET user_first_name='$user_first_name', user_last_name='$user_last_name', user_email='$user_email', user_phone='$user_phone', user_address='$user_address' WHERE user_id='$user_id'";
+            $sql = "UPDATE user SET user_name='$user_name', user_email='$user_email', user_phone='$user_phone', user_address='$user_address' WHERE user_id='$user_id'";
 
                 if (mysqli_query($conn, $sql)) {
-                    $_SESSION['success_message1'] = "Doctor details updated successfully.";
-                    header("Location: userProfile.php");
+                    $_SESSION['success_message1'] = "User details updated successfully.";
+                    header("Location: user_profile.php");
                     exit();
                 } else {
                     $_SESSION['error_message1'] = "Error updating pet: " . mysqli_error($conn);
@@ -63,96 +62,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
     <title>Admin profile form</title>
     <link rel="stylesheet" href="../afterLoginDoctor_style/dr_profile.css">
-=======
-    <title>User Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7ff;
-            margin: 0;
-            
-          
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-           
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .success {
-            color: green;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .error {
-            color: red;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-    </style>
-    <script>
-        function validateForm() {
-            var name = document.forms["profileForm"]["name"].value;
-            var email = document.forms["profileForm"]["email"].value;
-            var phone = document.forms["profileForm"]["phone"].value;
-            var address = document.forms["profileForm"]["address"].value;
-
-            if (name == "" || email == "" || phone == "" || address == "") {
-                alert("Please fill out all fields.");
-                return false;
-            }
-            // Email format validation
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                alert("Please enter a valid email address.");
-                return false;
-            }
-            // Phone format validation (optional)
-            var phonePattern = /^[0-9]{10}$/;
-            if (!phonePattern.test(phone)) {
-                alert("Please enter a valid phone number (10 digits).");
-                return false;
-            }
-            return true;
-        }
-    </script>
->>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 </head>
 <body>
 
@@ -170,11 +81,11 @@
 
     <div class="profile-container">
         <div class="profile">
-            <?php
+        <?php
             // Check if the user has a photo in the database
             if (!empty($row['user_image'])) {
                 echo "<div class='dr_img'>";
-                echo "<img src='" . htmlspecialchars($row['user_image']) . "' alt='User Photo' width='100px' height='auto'>";
+                echo "<img src='" . htmlspecialchars($row['user_image']) . "' alt='user Photo' width='100px' height='auto'>";
                 echo "</div>";
             } else {
                 // Use the default image if no photo exists
@@ -188,45 +99,20 @@
             </div>
         </div>
 
-<<<<<<< HEAD
         <?php
             if (isset($_SESSION['success_message'])) {
                         echo '<p style="color:green;">' . $_SESSION['success_message'] . '</p>';
                         unset($_SESSION['success_message']);
             }
         ?>
-=======
-    <form name="profileForm" method="POST" onsubmit="return validateForm()">
-        <div>
-            <label for="name">Name:</label>
-            <input type="text" name="name" value="<?php echo htmlspecialchars($user['user_first_name']); ?>" required>
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" name="email" value="<?php echo htmlspecialchars($user['user_email']); ?>" required>
-        </div>
-        <div>
-            <label for="phone">Phone:</label>
-            <input type="text" name="phone" value="<?php echo htmlspecialchars($user['user_phone']); ?>" required>
-        </div>
-        <div>
-            <label for="address">Address:</label>
-            <textarea name="address" rows="4" required><?php echo htmlspecialchars($user['user_address']); ?></textarea>
-        </div>
-        <div>
-            <button class="btn" type="submit">Update Profile</button>
-        </div>
-    </form>
-</div>
->>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 
         <div class="form">
             <h2>Edit Profile</h2>
-            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                <label for="first_name">First Name:</label>
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <label for="first_name">Name:</label>
                 <input id="first_name" type="text" name="user_first_name" value="<?php echo htmlspecialchars($row['user_first_name']);?>"><br><br>
-                <label for="last_name">Last Name:</label>
-                <input id="last_name" type="text" name="user_first_name" value="<?php echo htmlspecialchars($row['user_last_name']);?>"><br><br>
+                <label for="last_name">Name:</label>
+                <input id="last_name" type="text" name="user_last_name" value="<?php echo htmlspecialchars($row['user_last_name']);?>"><br><br>
                 <label for="email">Email:</label>
                 <input id="email" type="email" name="user_email" value="<?php echo htmlspecialchars($row['user_email']);?>"><br><br>
                 <label for="phone">Phone number:</label>
@@ -251,11 +137,7 @@
 </body>
 </html>
 
-<<<<<<< HEAD
 <!-- footer -->
-<?php include_once"footer_user.php";?>
+<?php include_once "footer_user.php";?>
 
-=======
-<?php include_once "../footer.php"?>
->>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 <?php $conn->close(); ?>
