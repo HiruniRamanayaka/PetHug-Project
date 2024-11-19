@@ -194,7 +194,7 @@
     </div>
 
     <!--footer-->
-    <?php include_once "footer_user.php"?>
+    <?php include_once "../footer.php"?>
 
 </body>
 </html>

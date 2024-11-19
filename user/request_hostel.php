@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </html>
 
 <?php
-include_once "footer_user.php";
+include_once "../footer.php";
 ?>
 
 <?php $conn->close(); ?>

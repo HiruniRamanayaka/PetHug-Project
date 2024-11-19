@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 0 auto;
             
         }
-        img{
+        .about-image{
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container">
 <div class="about">
     <h2>My Hostel Bookings</h2>
-    <img src="../images/ai-generated-8985306_640.jpg" alt="Pet" >
+    <img class="about-image" src="../images/ai-generated-8985306_640.jpg" alt="Pet" >
     <p class="about-text">Here, you can arrange comfortable stays for your pet by creating new hostel requests and managing existing ones. Ensure your pet has a safe and cozy place to stay—all from one simple page.</p>    
      <div class="button-container">
      <a href="request_hostel.php" class="button">Book a New Hostel</a>
@@ -284,5 +284,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 </html>
 <?php
-include_once "footer_user.php"; 
+include_once "../footer.php"; 
 ?>

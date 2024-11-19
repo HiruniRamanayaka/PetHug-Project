@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 0 auto;
             
         }
-        img{
+        .about-image{
             display: block;
             margin-left: auto;
             margin-right: auto;
@@ -313,7 +313,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="container">
     <div class="about">
     <h2>Your Appointments</h2>
-    <img src="../images/dog-1861839_1280.jpg" alt="Pet" >
+    <img class="about-image" src="../images/dog-1861839_1280.jpg" alt="Pet" >
     <p class="about-text">Welcome to the PetHug, where taking care of your pet’s health is simple and convenient. From this page, you can quickly create new appointments with our dedicated veterinary team or manage existing ones to fit your schedule. Whether your pet needs a check-up, a vaccination, or a specialized consultation, our streamlined system makes it easy to stay on top of every health appointment. Book with confidence and manage with flexibility—all in one place.</p>    
     <div class="create-btn-container">
         <a href="makeAppointment.php" class="new-appointment-btn">Create New Appointment</a>
@@ -421,5 +421,5 @@ foreach ($statuses as $status) {
 </body>
 </html>
 <?php
-include_once "footer_user.php";
+include_once "../footer.php";
 ?>

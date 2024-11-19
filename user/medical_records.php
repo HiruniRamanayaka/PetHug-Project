@@ -267,5 +267,5 @@ if (!$pet_result) {
 </body>
 </html>
 <?php
-include_once 'footer_user.php';
+include_once '../footer.php';
 ?>
