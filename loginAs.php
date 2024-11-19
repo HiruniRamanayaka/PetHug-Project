@@ -11,77 +11,72 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title>Header</title>
     <style>
         *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
+          margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
 }
 
 body{
-  font-family: 'Arial', sans-serif;
-  color: #333;
-  background-color: #e0f7ff;
+    font-family: 'Arial', sans-serif;
+    
 }
 
-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #bcd2fd;
-  padding: 5px 5% 5px 0;
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:   #6666ff ;
+    padding: 5px 5% 5px 0;
+    height: 130px;
 }
 
 #logo{
-  display: flex;
-  justify-content: left;
-  width: 300px;
-  height: 100px;
+    display: flex;
+    justify-content: left;
+    width: auto;
+    max-width: 200px; 
+    flex-shrink: 0;
+    margin-left: 5%;
 }
 
 #logo img{
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  transform: scale(1.8); /* Scale the logo up (adjust scale value as needed) */
-  transform-origin: center; /* Adjust the origin point of the scaling */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .nav-links{
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  gap: 30px;
+    list-style-type: none;
+    display: flex;
+    gap: 30px;
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .nav-links a{
-  text-decoration: none;
-  color:#333;
-  font-weight: 500;
+    text-decoration: none;
+    color:white;
+    font-weight:700;
 }
 
-#login-btn{
-  padding: 10px 20px;
-  border: 2px solid #2b55eb;
-  border-radius: 20px;
-  
-}
+
 
 #signup-btn{
-  background-color: #2b55eb;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid    #03045e;
+    border-radius: 20px;
 }
 
 .nav-links a:hover{
-  color: #2b55eb;
+    color:    #03045e;
 }
 
 .nav-links a.active {
-  color: #2b55eb !important; /* Color for the active page */
-  font-weight: bold; 
+    color:   #03045e !important; 
+    font-weight: 700; 
 }
+
 
         </style>
 </head>
