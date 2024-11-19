@@ -55,13 +55,14 @@ body{
 }
 
 #signup-btn{
+    background-color: #35379a;
     padding: 10px 20px;
-    border: 2px solid    #03045e;
+    border: 2px solid    #181a91;
     border-radius: 20px;
 }
 
 .nav-links a:hover{
-    color:    #03045e;
+    color: #03045e;
 }
 
 .nav-links a.active {

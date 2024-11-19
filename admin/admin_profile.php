@@ -11,7 +11,7 @@
     // Admin ID from session
     $admin_id = $_SESSION['admin_id'];
     
-    // Fetch user details from the database
+    // Fetch admin details from the database
     $sql = "SELECT * FROM admin WHERE admin_id = $admin_id";
     $result = mysqli_query($conn, $sql);
 
@@ -31,7 +31,6 @@
 
         // Validate the input
         if (empty($admin_name) || empty($admin_email) ||empty($admin_phone) || empty($admin_address)) {
-
             $_SESSION['error_message1'] = "All fields is required.";
         } elseif (!preg_match("/^[0-9]{10}$/", $admin_phone)) {
             $_SESSION['error_message1'] = "Phone number must be 10 digits.";
@@ -41,7 +40,7 @@
             $sql = "UPDATE admin SET admin_name='$admin_name', admin_email='$admin_email', admin_phone='$admin_phone', admin_address='$admin_address' WHERE admin_id='$admin_id'";
 
                 if (mysqli_query($conn, $sql)) {
-                    $_SESSION['success_message1'] = "Doctor details updated successfully.";
+                    $_SESSION['success_message1'] = "Admin details updated successfully.";
                     header("Location: admin_profile.php");
                     exit();
                 } else {
@@ -82,7 +81,7 @@
     <div class="profile-container">
         <div class="profile">
         <?php
-            // Check if the user has a photo in the database
+            // Check if the admin has a photo in the database
             if (!empty($row['admin_image'])) {
                 echo "<div class='dr_img'>";
                 echo "<img src='" . htmlspecialchars($row['admin_image']) . "' alt='Admin Photo' width='100px' height='auto'>";
