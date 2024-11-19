@@ -26,25 +26,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <ul class="nav-links">
                 <li><a href="home.php" class="<?php if ($current_page == 'home.php'){echo 'active';} ?>">Home</a></li>
                 <li><a href="dashboard.php" class="<?php if($current_page == 'dashboard.php'){echo 'active';} ?>">Dashboard</a></li>
-                <li><a href="viewPets.php" class="<?php if($current_page == 'viewPets.php'){echo 'active';} ?>">View <br>Pets</a></li>
-                <li><a href="add_pets.php" class="<?php if($current_page == 'add_pets.php'){echo 'active';} ?>">Add <br>Pet</a></li>
-                <li><a href="makeAppointment.php" class="<?php if($current_page == 'makeAppointment.php'){echo 'active';} ?>">Make <br>Appointment</a></li> 
-                <li><a href="consultation_form.php" class="<?php if($current_page == 'consultation_form.php'){echo 'active';} ?>">Schedule <br>Consultations</a></li>
-                <li><a href="request_hostel.php" class="<?php if($current_page == 'request_hostel.php'){echo 'active';} ?>">Request <br>Hostel</a></li>
-                <li><a href="medical_records.php" class="<?php if($current_page == 'medical_records.php'){echo 'active';} ?>">Medical <br>Records</a></li>
-                <li><a href="bill.php" class="<?php if($current_page == 'bill.php'){echo 'active';} ?>">View <br>Billing</a></li>
-                <li><a href="pending_payments.php" class="<?php if($current_page == 'pending_payments.php'){echo 'active';} ?>">Pending <br> Payments</a></li>
+                <li><a href="viewPets.php" class="<?php if($current_page == 'viewPets.php'){echo 'active';} ?>">My Pets</a></li>
+            
+                <li><a href="my_appointments.php" class="<?php if($current_page == 'makeAppointment.php'){echo 'active';} ?>">My Appointment</a></li> 
+                <li><a href="my_consultations.php" class="<?php if($current_page == 'consultation_form.php'){echo 'active';} ?>">My Consultations</a></li>
+                <li><a href="my_hostel.php" class="<?php if($current_page == 'request_hostel.php'){echo 'active';} ?>"> My Hostel</a></li>
+                <li><a href="medical_records.php" class="<?php if($current_page == 'medical_records.php'){echo 'active';} ?>">Medical Records</a></li>
+                <li><a href="bill.php" class="<?php if($current_page == 'bill.php'){echo 'active';} ?>">Payments</a></li>
+               
 
-                <li><button><a href="user_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></button></li>
+                <li><button><a href="user_notifications.php"><i  class="fas fa-bell"></i></a></button></li>
                 
                 <li>
-                    <button onclick="togglePopup('profilePopup')"><i style="font-size: 30px" class="fas fa-user-circle"></i></button>
+                    <button onclick="togglePopup('profilePopup')"><i  class="fas fa-user-circle"></i></button>
                     <div id="profilePopup" class="popup">
                         <p><a href="userProfile.php">Profile</a></p><br>
-                        <p><a href="my_appointments.php">My Appointments</a></p><br>
-                        <p><a href="my_consultations.php">My Consultations</a></p><br>
-                        <p><a href="my_hostel.php">My Hostels</a></p><br>
-                        <p><a href="payment_history.php">Payment History</a></p><br>
+                        
                         <p><a href="../logout.php">Logout</a></p>
                     </div>
                 </li>

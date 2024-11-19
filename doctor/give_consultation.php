@@ -5,14 +5,14 @@ if (!isset($_SESSION['dr_id'])) {
     exit();
 }
 
-require '../connection.php';
+require_once '../connection.php';
 include_once 'header_dr.php';
 
 $doctor_id = $_SESSION['dr_id'];
 $today = date('Y-m-d');
 
 // Fetch today's consultations
-$acceptedQuery = "SELECT consultation.*, pet.pet_name, user.user_first_name AS pet_owner_name FROM consultation 
+$acceptedQuery = "SELECT consultation.*, pet.pet_name,user.user_phone AS owner_phone, user.user_first_name AS pet_owner_name FROM consultation 
                   JOIN pet ON consultation.pet_id = pet.pet_id 
                   JOIN user ON consultation.user_id = user.user_id 
                   WHERE consultation.dr_id = ?  AND consultation.status = 'accepted'";
@@ -187,6 +187,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             margin-top: 5px;
             background-color: #f9f9f9;
         }
+        .whatsapp-btn button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
+            margin-left: 3px;
+        }
+
+       .whatsapp-btn button:hover {
+           background-color: #1da851;
+        }
+
     </style>
 </head>
 <body>
@@ -228,6 +243,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                         <textarea name="details" id="details_<?php echo $row['consultation_id']; ?>" placeholder="Enter notes..." required></textarea>
                         <button type="submit" class="update-notes-btn">Save Notes</button>
                     </form>
+                 <a 
+                    href="https://wa.me/<?php echo $row['owner_phone']; ?>?text=<?php echo urlencode("Hello " . $row['pet_owner_name'] . ", regarding your pet " . $row['pet_name'] . ": "); ?>" 
+                    target="_blank" 
+                    class="whatsapp-btn">
+                    <button type="button">WhatsApp</button>
+                </a>
                 </td>
             </tr>
         <?php } ?>

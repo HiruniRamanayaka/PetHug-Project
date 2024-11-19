@@ -21,7 +21,7 @@ body {
   margin-bottom: 20vh;
 }
 h2 {
-  color: #0044cc;
+  color: #3333ff;
 }
 .button-group {
   display: flex;
@@ -30,8 +30,8 @@ h2 {
   margin-top: 20px;
 }
 .btn {
-  background-color:rgb(46, 109, 230);
-  color: white;
+  background-color:#9999ff;
+  color: #03045e;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -39,5 +39,5 @@ h2 {
   font-size: 16px;
 }
 .btn:hover {
-  background-color: #003399;
+  background-color: #6666ff;
 }
