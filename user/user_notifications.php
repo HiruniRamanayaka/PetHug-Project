@@ -65,7 +65,7 @@ $result_read_notifications = $conn->query($sql_read_notifications);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e0f7ff;
             color: #333;
             margin: 0;
             padding: 0;
