@@ -24,12 +24,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
 
             <ul class="nav-links">
-                <li><a href="doctor_home.php" class="<?php if ($current_page == 'doctor_home.php'){echo 'active';} ?>">Home</a></li>
+                <li><a href="home.php" class="<?php if ($current_page == 'doctor_home.php'){echo 'active';} ?>">Home</a></li>
                 <li><a href="doctor_dashboard.php" class="<?php if($current_page == 'doctor_dashboard.php'){echo 'active';} ?>">Dashboard</a></li>
                 <li><a href="give_consultation.php" class="<?php if($current_page == 'give_consultation.php'){echo 'active';} ?>"> Consultations</a></li>
                 <li><a href="assigned_appointments.php" class="<?php if($current_page == 'assigned_appointments.php'){echo 'active';} ?>">Appointments</a></li>
 
-                <li><a href="doctor_view_report.php" class="<?php if($current_page == 'doctor_view_report.php'){echo 'active';} ?>">Reports</a></li>
+                <li><a href="generate_doctor_report.php" class="<?php if($current_page == 'generate_doctor_report.php'){echo 'active';} ?>">Reports</a></li>
                 <li><a href="doctor_earnings.php" class="<?php if($current_page == 'doctor_earnings.php'){echo 'active';} ?>">Earnings</a></li>
                 
                 <li><a href="doctor_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></li>

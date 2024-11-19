@@ -1,15 +1,15 @@
 <?php
     session_start();
-
-    include_once "../connection.php"; 
-    
     if (!isset($_SESSION['user_id'])) {
         header("Location: userLogin.php");
         exit();
     }
     
-    $user_id = $_SESSION['user_id'];     
-    $email = $_SESSION['user_email'];
+    $user_id = $_SESSION['user_id'];
+ 
+    include_once "../connection.php";
+    //header
+    include_once "header_user.php";
 
     if (!isset($_SESSION['total_amount'])) {
         header("Location: unpaid_activities_page.php"); // Adjust to the correct page
@@ -128,7 +128,7 @@
                     <input type="text" name="cvv" placeholder="XXX" required>
                 </div>
             </div>
-            <button type="submit">Pay Now</button>
+            <button class="btn" type="submit">Pay Now</button>
         </form>
     <div>
 

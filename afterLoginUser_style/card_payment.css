@@ -109,7 +109,7 @@ input[type="text"]::placeholder {
 }
 
 /* Submit button styling */
-button {
+.btn {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
