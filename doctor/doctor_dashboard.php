@@ -16,8 +16,50 @@
     $relevantPets = []; // Initialize with an empty array if there's no data
     // Get the current date
     $currentDateTime = date('Y-m-d H:i:s');
-?>
 
+
+ // Handle button actions
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+    $action = $_POST['action'];
+
+    switch ($action) {
+        case "save_notes":
+            $consultation_id = $_POST['consultation_id'];
+            $dr_notes = $_POST['details'];
+            $updateQuery = "UPDATE consultation SET details = ?, status = 'completed' WHERE consultation_id = ?";
+            break;
+        case "update_notes":
+            $appointment_id = $_POST['appointment_id'];
+            $details = $_POST['details'];
+            $updateQuery = "UPDATE appointment SET details = ?, status = 'Completed' WHERE appointment_id = ?";
+            break;
+        default:
+            $updateQuery = ""; // No action matched
+            break;
+    }
+
+    if (!empty($updateQuery)) {
+        $updateStmt = $conn->prepare($updateQuery);
+        
+        if ($action === "save_notes") {
+            // Bind parameters for `save_notes`
+            $updateStmt->bind_param("si", $dr_notes, $consultation_id);
+        } else if ($action === "update_notes") {
+            // Bind parameters for `update_notes`
+            $updateStmt->bind_param("si", $details, $appointment_id);
+        }
+
+        if ($updateStmt->execute()) {
+            header("Location: doctor_dashboard.php");
+            exit();
+        } else {
+            $error_message = "Error updating records. Please try again.";
+        }
+    } else {
+        $error_message = "No valid action provided.";
+    }
+}
+?>
 
 
 <!DOCTYPE html>
@@ -90,19 +132,35 @@
                         <th>Pet name</th>
                         <th>Appointment time</th>
                         <th>Appointment reason</th>
+                        <th>Details</th>
                         <th>Actions</th>
                     </tr>";
 
-                    while ($row = mysqli_fetch_assoc($result_appointments)) {
+                    while ($row = mysqli_fetch_assoc($result_appointments)) {?>
 
-                        echo "<tr>
-                            <td>" . $row['appointment_id'] . "</td>
-                            <td>" . $row['pet_id'] . "</td>
-                            <td>" . $row['pet_name'] . "</td>
-                            <td style='color:red;'>" . $row['appointment_time'] . "</td>
-                            <td>" . $row['appointment_reason'] . "</td> 
+                <td><?php echo $row['appointment_id']; ?></td>
+                <td><?php echo $row['pet_id']; ?></td>
+                <td><?php echo $row['pet_name']; ?></td>
+                <td><?php echo $row['appointment_time']; ?></td>
+                <td><?php echo $row['appointment_reason']; ?></td>
+                <td>
+                  <a href="../Doctor/doctor_view_report.php?appointment_id=<?php echo $row['appointment_id']; ?>&pet_id=<?php echo $row['pet_id']; ?>" class="ShowNotes-btn">
+                  Show Notes
+                  </a>
+                </td>
+
+                <td>
+                   <form method="POST" style="display:inline;">
+                      <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
+                      <input type="hidden" name="action" value="update_notes">
+                      <textarea name="details" id="details_<?php echo $row['appointment_id']; ?>" placeholder="Enter notes..." required></textarea>
+                     <button type="submit" class="update-notes-btn">Save Notes</button>
+                   </form>
+                </td>
                             
-                        </tr>";
+                    </tr>
+
+                    <?php
                         }
 
                         echo "</table><br><br>";
@@ -123,10 +181,13 @@
                             c.created_at,
                             p.pet_id,
                             p.pet_name,
-                            d.dr_name
+                            d.dr_name,
+                            u.user_phone,
+                            u.user_first_name
                         FROM consultation c
                         INNER JOIN pet p ON c.pet_id = p.pet_id
                         INNER JOIN doctor d ON c.dr_id = d.dr_id
+                        INNER JOIN user u ON c.user_id = u.user_id
                         WHERE c.dr_id = '$doctor_id' AND c.created_at>='$currentDateTime' AND c.status='Accepted'
                         ORDER BY c.created_at ASC
                         LIMIT 3";
@@ -141,18 +202,39 @@
                         <th>Pet name</th>
                         <th>Consultation time</th>
                         <th>Consultation reason</th>
+                        <th>Details </th>
                         <th>Actions</th>
                     </tr>";
 
-                    while ($row = mysqli_fetch_assoc($result_consultations)) {
+                    while ($row = mysqli_fetch_assoc($result_consultations)) {?>
 
-                        echo "<tr>
-                            <td>" . $row['consultation_id'] . "</td>
-                            <td>" . $row['pet_id'] . "</td>
-                            <td>" . $row['pet_name'] . "</td>
-                            <td style='color:red;'>" . $row['created_at'] . "</td>
-                            <td>" . $row['consultation_reason'] . "</td>
-                        </tr>";
+<tr>
+                <td><?php echo $row['consultation_id']; ?></td>
+                <td><?php echo $row['pet_id']; ?></td>
+                <td><?php echo $row['pet_name']; ?></td>
+                <td><?php echo $row['created_at']; ?></td>
+                <td><?php echo $row['consultation_reason']; ?></td>
+                <td>
+                  <a href="../Doctor/doctor_view_report.php?consultation_id=<?php echo $row['consultation_id']; ?>&pet_id=<?php echo $row['pet_id']; ?>" class="ShowNotes-btn">
+                  Show Notes
+                  </a>
+                </td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
+                        <input type="hidden" name="action" value="save_notes">
+                        <textarea name="details" id="details_<?php echo $row['consultation_id']; ?>" placeholder="Enter notes..." required></textarea>
+                        <button type="submit" class="update-notes-btn">Save Notes</button>
+                    </form>
+                 <a 
+                    href="https://wa.me/<?php echo $row['user_phone']; ?>?text=<?php echo urlencode("Hello " . $row['user_first_name'] . ", regarding your pet " . $row['pet_name'] . ": "); ?>" 
+                    target="_blank" 
+                    class="whatsapp-btn">
+                    <button type="button">WhatsApp</button>
+                </a>
+                </td>
+            </tr>
+            <?php
                     }
 
                     echo "</table><br><br>";
@@ -172,3 +254,4 @@
 <?php include_once "../footer.php"?>
 
 <?php $conn->close(); ?>
+            

@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_reminder'])) {
         // Insert notification
         $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message,service_type, service_id) VALUES (?, ?, ?, ?, 'consultation', ?)";
         $insertStmt = $conn->prepare($insertNotification);
-        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message, $consultation_id);
+        $insertStmt->bind_param("sissi", $recipient_type, $recipient_id, $title, $message, $consultation_id);
 
         if ($insertStmt->execute()) {
             // Update consultation to mark reminder as sent
@@ -294,7 +294,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
                         <form method="POST" style="display:inline-block;">
                             <input type="hidden" name="consultation_id" value="<?php echo $row['consultation_id']; ?>">
                             <?php if (!$row['reminder_sent']) { ?>
-                                <button type="submit" name="send_reminder" class="reminder-btn">Send Reminder to User</button>
+                                <button type="submit" name="send_reminder" class="reminder-btn">Send Reminder to Doctor</button>
                             <?php } ?>
                         </form>
                     </td>

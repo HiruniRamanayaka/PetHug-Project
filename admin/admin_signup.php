@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Hash the password
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        // Insert user data
+        // Insert admin data
         $sql = "INSERT INTO admin (admin_name, admin_email, admin_image, admin_address, admin_phone, admin_password) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);

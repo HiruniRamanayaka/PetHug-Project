@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_reminder'])) {
         // Prepare and insert notification
         $insertNotification = "INSERT INTO notifications (recipient_type, recipient_id, title, message,service_type, service_id) VALUES (?, ?, ?, ?, 'appointment', ?)";
         $insertStmt = $conn->prepare($insertNotification);
-        $insertStmt->bind_param("siss", $recipient_type, $recipient_id, $title, $message, $appointment_id);
+        $insertStmt->bind_param("sissi", $recipient_type, $recipient_id, $title, $message, $appointment_id);
 
         if ($insertStmt->execute()) {
             // Update appointment to mark reminder as sent

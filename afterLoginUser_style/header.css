@@ -60,14 +60,14 @@ body{
     font-weight: 700; 
 }
 
-i{
+.nav-links i{
     font-size: 30px; color: white; background-color: #6666ff
 }
-i:hover{
+.nav-links i:hover{
     color:    #03045e;
 }
 
-.button{
+.nav-links button{
     border: none;
 }
 

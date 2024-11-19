@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <button type="reset" class="btn reset">Reset</button>
         </div>
       </form>
-      <p class="signup-link">Have an account? <a href="userLogin.php">Log In</a></p>
+      <p class="signup-link">Have an account? <a href="doctorLogin.php">Log In</a></p>
     </div>
   </div>
 </body>
