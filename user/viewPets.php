@@ -24,10 +24,19 @@ include_once "header_user.php";
     <link rel="stylesheet" href="../afterLoginUser_style/viewPets.css">
 </head>
 <body>
-    <!--header-->
-    <?php include_once "header_user.php"?>
 
-    <h1 class="pets">My Pets</h1>
+
+<div class="container_H">
+  <div class="about">
+    <h2>My Pets</h2>
+    <img src="../images/1920-ai-generated-dogs-run-in-grass-and-cats-run-on-the-front-yard (1).jpg"  class="about_img" alt="Pet" >
+    <p class="about-text">Welcome to the PetHug Pet Management Page, your one-stop solution for caring for your beloved companions. Here, you can effortlessly add new pets to your profile, update their details, or manage existing records with ease. Whether you're keeping track of vaccinations, medical history, or simply organizing your pet's information, our user-friendly system ensures everything is in one place. Celebrate the joy of pet ownership with the confidence that their care is well-organized and at your fingertips. Let PetHug help you give your furry friends the love and attention they deserve!</p>    
+    <div class="create-btn-container">
+        <a href="add_pets.php" class="new-pet-btn">Add New Pet</a>
+    </div>
+  </div>
+
+    
 
     <!-- Elements to display error and success messages -->
     <?php
@@ -40,7 +49,7 @@ include_once "header_user.php";
                 unset($_SESSION['success_message3']);
             }
     ?>
-
+   
     <div class="container">
     <!-- Display Pets in Cards -->
     <?php 
@@ -64,7 +73,8 @@ include_once "header_user.php";
         }
 
     ?>  
-    </div>            
+    </div>  
+</div>          
 
     <!--footer-->
     <?php include_once "../footer.php"?>
