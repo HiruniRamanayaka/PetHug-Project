@@ -1,4 +1,8 @@
 
+body{
+    background-color: #e0f7ff;
+}
+
 /* Main container */
 #main {
     max-width: 600px;
