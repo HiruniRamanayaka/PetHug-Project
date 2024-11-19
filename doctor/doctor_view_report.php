@@ -97,4 +97,4 @@ $doctor_id = $_SESSION['dr_id']; // Assign doctor_id from session before using i
 </html>
 
 <!-- footer -->
-<?php include_once "footer_dr.php" ?>
+<?php include_once "../footer.php" ?>
