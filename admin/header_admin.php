@@ -28,11 +28,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li><a href="admin_dashboard.php" class="<?php if($current_page == 'admin_dashboard.php'){echo 'active';} ?>">Dashboard</a></li>
                 <li><a href="admin_consultation_management.php" class="<?php if($current_page == 'admin_consultation_management.php'){echo 'active';} ?>">Consultation</a></li>
                 <li><a href="admin_appointment_management.php" class="<?php if($current_page == 'admin_appointment_management.php'){echo 'active';} ?>">Appointment</a></li>
+                <li><a href="hostel_management.php" class="<?php if($current_page == 'hostel_management.php'){echo 'active';} ?>">Hostel</a></li>
                 <li><a href="admin_user_management.php" class="<?php if($current_page == 'admin_user_management.php'){echo 'active';} ?>">User</a></li>
                 <li><a href="admin_doctor_management.php" class="<?php if($current_page == 'admin_doctor_management.php'){echo 'active';} ?>">Doctor</a></li>
-                <li><a href="hostel_management.php" class="<?php if($current_page == 'hostel_management.php'){echo 'active';} ?>">Hostel</a></li>
-                <li><a href="admin_send_notifications.php" class="<?php if($current_page == 'admin_notifications.php'){echo 'active';} ?>">Notification</a></li>
+               
+                
                 <li><a href="payment_management.php" class="<?php if($current_page == 'payment_management.php'){echo 'active';} ?>">Payment</a></li>
+                <li><a href="generate_reports.php" class="<?php if($current_page == 'generate_reports.php'){echo 'active';} ?>">Reports</a></li>
 
                 <li><button><a href="admin_notifications.php"><i style="font-size: 30px" class="fas fa-bell"></i></a></button></li>
                 
