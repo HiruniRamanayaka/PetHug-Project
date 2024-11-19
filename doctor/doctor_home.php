@@ -66,7 +66,7 @@ if ($doctor) {
             <img src="../images/reports.png" alt="Reports">
             <h3>Get Reports</h3>
             <p>Generate detailed reports of your activity and consultations.</p>
-            <a href="doctor_view_report.php">Generate Reports</a>
+            <a href="generate_doctor_reports.php">Generate Reports</a>
         </div>
     </div>
 </div>

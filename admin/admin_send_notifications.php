@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .container { 
             margin: 20px auto;
+            margin-top: 50px;
             max-width: 600px; 
             background-color: #ffffff; 
             border-radius: 8px; 

@@ -98,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_user'])) {
             max-width: 1200px;
             margin: 10px auto;
             padding: 20px;
+            margin-top: 50px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
