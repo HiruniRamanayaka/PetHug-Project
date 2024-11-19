@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
                     while ($row = mysqli_fetch_assoc($result_consultations)) {?>
 
-<tr>
+              <tr>
                 <td><?php echo $row['consultation_id']; ?></td>
                 <td><?php echo $row['pet_id']; ?></td>
                 <td><?php echo $row['pet_name']; ?></td>
@@ -245,7 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             </div>
 
     </div>
-
 </body>
 </html>
 
