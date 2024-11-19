@@ -8,7 +8,7 @@
     // Database connection
     require '../connection.php';
     
-    // Admin ID from session
+    // User ID from session
     $user_id = $_SESSION['user_id'];
     
     // Fetch user details from the database
@@ -49,7 +49,7 @@
                 }
             }
     }elseif (isset($_POST["cancel"])) {
-        // Redirect to admin_profile.php if cancel is clicked
+        // Redirect to userProfile.php if cancel is clicked
         header("Location: userProfile.php");
         exit();
     }

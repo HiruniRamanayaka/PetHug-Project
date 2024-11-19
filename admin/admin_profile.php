@@ -11,7 +11,7 @@
     // Admin ID from session
     $admin_id = $_SESSION['admin_id'];
     
-    // Fetch user details from the database
+    // Fetch admin details from the database
     $sql = "SELECT * FROM admin WHERE admin_id = $admin_id";
     $result = mysqli_query($conn, $sql);
 
@@ -81,7 +81,7 @@
     <div class="profile-container">
         <div class="profile">
         <?php
-            // Check if the user has a photo in the database
+            // Check if the admin has a photo in the database
             if (!empty($row['admin_image'])) {
                 echo "<div class='dr_img'>";
                 echo "<img src='" . htmlspecialchars($row['admin_image']) . "' alt='Admin Photo' width='100px' height='auto'>";
