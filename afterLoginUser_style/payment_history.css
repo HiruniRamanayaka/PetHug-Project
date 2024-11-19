@@ -8,17 +8,18 @@ body{
     max-width: 70%;
     margin: 20px auto;
     padding: 20px;
-    height: 600px;
+    height: auto;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     overflow-x: auto;
 }
 
-.container h2 {
-    font-size: 32px;
+.container h1 {
+    color: #1d3272;
     text-align: center;
-    color: rgb(47, 93, 194);
+    font-size: 1.8em;
+    margin-bottom: 30px;
 }
 
 .table {
