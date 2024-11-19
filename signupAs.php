@@ -20,6 +20,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 body{
   font-family: 'Arial', sans-serif;
   color: #333;
+  background-color: #e0f7ff;
 }
 
 header{

@@ -1,3 +1,7 @@
+body{
+    background-color: #e0f7ff;
+}
+
 /* Container for pending payment details */
 .pending_payment {
     max-width: 90%;

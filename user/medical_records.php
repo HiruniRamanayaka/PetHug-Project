@@ -25,7 +25,7 @@ if (!$pet_result) {
         /* CSS Styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #e0f7ff;
             color: #333;
             margin: 0;
             padding: 0;
@@ -33,7 +33,7 @@ if (!$pet_result) {
         .medical_records h1, .medical_records h2 {
             margin: 20px 0;
             text-align: center;
-            color: #4a90e2;
+            color: #007bff;
         }
         .medical_records form {
             max-width: 500px;
@@ -48,17 +48,18 @@ if (!$pet_result) {
             width: 100%;
             margin-bottom: 10px;
         }
-        .medical_recordscontainer button {
+        .medical_records button {
             width: 100%;
             padding: 10px;
-            background: #4a90e2;
+            background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         .medical_record button:hover {
-            background: #357abd;
+            background-color: #0056b3;
         }
         .container {
             max-width: 1200px;
