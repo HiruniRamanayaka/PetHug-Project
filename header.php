@@ -24,7 +24,7 @@
             <!-- Hamburger icon -->
             <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
             <ul class="nav-links">
-                <li><a href="home.php" class="<?php if ($current_page == 'home.php'){echo 'active';} ?>">Home</a></li>
+                <li><a href="index.php" class="<?php if ($current_page == 'home.php'){echo 'active';} ?>">Home</a></li>
                 <li><a href="about.php" class="<?php if($current_page == 'about.php'){echo 'active';} ?>">About Us</a></li>
                 <li><a href="services.php" class="<?php if($current_page == 'services.php'){echo 'active';} ?>">Services</a></li>
                 <li><a href="contact.php" class="<?php if($current_page == 'contact.php'){echo 'active';} ?>">Contact</a></li>
