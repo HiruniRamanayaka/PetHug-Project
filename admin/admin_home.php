@@ -29,7 +29,7 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - PetHug</title>
-    <link rel="stylesheet" href="../afterLoginAdmin_style/admin_home.css" type="text/css">
+    <link rel="stylesheet" href="../afterLoginUser_style/home.css" type="text/css">
 </head>
 <body>
 
@@ -43,13 +43,13 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
    
     <div class="cards">
         <div class="card">
-            <img src="../images/appointment.png" alt="manage_appointments">
+            <img src="../images/user_management.png" alt="User Management">
             <h3>User Management</h3>
             <p>Manage registered users on the platform.</p>
             <a href="admin_user_management.php">Manage Users</a>
         </div>
         <div class="card">
-            <img src="../images/appointment.png" alt="manage_appointments">
+            <img src="../images/doctor_management.png" alt="Doctor Management">
             <h3>Doctor Management</h3>
             <p>Manage registered doctors on the platform.</p>
             <a href="admin_doctor_management.php">Manage Doctors</a>
@@ -79,26 +79,21 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
             <a href="payment_management.php">Manage Payments</a>
         </div>
         <div class="card">
-            <img src="../images/payments.png" alt="calculate_payments">
+            <img src="../images/medical-record.png" alt="Get report">
             <h3>Get Reports</h3>
             <p>Generate and view reports for the platform.</p>
             <a href="generate_reports.php">Get Reports</a>
         </div>
 
+       
         <div class="card">
-            <img src="../images/payments.png" alt="calculate_payments">
-            <h3>Hospital Info</h3>
-            <p>Generate and view reports for the platform.</p>
-            <a href="hospital_info.php">Hospital Info</a>
-        </div>
-        <div class="card">
-            <img src="" alt="contact">
+            <img src="../images/message.png" alt="contact">
             <h3>Manage Contact Message</h3>
            
             <a href="admin_contact.php">Contact Messages</a>
         </div>
         <div class="card">
-            <img src="" alt="feedback">
+            <img src="../images/feedback.png" alt="feedback">
             <h3>Manage Feedback</h3>
             
             <a href="admin_feedback.php">Feedback</a>
@@ -111,6 +106,6 @@ $admin_name = $admin['admin_name']; // Assuming the admin's name is stored in 'a
 </body>
 </html>
 <?php
-include_once "footer_admin.php";
+include_once "../footer.php";
 
 ?>

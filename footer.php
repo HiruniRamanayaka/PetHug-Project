@@ -108,9 +108,9 @@
             <!-- Contact Us Section -->
             <div class="footer-section contact-us">
                 <h4>Contact Us</h4>
-                <p><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;123 Pet Lane, Animal City, PA 12345</p>
-                <p><i class="fas fa-phone"></i>&nbsp;&nbsp;Phone: +94 (234) 567-890</p>
-                <p><i class="fas fa-envelope"></i>&nbsp;&nbsp;Email: info@pethugvet.com</p>
+                <p><i style="font-size: 14px;" class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;123 Pet Lane, Animal City, PA 12345</p>
+                <p><i style="font-size: 14px;" class="fas fa-phone"></i>&nbsp;&nbsp;Phone: +94 (234) 567-890</p>
+                <p><i style="font-size: 14px;" class="fas fa-envelope"></i>&nbsp;&nbsp;Email: info@pethugvet.com</p>
             </div>
 
             <!-- Quick Links Section -->

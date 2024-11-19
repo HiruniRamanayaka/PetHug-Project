@@ -84,5 +84,5 @@ if (isset($_POST['change_password'])) {
     $conn->close();
  ?>
  <?php
-include_once 'footer_admin.php';
+include_once '../footer.php';
 ?>

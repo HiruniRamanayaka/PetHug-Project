@@ -135,19 +135,7 @@
                         ?>
                     </select>
 
-                    <label for="petType">Pet Type:</label>
-                    <select name="pet_breed" required>
-                    <option value="">Select pet breed</option>
-                        <?php
-                            // Fetch unique breeds of the user's pets
-                            $sql2 = "SELECT DISTINCT breed FROM pet WHERE user_id = $user_id";
-                            $result2 = mysqli_query($conn, $sql2);
-                            while ($row = mysqli_fetch_assoc($result2)) {
-                                echo "<option value='" . $row['breed'] . "'>" . $row['breed'] . "</option>";
-                            }
-                        ?>
-                    </select>
-
+                    
                     <label for="vet">Veterinarian:</label>
                     <select name="dr_id" required>
                     <option value="">Select veterinarian</option>
@@ -174,6 +162,6 @@
 </html>
 
 <!--footer-->
-<?php include_once "footer_user.php" ?>
+<?php include_once "../footer.php" ?>
 
 <?php $conn->close(); ?>
