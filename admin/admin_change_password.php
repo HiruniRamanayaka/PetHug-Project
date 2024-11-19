@@ -81,4 +81,11 @@ if (isset($_POST['change_password'])) {
 </html>
  <?php
     $conn->close();
+<<<<<<< HEAD
  ?>
+=======
+ ?>
+ <?php
+include_once '../footer.php';
+?>
+>>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6

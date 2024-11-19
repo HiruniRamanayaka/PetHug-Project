@@ -63,8 +63,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Admin profile form</title>
     <link rel="stylesheet" href="../afterLoginDoctor_style/dr_profile.css">
+=======
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7ff;
+            margin: 0;
+            
+          
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+           
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var name = document.forms["profileForm"]["name"].value;
+            var email = document.forms["profileForm"]["email"].value;
+            var phone = document.forms["profileForm"]["phone"].value;
+            var address = document.forms["profileForm"]["address"].value;
+
+            if (name == "" || email == "" || phone == "" || address == "") {
+                alert("Please fill out all fields.");
+                return false;
+            }
+            // Email format validation
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+            // Phone format validation (optional)
+            var phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                alert("Please enter a valid phone number (10 digits).");
+                return false;
+            }
+            return true;
+        }
+    </script>
+>>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 </head>
 <body>
 
@@ -100,12 +188,37 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <?php
             if (isset($_SESSION['success_message'])) {
                         echo '<p style="color:green;">' . $_SESSION['success_message'] . '</p>';
                         unset($_SESSION['success_message']);
             }
         ?>
+=======
+    <form name="profileForm" method="POST" onsubmit="return validateForm()">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="<?php echo htmlspecialchars($user['user_first_name']); ?>" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" value="<?php echo htmlspecialchars($user['user_email']); ?>" required>
+        </div>
+        <div>
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" value="<?php echo htmlspecialchars($user['user_phone']); ?>" required>
+        </div>
+        <div>
+            <label for="address">Address:</label>
+            <textarea name="address" rows="4" required><?php echo htmlspecialchars($user['user_address']); ?></textarea>
+        </div>
+        <div>
+            <button class="btn" type="submit">Update Profile</button>
+        </div>
+    </form>
+</div>
+>>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 
         <div class="form">
             <h2>Edit Profile</h2>
@@ -138,7 +251,11 @@
 </body>
 </html>
 
+<<<<<<< HEAD
 <!-- footer -->
 <?php include_once"footer_user.php";?>
 
+=======
+<?php include_once "../footer.php"?>
+>>>>>>> 397d6ace40e9800958cf6f91676672936c3151e6
 <?php $conn->close(); ?>

@@ -198,18 +198,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
             top: 0;
             z-index: 1;
         }
-        button {
+       
+        .cancel-btn {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 3px;
-        }
-        .cancel-btn {
             background-color: #ff4500;
             color: white;
         }
         .reminder-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 3px;
             background-color: #3498db;
             color: white;
         }
@@ -343,5 +347,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancel_consultation'])
 </body>
 </html>
 <?php
-include_once 'footer_admin.php';
+include_once '../footer.php';
 ?>

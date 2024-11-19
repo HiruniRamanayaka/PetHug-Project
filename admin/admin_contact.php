@@ -39,14 +39,24 @@ $result = $conn->query($sql);
    <style> 
    body {
     font-family: Arial, sans-serif;
-    margin: 20px;
     background-color: #e0f7ff;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #03045e;
 }
+.container {
+            max-width: 1200px;
+            margin: 10px auto;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
 table {
     width: 100%;
@@ -95,6 +105,7 @@ table th {
    </style>
 </head>
 <body>
+    <div class="container">
     <h1>Contact Messages Management</h1>
 
     <?php if (isset($message)): ?>
@@ -138,5 +149,8 @@ table th {
     </table>
 
     <?php $conn->close(); // Close the database connection ?>
+    </div>
 </body>
 </html>
+
+<?php include_once "../footer.php"?>
