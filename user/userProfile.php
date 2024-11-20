@@ -18,7 +18,7 @@
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
     } else {
-        $_SESSION['error_message1'] = "<p>Admin not found or you do not have permission to edit this profile.</p>";
+        $_SESSION['error_message1'] = "<p>User not found or you do not have permission to edit this profile.</p>";
         exit();
     }
 
@@ -31,18 +31,18 @@
         $user_address = $_POST['user_address'];
 
         // Validate the input
-        if (empty($user_first_name) || ($user_last_name) || empty($user_email) ||empty($user_phone) || empty($user_address)) {
+        if (empty($user_first_name) || empty($user_last_name) || empty($user_email) ||empty($user_phone) || empty($user_address)) {
             $_SESSION['error_message1'] = "All fields is required.";
         } elseif (!preg_match("/^[0-9]{10}$/", $user_phone)) {
             $_SESSION['error_message1'] = "Phone number must be 10 digits.";
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error_message1'] = "Invalid email format.";
         } else {
-            $sql = "UPDATE user SET user_name='$user_name', user_email='$user_email', user_phone='$user_phone', user_address='$user_address' WHERE user_id='$user_id'";
+            $sql = "UPDATE user SET user_first_name='$user_first_name', user_last_name='$user_last_name', user_email='$user_email', user_phone='$user_phone', user_address='$user_address' WHERE user_id='$user_id'";
 
                 if (mysqli_query($conn, $sql)) {
                     $_SESSION['success_message1'] = "User details updated successfully.";
-                    header("Location: user_profile.php");
+                    header("Location: userProfile.php");
                     exit();
                 } else {
                     $_SESSION['error_message1'] = "Error updating pet: " . mysqli_error($conn);
