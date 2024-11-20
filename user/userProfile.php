@@ -109,15 +109,15 @@
         <div class="form">
             <h2>Edit Profile</h2>
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                <label for="first_name">Name:</label>
+                <label for="first_name">First Name:</label>
                 <input id="first_name" type="text" name="user_first_name" value="<?php echo htmlspecialchars($row['user_first_name']);?>"><br><br>
-                <label for="last_name">Name:</label>
+                <label for="last_name">Last Name:</label>
                 <input id="last_name" type="text" name="user_last_name" value="<?php echo htmlspecialchars($row['user_last_name']);?>"><br><br>
                 <label for="email">Email:</label>
                 <input id="email" type="email" name="user_email" value="<?php echo htmlspecialchars($row['user_email']);?>"><br><br>
                 <label for="phone">Phone number:</label>
                 <input id="phone" type="text" name="user_phone" value="<?php echo htmlspecialchars($row['user_phone']);?>" min="0"><br><br>
-                <label for="address">Phone number:</label>
+                <label for="address">Address:</label>
                 <input id="address" type="text" name="user_address" value="<?php echo htmlspecialchars($row['user_address']);?>"><br><br>
 
                 <!-- Button to change password -->
