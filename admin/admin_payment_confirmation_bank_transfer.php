@@ -14,6 +14,10 @@ $admin_id = $_SESSION['admin_id'];
 
 // Get the current time
 $current_time = date("Y-m-d H:i:s");
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    var_dump($_POST);
+}
+
 
 // If the admin confirms a payment, update the status to "Confirmed"
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_payment']) && isset($_POST['user_id'])) {
@@ -86,6 +90,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_payment']) && 
     $stmt->close();
 }
 
+// If the admin rejects a payment, update the status to "Rejected"
+elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reject_payment']) && isset($_POST['user_id'])) {
+    $bill_id = $_POST['bill_id'];
+    $user_id = $_POST['user_id'];
+
+    $stmt = $conn->prepare("UPDATE bill SET status = 'Rejected', admin_id = ? WHERE bill_id = ?");
+    $stmt->bind_param("ii", $admin_id, $bill_id);
+
+    if ($stmt->execute()) {
+        echo "<p class='error'>Payment for Bill ID $bill_id has been rejected!</p>";
+    } else {
+        echo "<p class='error'>Error: " . $stmt->error . "</p>";
+    }
+    $stmt->close();
+}
+
 // Fetch all pending payments for both bank transfer and cash payments
 $result = $conn->query("SELECT * FROM bill WHERE status = 'Pending' AND (method = 'Online Bank Transfer')");
 
@@ -133,6 +153,12 @@ $result = $conn->query("SELECT * FROM bill WHERE status = 'Pending' AND (method 
                                 <input type="hidden" name="bill_id" value="<?php echo $row['bill_id']; ?>">
                                 <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
                                 <input type="submit" name="confirm_payment" value="Confirm">
+                            </form>
+                            <!-- Rejection Form -->
+                            <form action="" method="post" style="display:inline;">
+                                <input type="hidden" name="bill_id" value="<?php echo $row['bill_id']; ?>">
+                                <input type="hidden" name="user_id" value="<?php echo $row['user_id']; ?>">
+                                <input type="submit" name="reject_payment" value="Reject" style="background-color:red; color:white;">
                             </form>
                         </td>
                     </tr>

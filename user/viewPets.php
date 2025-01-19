@@ -25,6 +25,13 @@ include_once "header_user.php";
 </head>
 <body>
 
+<?php 
+    if(isset($_SESSION['success_message2'])) {
+        echo '<p style="color:green;">'.$_SESSION['success_message2'].'</p>';
+        unset($_SESSION['success_message2']);
+    }
+?>
+
 
 <div class="container_H">
   <div class="about">
@@ -40,6 +47,7 @@ include_once "header_user.php";
 
     <!-- Elements to display error and success messages -->
     <?php
+
             if(isset($_SESSION['error_message3'])) {
                 echo '<p style="color:red;">'.$_SESSION['error_message3'].'</p>';
                 unset($_SESSION['error_message3']);

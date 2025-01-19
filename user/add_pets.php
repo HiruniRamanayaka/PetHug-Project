@@ -27,6 +27,8 @@
             $_SESSION['error_message2'] = "Pet name is required.";
         }else if(empty($species)) {
             $_SESSION['error_message2'] = "Species is required.";
+        }else if(empty($breed)) {
+                $_SESSION['error_message2'] = "Breed is required.";
         }else if(empty($age) || !is_numeric($age) || $age < 0) {
             $_SESSION['error_message2'] = "Valid age is required.";
         }else if(empty($weight) || !is_numeric($weight) || $weight < 0) {
@@ -36,6 +38,9 @@
         }else{
             //************* image upload *********
             $target_dir = "../uploads/";
+            if (!isset($_FILES["fileToUpload"]) || empty($_FILES["fileToUpload"]["name"])) {
+                $_SESSION['error_message2'] = "Pet image is required.";
+            }else{
             $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 
             $uploadOk = 1;
@@ -57,23 +62,32 @@
             if (file_exists($target_file)){
                 $_SESSION['error_message2'] = "Sorry, file already exists.";
                 $uploadOk = 0;
+                header("Location: add_pets.php");
+                exit();
             }
+            
 
             // Check file size
             if ($_FILES["fileToUpload"]["size"] > 500000){
                 $_SESSION['error_message2'] = "Sorry, your file is too large.";
                 $uploadOk = 0;
+                header("Location: add_pets.php");
+                exit();
             }
 
             // Allow certain file formats
             if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif"){
                 $_SESSION['error_message2'] =  "Sorry, only JPG, JPEG, PNG & GIF are allowed.";
                 $uploadOk = 0;
+                header("Location: add_pets.php");
+                exit();
             }
 
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0){
                 $_SESSION['error_message2'] =  "Sorry, your file was not uploaded.";
+                header("Location: add_pets.php");
+                exit();
             }
 
 
@@ -105,6 +119,7 @@
                 exit();
             }
         }
+    }
 }
 $conn->close(); 
 ?>
@@ -126,10 +141,7 @@ $conn->close();
                 echo '<p style="color:red;">'.$_SESSION['error_message2'].'</p>';
                 unset($_SESSION['error_message2']);
             }
-            if(isset($_SESSION['success_message2'])) {
-                echo '<p style="color:green;">'.$_SESSION['success_message2'].'</p>';
-                unset($_SESSION['success_message2']);
-            }
+            
     ?>
 
     <div id="main">
@@ -153,6 +165,7 @@ $conn->close();
 
             <label>Gender: </label>
             <select name="gender" required>
+                <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Unknown</option>

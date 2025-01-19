@@ -35,7 +35,7 @@
     <div id="toRegister">
         <h2>Need high-quality veterinary care you can trust?</h2>
         <div id="toRegisterLink">
-            <a href="signupAs.php"><button>Register Now &nbsp;<i class="fas fa-arrow-right"></i></button></a>
+            <a href="user_signup.php"><button>Register Now &nbsp;<i class="fas fa-arrow-right"></i></button></a>
         </div>
         <br><p>Walk-Ins Accepted!</p>
     </div>

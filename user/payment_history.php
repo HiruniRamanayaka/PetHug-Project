@@ -11,13 +11,12 @@
  //header
  include_once "header_user.php";
 
-// SQL query to get payment history
-$sql = "SELECT bill_id, amount, date, method, status, transaction_reference 
-        FROM bill 
-        ORDER BY date DESC";
+ // SQL query to get payment history
+ $sql = "SELECT bill_id, amount, date, method, status, transaction_reference 
+         FROM bill 
+         ORDER BY date DESC";
 
-$result = $conn->query($sql);
-
+ $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -51,12 +50,16 @@ $result = $conn->query($sql);
                     ";
 
                     while($row = $result->fetch_assoc()) {
+                        
                         echo "<tr>
                                 <td>{$row['bill_id']}</td>
                                 <td>{$row['amount']}</td>
                                 <td>{$row['date']}</td>
                                 <td>{$row['method']}</td>
-                                <td>{$row['status']}</td>
+                                <td style='color: " . 
+                                    ($status === 'Rejected' ? 'red' : 
+                                    ($status === 'Confirmed' ? 'green' : 'black')) . ";'>
+                                    {$row['status']}</td>
                                 <td>{$row['transaction_reference']}</td>
                               </tr>";
                     }

@@ -118,7 +118,7 @@ body{
         <div class="button-group">
             <a href="user/user_signup.php"><button class="btn">Sign Up as User</button></a>
             <a href="Doctor/doctor_signup.php"><button class="btn">Sign Up as Doctor</button></a>
-            <a href="Admin/admin_signup.php"><button class="btn">Sign Up as Admin</button></a>
+            <!--<a href="Admin/admin_signup.php"><button class="btn">Sign Up as Admin</button></a>-->
         </div>
     </div>
 </body>

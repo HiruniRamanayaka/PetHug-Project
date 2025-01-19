@@ -283,7 +283,7 @@ $result = $conn->query($sql);
 <body>
 
 <div class="container">
-    <h1>Payment History</h1>
+    <h2>Payment History</h2>
     <div class="table-container">       
                 <?php
                 if ($result->num_rows > 0) {
@@ -303,12 +303,13 @@ $result = $conn->query($sql);
                     ";
 
                     while($row = $result->fetch_assoc()) {
+                        
                         echo "<tr>
                                 <td>{$row['bill_id']}</td>
                                 <td>{$row['amount']}</td>
                                 <td>{$row['date']}</td>
                                 <td>{$row['method']}</td>
-                                <td>{$row['status']}</td>
+                                <td style='color: " . (($row['status'] === 'Rejected') ? 'red' : (($row['status'] === 'Confirmed') ? 'green' : 'black')) . ";'>{$row['status']}</td>
                                 <td>{$row['transaction_reference']}</td>
                               </tr>";
                     }
@@ -326,7 +327,6 @@ $result = $conn->query($sql);
 
 </body>
 </html>
-
 
 <!--footer-->
 <?php include_once "../footer.php"?>
